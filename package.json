@@ -1,12 +1,63 @@
 {
   "name": "minecat",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "nx run-many -t build",
+    "build:fast": "nx run-many -t build:fast",
+    "dev": "nx run-many -t dev",
+    "test": "nx run-many -t test",
+    "test:watch": "nx run-many -t test:watch",
+    "coverage": "nx run-many -t coverage",
+    "size": "size-limit",
+    "prepare": "husky install",
+    "prettier": "prettier",
+    "lint": "eslint ./packages/*",
+    "lint:fix": "eslint ./packages/* --fix",
+    "type-check": "tsc --noEmit",
+    "project-graph": "nx graph",
+    "ci:version": "changeset version",
+    "ci:publish": "changeset publish",
+    "example": "npm run build && pnpm -F example dev"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "description": "PNPM monorepo template",
+  "license": "MIT",
+  "devDependencies": {
+    "@commitlint/config-conventional": "^17.7.0",
+    "@size-limit/preset-small-lib": "^8.2.6",
+    "@types/node": "^18.17.9",
+    "@typescript-eslint/eslint-plugin": "^5.62.0",
+    "@typescript-eslint/parser": "^5.62.0",
+    "commitlint": "^17.7.1",
+    "concurrently": "^8.2.1",
+    "eslint": "^8.47.0",
+    "eslint-config-prettier": "^8.10.0",
+    "eslint-import-resolver-typescript": "^3.6.0",
+    "eslint-plugin-import": "^2.28.1",
+    "eslint-plugin-prettier": "^4.2.1",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.3.0",
+    "nx": "16.3.2",
+    "prettier": "^2.8.8",
+    "size-limit": "^8.2.6",
+    "tsup": "^7.2.0",
+    "tsx": "^3.12.10",
+    "typescript": "^4.9.5",
+    "vite": "^4.4.9",
+    "vitest": "^1.0.1"
+  },
+  "packageManager": "pnpm@8.6.0",
+  "size-limit": [
+    {
+      "path": "./lib/dist/index.js",
+      "limit": "15 kb"
+    },
+    {
+      "path": "./lib/dist/index.mjs",
+      "limit": "15 kb"
+    }
+  ],
+  "dependencies": {
+    "@changesets/cli": "^2.26.2",
+    "eslint-plugin-react": "^7.33.2"
+  }
 }

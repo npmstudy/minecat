@@ -1,0 +1,31 @@
+{
+  "name": "lib2",
+  "version": "0.0.1",
+  "description": "My Awesome lib",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "author": "npmstudy <npmstudy@qq.com>",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup src -- --dts-resolve",
+    "build:fast": "tsup src",
+    "dev": "tsup src --watch",
+    "test": "vitest run",
+    "test:watch": "vitest watch",
+    "coverage": "vitest run --coverage"
+  },
+  "keywords": [
+    "awesome-keywords"
+  ],
+  "devDependencies": {
+    "@vitest/coverage-v8": "^1.0.1",
+    "happy-dom": "^6.0.4"
+  }
+}
