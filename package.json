@@ -1,6 +1,9 @@
 {
   "name": "minecat",
   "private": true,
+  "engines": {
+    "node": "^20.0.0"
+  },
   "scripts": {
     "build": "nx run-many -t build",
     "build:fast": "nx run-many -t build:fast",

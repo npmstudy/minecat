@@ -1,5 +1,5 @@
-import Koa from 'koa';
-import { lib } from 'lib2';
+import Koa from "koa";
+import { lib } from "minecat";
 const app = new Koa();
 
 app.use(async (ctx) => {
