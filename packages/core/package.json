@@ -28,7 +28,17 @@
     "awesome-keywords"
   ],
   "devDependencies": {
+    "@types/minimist": "^1.2.5",
+    "@types/prompts": "^2.4.9",
+    "@types/yargs": "^17.0.32",
     "@vitest/coverage-v8": "^1.0.1",
     "happy-dom": "^6.0.4"
+  },
+  "dependencies": {
+    "cross-spawn": "^7.0.3",
+    "kolorist": "^1.8.0",
+    "minimist": "^1.2.8",
+    "prompts": "^2.4.2",
+    "yargs": "^17.7.2"
   }
 }
