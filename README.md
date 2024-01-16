@@ -42,6 +42,45 @@ NX is a cacheable build tool (and Monorepo manager). This project uses it to run
 nx run-many -t build
 ```
 
+## Usage
+
+### 1、打印信息和帮助
+
+```
+$ minecat
+```
+
+### 2、创建项目
+
+```
+$ minecat init
+```
+
+选择 Node.js/React
+然后初始化 pnpm
+
+### 3、创建模块
+
+```
+$ minecat module
+$ minecat module --list
+```
+
+选择 Node.js/React
+然后读 pnpm workspace 的配置，有 packages 就读，没有提示输入。
+
+### 4、use 模块
+
+```
+$ minecat use abc
+
+$ minecat dd debug //增加debug到abc模块的devdependency
+$ minecat pd yargs // 增加yarg到abc模块的proddependency
+$ minecat rd debug // 从abc模块，移除debug
+```
+
+
+
 ## License
 
 MIT @ npmstudy
