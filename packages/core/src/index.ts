@@ -2,6 +2,7 @@
 import yargs from "yargs/yargs";
 import { hideBin } from "yargs/helpers";
 import prompts from "prompts";
+import { dclone } from "dclone";
 
 export async function init() {
   yargs(hideBin(process.argv))
@@ -43,6 +44,16 @@ export async function init() {
 
           if (response.confirm) {
             console.dir(response.apptype);
+
+            if (response.apptype === "Node.js") {
+              await dclone({
+                dir: "https://github.com/npmstudy/your-node-v20-monoreopo-project",
+              });
+
+              console.dir("rm ");
+
+              console.dir("done");
+            }
           }
         } catch (cancelled: any) {
           console.log(cancelled.message);
