@@ -46,7 +46,7 @@ $ minecat add --update
 - 获取当前项目package.json minecat类型：Node.js/
 - ls ~/.minecat/Node.js/
 - mv lib to ./packages/xxx
-
+- mv ~/.minecat/Node.js/xx ~/packages/xx
 
 ### 4、use 模块
 

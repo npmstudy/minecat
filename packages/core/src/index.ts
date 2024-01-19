@@ -3,6 +3,12 @@ import yargs from "yargs/yargs";
 import { hideBin } from "yargs/helpers";
 import prompts from "prompts";
 import { dclone } from "dclone";
+import { readdirSync } from "fs";
+import shell from "shelljs";
+import { homedir } from "os";
+import debug from "debug";
+
+const log = debug("minecat");
 
 export async function init() {
   yargs(hideBin(process.argv))
@@ -11,10 +17,7 @@ export async function init() {
       "init a minecat project with pnpm",
       (yargs) => {
         // init project
-        return yargs.positional("port", {
-          describe: "port to bind on",
-          default: 5000,
-        });
+        return;
       },
       async (argv) => {
         if (argv.verbose) console.info(`start server on :${argv.port}`);
@@ -43,16 +46,46 @@ export async function init() {
           // console.log(response); // => { value: 24 }
 
           if (response.confirm) {
-            console.dir(response.apptype);
+            log(response.apptype);
+            const userName = "npmstudy";
+            const repoName = "your-node-v20-monoreopo-project";
+            const pkgHome = homedir + `/.minecat/` + response.apptype + "/";
+            shell.mkdir("-p", pkgHome);
 
+            const projectDir = process.cwd() + "/" + repoName;
+            const originPkgDir = projectDir + "/packages";
             if (response.apptype === "Node.js") {
-              await dclone({
-                dir: "https://github.com/npmstudy/your-node-v20-monoreopo-project",
-              });
+              if (!shell.test("-d", originPkgDir)) {
+                // 不存在originPkgDir，才可以执行下面的clone逻辑
+                await dclone({
+                  dir: "https://github.com/" + userName + "/" + repoName,
+                });
 
-              console.dir("rm ");
+                // 获取某个目录下面的所有文件夹
+                const getDirectories = (source) =>
+                  readdirSync(source, { withFileTypes: true })
+                    .filter((dirent) => dirent.isDirectory())
+                    .map((dirent) => dirent.name);
 
-              console.dir("done");
+                const pkgs = getDirectories(originPkgDir);
+
+                log(pkgs);
+
+                // mv pkg to ~/.minecat/Node.js/xxx
+                for (const i in pkgs) {
+                  const pkg = pkgs[i];
+                  const pkgDir = originPkgDir + "/" + pkg;
+
+                  shell.mv("-f", pkgDir, pkgHome);
+                  console.log("add module at " + pkgHome + pkg);
+                }
+
+                shell.rm("-rf", projectDir + "/.git");
+
+                console.dir("congratulations");
+              } else {
+                console.dir("failed，dir is exist");
+              }
             }
           }
         } catch (cancelled: any) {
@@ -62,7 +95,7 @@ export async function init() {
       }
     )
     .command(
-      "module [port]",
+      "add [port]",
       "add a module in project",
       (yargs) => {
         // add module in project

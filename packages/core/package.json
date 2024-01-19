@@ -37,10 +37,12 @@
   "dependencies": {
     "cross-spawn": "^7.0.3",
     "dclone": "^1.4.2",
+    "debug": "^4.3.4",
     "find-up": "^7.0.0",
     "kolorist": "^1.8.0",
     "minimist": "^1.2.8",
     "prompts": "^2.4.2",
+    "shelljs": "^0.8.5",
     "yargs": "^17.7.2"
   }
 }
