@@ -7,7 +7,7 @@
   "scripts": {
     "build": "nx run-many -t build",
     "build:fast": "nx run-many -t build:fast",
-    "dev": "nx run-many -t dev",
+    "dev": "npm run build && nx run-many -t dev",
     "test": "nx run-many -t test",
     "test:watch": "nx run-many -t test:watch",
     "coverage": "nx run-many -t coverage",
@@ -42,11 +42,11 @@
     "nx": "16.3.2",
     "prettier": "^2.8.8",
     "size-limit": "^8.2.6",
-    "tsup": "^7.2.0",
-    "tsx": "^3.12.10",
-    "typescript": "^4.9.5",
-    "vite": "^4.4.9",
-    "vitest": "^1.0.1"
+    "tsup": "^8.0.0",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.3",
+    "vite": "^5.0.12",
+    "vitest": "^1.2.1"
   },
   "packageManager": "pnpm@8.6.0",
   "size-limit": [
