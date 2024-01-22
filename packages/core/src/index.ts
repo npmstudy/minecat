@@ -3,14 +3,34 @@ import yargs from "yargs/yargs";
 import { hideBin } from "yargs/helpers";
 import prompts from "prompts";
 import { dclone } from "dclone";
-import { readdirSync } from "fs";
+import fs, { readdirSync } from "fs";
 import shell from "shelljs";
 import { homedir } from "os";
 import debug from "debug";
 
 const log = debug("minecat");
+let proj_type;
+
+// 获取某个目录下面的所有文件夹
+const getDirectories = (source) =>
+  readdirSync(source, { withFileTypes: true })
+    .filter((dirent) => dirent.isDirectory())
+    .map((dirent) => dirent.name);
 
 export async function init() {
+  try {
+    const json = JSON.parse(
+      fs.readFileSync(process.cwd() + "/package.json").toString()
+    );
+    if (!json.minecat) {
+      console.log("please check this is a minecat project");
+      return;
+    } else {
+      proj_type = json.minecat.type;
+      console.log("this is a minecat project with type = " + json.minecat.type);
+    }
+  } catch (e) {}
+
   yargs(hideBin(process.argv))
     .command(
       "init",
@@ -61,12 +81,6 @@ export async function init() {
                   dir: "https://github.com/" + userName + "/" + repoName,
                 });
 
-                // 获取某个目录下面的所有文件夹
-                const getDirectories = (source) =>
-                  readdirSync(source, { withFileTypes: true })
-                    .filter((dirent) => dirent.isDirectory())
-                    .map((dirent) => dirent.name);
-
                 const pkgs = getDirectories(originPkgDir);
 
                 log(pkgs);
@@ -95,18 +109,55 @@ export async function init() {
       }
     )
     .command(
-      "add [port]",
+      "add [tpl] [newname]",
       "add a module in project",
       (yargs) => {
         // add module in project
-        return yargs.positional("port", {
-          describe: "port to bind on",
-          default: 5000,
-        });
+        return yargs
+          .positional("tpl", {
+            describe: "template to use",
+          })
+          .positional("newname", {
+            describe: "to destination dir",
+          });
       },
       (argv) => {
-        if (argv.verbose) console.info(`start server on :${argv.port}`);
-        console.log(argv.port);
+        // if (argv.verbose) console.info(`start server on :${argv.port}`);
+
+        console.dir(proj_type);
+
+        const pkgHome = homedir + `/.minecat/` + proj_type + "/";
+        const pkgs = getDirectories(pkgHome);
+        // shell.ls("-alt", pkgHome);
+
+        console.log(pkgs);
+
+        if (!argv["tpl"]) {
+          console.log("please input tpl name");
+          return;
+        }
+
+        if (!argv["newname"]) {
+          argv["newname"] = argv["tpl"];
+        }
+        // 先判断newname是否存在
+
+        console.dir(
+          "cp from " +
+            pkgHome +
+            argv["tpl"] +
+            " to " +
+            process.cwd() +
+            "/packages/" +
+            argv["newname"]
+        );
+        // 如果newname不存在，就拷贝tpl到newname
+        shell.cp(
+          "-Rf",
+          pkgHome + "/" + argv["tpl"],
+          process.cwd() + "/packages/" + argv["newname"]
+        );
+        // 修改package.json里的名字。
       }
     )
     .command(
