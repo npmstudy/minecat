@@ -10,6 +10,7 @@ import debug from "debug";
 
 const log = debug("minecat");
 let proj_type;
+let proj_package_json;
 let proj_script_names;
 let pkg_list = {};
 let pkg_names = [];
@@ -29,9 +30,10 @@ export async function init() {
       console.log("please check this is a minecat project");
       return;
     } else {
+      proj_package_json = json;
       proj_type = json.minecat.type;
       proj_script_names = Object.keys(json.scripts);
-      console.dir(proj_script_names);
+      // console.dir(proj_script_names);
       console.log("this is a minecat project with type = " + json.minecat.type);
 
       const originPkgDir = process.cwd() + "/packages";
@@ -274,21 +276,21 @@ export async function init() {
         }
       }
     )
-    .command(
-      "r [package]",
-      "pnpm add dev dependency to current project",
-      (yargs) => {
-        // minecat dd debug //增加debug到abc模块的devdependency
-        return yargs.positional("port", {
-          describe: "port to bind on",
-          default: 5000,
-        });
-      },
-      (argv) => {
-        if (argv.verbose) console.info(`start server on :${argv.port}`);
-        console.log(argv.port);
-      }
-    )
+    // .command(
+    //   "remove [package]",
+    //   "pnpm add dev dependency to current project",
+    //   (yargs) => {
+    //     // minecat dd debug //增加debug到abc模块的devdependency
+    //     return yargs.positional("port", {
+    //       describe: "port to bind on",
+    //       default: 5000,
+    //     });
+    //   },
+    //   (argv) => {
+    //     if (argv.verbose) console.info(`start server on :${argv.port}`);
+    //     console.log(argv.port);
+    //   }
+    // )
     .command(
       "run [script]",
       "pnpm run script from current project",
