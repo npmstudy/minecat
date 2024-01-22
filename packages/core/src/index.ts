@@ -248,14 +248,12 @@ export async function init() {
             ];
             const response = await prompts(questions);
 
-            // => { value: 24 }
-
             if (response.confirm) {
               if (argv.verbose) console.log(response);
               const dept_type =
                 response.dependencytype === "proddependency" ? "-P" : "-D";
 
-              const cmd = `pnpm add ${depts.join(" ")} --filter ${
+              const cmd = `npx pnpm add ${depts.join(" ")} --filter ${
                 response.pkgname
               } ${dept_type}`;
               if (argv.verbose) console.dir(cmd);
@@ -289,7 +287,7 @@ export async function init() {
       }
     )
     .command(
-      "run [package]",
+      "run [script]",
       "pnpm remove prod|dev dependency from current project",
       (yargs) => {
         // 从abc模块，移除debug
