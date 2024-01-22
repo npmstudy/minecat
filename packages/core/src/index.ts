@@ -57,7 +57,7 @@ export async function init() {
       pkg_names = Object.keys(pkg_list);
     }
   } catch (e) {
-    console.error(e);
+    // console.error(e);
   }
 
   yargs(hideBin(process.argv))
@@ -92,8 +92,6 @@ export async function init() {
           ];
           const response = await prompts(questions);
 
-          // console.log(response); // => { value: 24 }
-
           if (response.confirm) {
             log(response.apptype);
             const userName = "npmstudy";
@@ -125,6 +123,29 @@ export async function init() {
 
                 shell.rm("-rf", projectDir + "/.git");
 
+                // Run external tool synchronously
+                if (
+                  shell.exec(`git config --global init.defaultBranch main`)
+                    .code !== 0
+                ) {
+                  shell.echo(
+                    "Error: git config --global init.defaultBranch main failed: "
+                  );
+                  shell.exit(1);
+                }
+
+                if (
+                  shell.exec(
+                    `cd ${repoName} && git init && git add . && git commit -am 'init'`
+                  ).code !== 0
+                ) {
+                  shell.echo(
+                    "Error: git config --global init.defaultBranch main failed: "
+                  );
+                  shell.exit(1);
+                }
+
+                console.log(`Usages: cd ${repoName} && pnpm i && pnpm dev`);
                 console.dir("congratulations");
               } else {
                 console.dir("failed，dir is exist");
