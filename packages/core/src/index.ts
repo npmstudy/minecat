@@ -161,21 +161,6 @@ export async function init() {
       }
     )
     .command(
-      "use [port]",
-      "change context to this project",
-      (yargs) => {
-        // minecat use abc，切换当前模块为abc
-        return yargs.positional("port", {
-          describe: "port to bind on",
-          default: 5000,
-        });
-      },
-      (argv) => {
-        if (argv.verbose) console.info(`start server on :${argv.port}`);
-        console.log(argv.port);
-      }
-    )
-    .command(
       "pd [port]",
       "pnpm add prod dependency to current project",
       (yargs) => {
