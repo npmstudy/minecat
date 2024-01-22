@@ -10,6 +10,7 @@ import debug from "debug";
 
 const log = debug("minecat");
 let proj_type;
+let proj_script_names;
 let pkg_list = {};
 let pkg_names = [];
 
@@ -29,6 +30,8 @@ export async function init() {
       return;
     } else {
       proj_type = json.minecat.type;
+      proj_script_names = Object.keys(json.scripts);
+      console.dir(proj_script_names);
       console.log("this is a minecat project with type = " + json.minecat.type);
 
       const originPkgDir = process.cwd() + "/packages";
@@ -148,7 +151,7 @@ export async function init() {
       (argv) => {
         // if (argv.verbose) console.info(`start server on :${argv.port}`);
 
-        console.dir(proj_type);
+        // console.dir(proj_type);
         if (!proj_type) {
           console.dir("当前不是minecat项目，或者没有在项目根目录");
           return;
@@ -189,7 +192,7 @@ export async function init() {
       }
     )
     .command(
-      "i [package]",
+      "install [package]",
       "pnpm add prod dependency to current project",
       (yargs) => {
         // minecat pd yargs // 增加yarg到abc模块的proddependency
@@ -288,7 +291,7 @@ export async function init() {
     )
     .command(
       "run [script]",
-      "pnpm remove prod|dev dependency from current project",
+      "pnpm run script from current project",
       (yargs) => {
         // 从abc模块，移除debug
         return yargs.positional("port", {
@@ -296,9 +299,51 @@ export async function init() {
           default: 5000,
         });
       },
-      (argv) => {
-        if (argv.verbose) console.info(`start server on :${argv.port}`);
-        console.log(argv.port);
+      async (argv) => {
+        if (!proj_type) {
+          console.dir("当前不是minecat项目，或者没有在项目根目录");
+          return;
+        }
+
+        try {
+          let scripts_choices = [];
+          for (var i in proj_script_names) {
+            let name = proj_script_names[i];
+            scripts_choices.push({ title: name, value: name });
+          }
+          const questions: any = [
+            {
+              type: "select",
+              name: "script",
+              message: "What is your script will run?",
+              choices: scripts_choices,
+            },
+            {
+              type: "confirm",
+              name: "confirm",
+              initial: true,
+              message: (prev, values) =>
+                `Please confirm that you choose ${prev} to init project in current directory?`,
+            },
+          ];
+          const response = await prompts(questions);
+
+          // console.log(response); // => { value: 24 }
+
+          if (response.confirm) {
+            log(response.script);
+
+            const cmd = `npx pnpm ${response.script}`;
+
+            if (shell.exec(cmd).code !== 0) {
+              shell.echo("Error: pnpm run failed: " + cmd);
+              shell.exit(1);
+            }
+          }
+        } catch (cancelled: any) {
+          console.log(cancelled.message);
+          return;
+        }
       }
     )
     .option("verbose", {
