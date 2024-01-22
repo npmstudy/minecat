@@ -10,6 +10,8 @@ import debug from "debug";
 
 const log = debug("minecat");
 let proj_type;
+let pkg_list = {};
+let pkg_names = [];
 
 // 获取某个目录下面的所有文件夹
 const getDirectories = (source) =>
@@ -28,8 +30,30 @@ export async function init() {
     } else {
       proj_type = json.minecat.type;
       console.log("this is a minecat project with type = " + json.minecat.type);
+
+      const originPkgDir = process.cwd() + "/packages";
+
+      const pkgs = getDirectories(originPkgDir);
+
+      log(pkgs);
+
+      // mv pkg to ~/.minecat/Node.js/xxx
+      for (const i in pkgs) {
+        const json = JSON.parse(
+          fs
+            .readFileSync(
+              process.cwd() + "/packages/" + pkgs[i] + "/package.json"
+            )
+            .toString()
+        );
+
+        pkg_list[json.name] = json;
+      }
+      pkg_names = Object.keys(pkg_list);
     }
-  } catch (e) {}
+  } catch (e) {
+    console.error(e);
+  }
 
   yargs(hideBin(process.argv))
     .command(
@@ -41,7 +65,7 @@ export async function init() {
       },
       async (argv) => {
         if (argv.verbose) console.info(`start server on :${argv.port}`);
-        console.log(argv.port);
+        // console.log(argv.port);
         try {
           const questions: any = [
             {
@@ -125,6 +149,10 @@ export async function init() {
         // if (argv.verbose) console.info(`start server on :${argv.port}`);
 
         console.dir(proj_type);
+        if (!proj_type) {
+          console.dir("当前不是minecat项目，或者没有在项目根目录");
+          return;
+        }
 
         const pkgHome = homedir + `/.minecat/` + proj_type + "/";
         const pkgs = getDirectories(pkgHome);
@@ -161,22 +189,92 @@ export async function init() {
       }
     )
     .command(
-      "pd [port]",
+      "i [package]",
       "pnpm add prod dependency to current project",
       (yargs) => {
         // minecat pd yargs // 增加yarg到abc模块的proddependency
-        return yargs.positional("port", {
+        return yargs.positional("package", {
           describe: "port to bind on",
           default: 5000,
         });
       },
-      (argv) => {
-        if (argv.verbose) console.info(`start server on :${argv.port}`);
-        console.log(argv.port);
+      async (argv) => {
+        // if (argv.verbose) console.info(`start server on :${argv.port}`);
+        // if (argv.verbose) console.dir(proj_type);
+        if (!proj_type) {
+          console.dir("当前不是minecat项目，或者没有在项目根目录");
+          return;
+        }
+
+        if (argv.verbose) console.dir("pkg names=" + pkg_names);
+
+        if (argv._[0] === "i" || argv._[0] === "install") {
+          // if (argv.verbose) console.log(argv);
+          // 移除 i 或 install
+          const pkgs = argv._.shift();
+          argv._.push(argv.package);
+          const depts = argv._;
+          if (argv.verbose) console.log("install packages: " + depts);
+
+          let pgk_choices = [];
+          for (var i in pkg_names) {
+            let name = pkg_names[i];
+            pgk_choices.push({ title: name, value: name });
+          }
+
+          try {
+            const questions: any = [
+              {
+                type: "select",
+                name: "pkgname",
+                message: "What is your package name?",
+                choices: pgk_choices,
+              },
+              {
+                type: "select",
+                name: "dependencytype",
+                message: "What is your dependency type?",
+                choices: [
+                  { title: "prod dependency", value: "proddependency" },
+                  { title: "dev dependency", value: "devdependency" },
+                ],
+              },
+              {
+                type: "confirm",
+                name: "confirm",
+                initial: true,
+                message: (prev, values) => `Please confirm ?`,
+              },
+            ];
+            const response = await prompts(questions);
+
+            // => { value: 24 }
+
+            if (response.confirm) {
+              if (argv.verbose) console.log(response);
+              const dept_type =
+                response.dependencytype === "proddependency" ? "-P" : "-D";
+
+              const cmd = `pnpm add ${depts.join(" ")} --filter ${
+                response.pkgname
+              } ${dept_type}`;
+              if (argv.verbose) console.dir(cmd);
+
+              // Run external tool synchronously
+              if (shell.exec(cmd).code !== 0) {
+                shell.echo("Error: pnpm add failed: " + cmd);
+                shell.exit(1);
+              }
+            }
+          } catch (cancelled: any) {
+            console.log(cancelled.message);
+            return;
+          }
+        }
       }
     )
     .command(
-      "dd [port]",
+      "r [package]",
       "pnpm add dev dependency to current project",
       (yargs) => {
         // minecat dd debug //增加debug到abc模块的devdependency
@@ -191,7 +289,7 @@ export async function init() {
       }
     )
     .command(
-      "rd [port]",
+      "run [package]",
       "pnpm remove prod|dev dependency from current project",
       (yargs) => {
         // 从abc模块，移除debug
@@ -210,6 +308,7 @@ export async function init() {
       type: "boolean",
       description: "Run with verbose logging",
     })
+    .help()
     .parse();
 }
 
