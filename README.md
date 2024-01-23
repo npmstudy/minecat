@@ -1,6 +1,7 @@
-# Your Node.js v20 Menoreopo Project
+# minecat
 
-> A PNPM monorepo template for Node.js v20 projects.
+> minecat is a monorepo cli tool for Node.js、React
+
 
 ## Usage
 
@@ -38,14 +39,11 @@ $ minecat init
 
 - Node.js
   - https://github.com/npmstudy/your-node-v20-monoreopo-project
-
-步骤
-
-- dclone https://github.com/npmstudy/your-node-v20-monoreopo-project
-- mv your-node-v20-monoreopo-project/packages/* ~/.minecat/Node.js/
+- React + vite
+  - https://github.com/npmstudy/your-vite-react-monoreopo-project
 
 
-### 3、创建模块
+### 3、创建Package
 
 ```
 $ minecat add
@@ -68,8 +66,10 @@ $ minecat add lib yourdir
 $ minecat install debug ms
 ```
 
-选择当前packages/xxx包
-选择是prod还是dev依赖
+步骤（此处采用prompts，类似fig，更简单）
+
+- 选择当前packages/xxx包
+- 选择是prod还是dev依赖
 
 
 ### 5、自定义模版
