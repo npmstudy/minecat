@@ -1,6 +1,6 @@
 {
   "name": "minecat",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "My Awesome lib",
   "bin": {
     "minecat": "dist/index.js"
