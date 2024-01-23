@@ -94,63 +94,74 @@ export async function init() {
 
           if (response.confirm) {
             log(response.apptype);
-            const userName = "npmstudy";
-            const repoName = "your-node-v20-monoreopo-project";
+            let userName = "npmstudy";
+            let repoName = "your-node-v20-monoreopo-project";
+
+            if (response.apptype === "Node.js") {
+              userName = "npmstudy";
+              repoName = "your-node-v20-monoreopo-project";
+            }
+
+            if (response.apptype === "React") {
+              userName = "npmstudy";
+              repoName = "your-vite-react-monoreopo-project";
+            }
+
             const pkgHome = homedir + `/.minecat/` + response.apptype + "/";
             shell.mkdir("-p", pkgHome);
 
             const projectDir = process.cwd() + "/" + repoName;
             const originPkgDir = projectDir + "/packages";
-            if (response.apptype === "Node.js") {
-              if (!shell.test("-d", originPkgDir)) {
-                // 不存在originPkgDir，才可以执行下面的clone逻辑
-                await dclone({
-                  dir: "https://github.com/" + userName + "/" + repoName,
-                });
+            // if (response.apptype === "Node.js") {
+            if (!shell.test("-d", originPkgDir)) {
+              // 不存在originPkgDir，才可以执行下面的clone逻辑
+              await dclone({
+                dir: "https://github.com/" + userName + "/" + repoName,
+              });
 
-                const pkgs = getDirectories(originPkgDir);
+              const pkgs = getDirectories(originPkgDir);
 
-                log(pkgs);
+              log(pkgs);
 
-                // mv pkg to ~/.minecat/Node.js/xxx
-                for (const i in pkgs) {
-                  const pkg = pkgs[i];
-                  const pkgDir = originPkgDir + "/" + pkg;
+              // mv pkg to ~/.minecat/Node.js/xxx
+              for (const i in pkgs) {
+                const pkg = pkgs[i];
+                const pkgDir = originPkgDir + "/" + pkg;
 
-                  shell.mv("-f", pkgDir, pkgHome);
-                  console.log("add module at " + pkgHome + pkg);
-                }
-
-                shell.rm("-rf", projectDir + "/.git");
-
-                // Run external tool synchronously
-                if (
-                  shell.exec(`git config --global init.defaultBranch main`)
-                    .code !== 0
-                ) {
-                  shell.echo(
-                    "Error: git config --global init.defaultBranch main failed: "
-                  );
-                  shell.exit(1);
-                }
-
-                if (
-                  shell.exec(
-                    `cd ${repoName} && git init && git add . && git commit -am 'init'`
-                  ).code !== 0
-                ) {
-                  shell.echo(
-                    "Error: git config --global init.defaultBranch main failed: "
-                  );
-                  shell.exit(1);
-                }
-
-                console.log(`Usages: cd ${repoName} && pnpm i && pnpm dev`);
-                console.dir("congratulations");
-              } else {
-                console.dir("failed，dir is exist");
+                shell.cp("-Rf", pkgDir, pkgHome);
+                console.log("add module at " + pkgHome + pkg);
               }
+
+              shell.rm("-rf", projectDir + "/.git");
+
+              // Run external tool synchronously
+              if (
+                shell.exec(`git config --global init.defaultBranch main`)
+                  .code !== 0
+              ) {
+                shell.echo(
+                  "Error: git config --global init.defaultBranch main failed: "
+                );
+                shell.exit(1);
+              }
+
+              if (
+                shell.exec(
+                  `cd ${repoName} && git init && git add . && git commit -am 'init'`
+                ).code !== 0
+              ) {
+                shell.echo(
+                  "Error: git config --global init.defaultBranch main failed: "
+                );
+                shell.exit(1);
+              }
+
+              console.log(`Usages: cd ${repoName} && pnpm i && pnpm dev`);
+              console.dir("congratulations");
+            } else {
+              console.dir("failed，dir is exist");
             }
+            // }
           }
         } catch (cancelled: any) {
           console.log(cancelled.message);
