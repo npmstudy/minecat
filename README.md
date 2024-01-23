@@ -4,6 +4,21 @@
 
 ## Usage
 
+```
+minecat [命令]
+
+命令：
+minecat init init a minecat project with pnpm
+minecat add [tpl] [newname] add a module in project
+minecat install [package] pnpm add prod dependency to current project
+minecat run [script] pnpm run script from current project
+
+选项：
+--version 显示版本号 [布尔]
+-v, --verbose Run with verbose logging [布尔]
+--help 显示帮助信息 [布尔]
+```
+
 ### 1、打印信息和帮助
 
 ```
@@ -34,8 +49,7 @@ $ minecat init
 
 ```
 $ minecat add
-$ minecat add --list
-$ minecat add --update
+$ minecat add lib yourdir
 ```
 
 选择 Node.js/React
@@ -48,15 +62,14 @@ $ minecat add --update
 - mv lib to ./packages/xxx
 - mv ~/.minecat/Node.js/xx ~/packages/xx
 
-### 4、use 模块
+### 4、安装模块
 
 ```
-$ minecat use abc
-
-$ minecat dd debug //增加debug到abc模块的devdependency
-$ minecat pd yargs // 增加yarg到abc模块的proddependency
-$ minecat rd debug // 从abc模块，移除debug
+$ minecat install debug ms
 ```
+
+选择当前packages/xxx包
+选择是prod还是dev依赖
 
 ## License
 
