@@ -74,10 +74,22 @@ $ minecat install debug ms
 
 ### 5、自定义模版
 
-```
-$ minecat config vue https://github.com/npmstudy/your-node-v20-monoreopo-project
-```
+为了方便自定义模版，增加minecat config子命令，用法如下。
 
+```
+$ minecat config --list
+{
+  'Node.js': 'https://github.com/npmstudy/your-node-v20-monoreopo-project',
+  React: 'https://github.com/npmstudy/your-vite-react-monoreopo-project',
+}
+$ minecat config vue https://github.com/npmstudy/your-node-v20-monoreopo-project
+{
+  'Node.js': 'https://github.com/npmstudy/your-node-v20-monoreopo-project',
+  React: 'https://github.com/npmstudy/your-vite-react-monoreopo-project',
+  vue: 'https://github.com/npmstudy/your-node-v20-monoreopo-project',
+}
+
+```
 
 ## License
 
