@@ -7,6 +7,9 @@ import fs, { readdirSync } from "fs";
 import shell from "shelljs";
 import { homedir } from "os";
 import debug from "debug";
+import { writeConfig } from "./postinstall";
+
+import { extractGitHubRepoInfo } from "./util";
 
 const log = debug("minecat");
 let proj_type;
@@ -14,6 +17,7 @@ let proj_package_json;
 let proj_script_names;
 let pkg_list = {};
 let pkg_names = [];
+let cfgJson;
 
 // 获取某个目录下面的所有文件夹
 const getDirectories = (source) =>
@@ -22,6 +26,14 @@ const getDirectories = (source) =>
     .map((dirent) => dirent.name);
 
 export async function init() {
+  const configFile = homedir + `/.minecat/config.json`;
+  try {
+    cfgJson = JSON.parse(fs.readFileSync(configFile).toString());
+    // console.dir(json);
+  } catch (error) {
+    console.dir(error);
+  }
+
   try {
     const json = JSON.parse(
       fs.readFileSync(process.cwd() + "/package.json").toString()
@@ -60,7 +72,7 @@ export async function init() {
     // console.error(e);
   }
 
-  yargs(hideBin(process.argv))
+  return yargs(hideBin(process.argv))
     .command(
       "init",
       "init a minecat project with pnpm",
@@ -71,16 +83,21 @@ export async function init() {
       async (argv) => {
         if (argv.verbose) console.info(`start server on :${argv.port}`);
         // console.log(argv.port);
+        // [
+        //   { title: "Node.js", value: "Node.js" },
+        //   { title: "React", value: "React" },
+        // ]
+        const appChoices = Object.keys(cfgJson).map((x) => {
+          return { title: x, value: x };
+        });
         try {
           const questions: any = [
             {
               type: "select",
               name: "apptype",
               message: "What is your project type?",
-              choices: [
-                { title: "Node.js", value: "Node.js" },
-                { title: "React", value: "React" },
-              ],
+
+              choices: appChoices,
             },
             {
               type: "confirm",
@@ -94,18 +111,29 @@ export async function init() {
 
           if (response.confirm) {
             log(response.apptype);
-            let userName = "npmstudy";
-            let repoName = "your-node-v20-monoreopo-project";
 
-            if (response.apptype === "Node.js") {
-              userName = "npmstudy";
-              repoName = "your-node-v20-monoreopo-project";
-            }
+            const { owner, name } = extractGitHubRepoInfo(
+              cfgJson[response.apptype]
+            );
 
-            if (response.apptype === "React") {
-              userName = "npmstudy";
-              repoName = "your-vite-react-monoreopo-project";
+            let userName = owner;
+            let repoName = name;
+
+            if (!userName || !repoName) {
+              console.dir(
+                "extractGitHubRepoInfo error, url=" + cfgJson[response.apptype]
+              );
+              return;
             }
+            // if (response.apptype === "Node.js") {
+            //   userName = "npmstudy";
+            //   repoName = "your-node-v20-monoreopo-project";
+            // }
+
+            // if (response.apptype === "React") {
+            //   userName = "npmstudy";
+            //   repoName = "your-vite-react-monoreopo-project";
+            // }
 
             const pkgHome = homedir + `/.minecat/` + response.apptype + "/";
             shell.mkdir("-p", pkgHome);
@@ -308,21 +336,34 @@ export async function init() {
         }
       }
     )
-    // .command(
-    //   "remove [package]",
-    //   "pnpm add dev dependency to current project",
-    //   (yargs) => {
-    //     // minecat dd debug //增加debug到abc模块的devdependency
-    //     return yargs.positional("port", {
-    //       describe: "port to bind on",
-    //       default: 5000,
-    //     });
-    //   },
-    //   (argv) => {
-    //     if (argv.verbose) console.info(`start server on :${argv.port}`);
-    //     console.log(argv.port);
-    //   }
-    // )
+    .command(
+      "config [name] [repo_url]",
+      "minecat custom config",
+      (yargs) => {
+        // minecat dd debug //增加debug到abc模块的devdependency
+        return yargs
+          .positional("name", {
+            describe: "config name",
+          })
+          .positional("repo_url", {
+            describe: "github repo url",
+          });
+      },
+      async (argv) => {
+        if (argv.verbose) console.log(argv);
+
+        if (argv.list === true) {
+          console.dir(cfgJson);
+          return;
+        }
+
+        if (argv["name"] && argv.repo_url)
+          cfgJson[argv["name"] as string] = argv.repo_url;
+        if (argv.verbose) console.dir(cfgJson);
+
+        await writeConfig(cfgJson);
+      }
+    )
     .command(
       "run [script]",
       "pnpm run script from current project",

@@ -71,6 +71,14 @@ $ minecat install debug ms
 选择当前packages/xxx包
 选择是prod还是dev依赖
 
+
+### 5、自定义模版
+
+```
+$ minecat config vue https://github.com/npmstudy/your-node-v20-monoreopo-project
+```
+
+
 ## License
 
 MIT @ npmstudy

@@ -22,7 +22,8 @@
     "dev": "tsup src --watch",
     "test": "vitest run",
     "test:watch": "vitest watch",
-    "coverage": "vitest run --coverage"
+    "coverage": "vitest run --coverage",
+    "postinstall": "node dist/postinstall.js"
   },
   "keywords": [
     "awesome-keywords"
