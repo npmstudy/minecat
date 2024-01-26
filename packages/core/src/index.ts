@@ -100,6 +100,12 @@ export async function init() {
               choices: appChoices,
             },
             {
+              type: "text",
+              name: "newname",
+              initial: "yourproject",
+              message: "What is the name of your new project?",
+            },
+            {
               type: "confirm",
               name: "confirm",
               initial: true,
@@ -143,24 +149,34 @@ export async function init() {
             // if (response.apptype === "Node.js") {
             if (!shell.test("-d", originPkgDir)) {
               // 不存在originPkgDir，才可以执行下面的clone逻辑
-              await dclone({
-                dir: "https://github.com/" + userName + "/" + repoName,
-              });
 
-              const pkgs = getDirectories(originPkgDir);
+              if (!shell.test("-d", pkgHome + repoName)) {
+                await dclone({
+                  dir: "https://github.com/" + userName + "/" + repoName,
+                });
 
-              log(pkgs);
+                shell.mv("-f", projectDir, pkgHome);
+              }
+              const newname = process.cwd() + "/" + response.newname;
+
+              shell.cp("-Rf", pkgHome + repoName, newname);
+
+              // console.dir(response.newname);
+
+              const pkgs = getDirectories(newname + "/packages");
+
+              console.log(pkgs);
 
               // mv pkg to ~/.minecat/Node.js/xxx
               for (const i in pkgs) {
                 const pkg = pkgs[i];
-                const pkgDir = originPkgDir + "/" + pkg;
+                const pkgDir = newname + "/packages/" + pkg;
 
                 shell.cp("-Rf", pkgDir, pkgHome);
                 console.log("add module at " + pkgHome + pkg);
               }
 
-              shell.rm("-rf", projectDir + "/.git");
+              shell.rm("-rf", newname + "/.git");
 
               // Run external tool synchronously
               if (
@@ -175,7 +191,7 @@ export async function init() {
 
               if (
                 shell.exec(
-                  `cd ${repoName} && git init && git add . && git commit -am 'init'`
+                  `cd ${response.newname} && git init && git add . && git commit -am 'init'`
                 ).code !== 0
               ) {
                 shell.echo(
@@ -184,7 +200,9 @@ export async function init() {
                 shell.exit(1);
               }
 
-              console.log(`Usages: cd ${repoName} && pnpm i && pnpm dev`);
+              console.log(
+                `Usages: cd ${response.newname} && pnpm i && pnpm dev`
+              );
               console.dir("congratulations");
             } else {
               console.dir("failed，dir is exist");
