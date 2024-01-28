@@ -42,6 +42,10 @@ $ minecat init
 - React + vite
   - https://github.com/npmstudy/your-vite-react-monoreopo-project
 
+该命令只是首次通过dclone下载仓库到~/.minecat缓存目录下面，
+以后再使用的时候，直接从缓存目录进行copy，这样执行效率更高
+
+如果想使用网络下载并更新，minecat init --force即可
 
 ### 3、创建Package
 
