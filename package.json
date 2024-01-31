@@ -1,6 +1,9 @@
 {
   "name": "minecat",
   "private": true,
+  "minecat": {
+    "type": "Node.js"
+  },
   "engines": {
     "node": "^20.0.0"
   },
