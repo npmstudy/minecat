@@ -21,6 +21,7 @@
     "lint:fix": "eslint ./packages/* --fix",
     "type-check": "tsc --noEmit",
     "project-graph": "nx graph",
+    "changeset": "npm run build && npx changeset",
     "ci:version": "changeset version",
     "ci:publish": "changeset publish",
     "example": "npm run build && pnpm -F example dev"
