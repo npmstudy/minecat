@@ -2,6 +2,7 @@
 
 import fs from "node:fs";
 import { homedir } from "os";
+import shell from "shelljs";
 
 export const defaultCfg = {
   "Node.js": "https://github.com/npmstudy/your-node-v20-monoreopo-project",
@@ -9,7 +10,11 @@ export const defaultCfg = {
   Vue: "https://github.com/npmstudy/your-vite-react-monoreopo-project",
 };
 
-const configFile = homedir + `/.minecat/config.json`;
+const pkgHome = homedir + `/.minecat`;
+shell.mkdir("-p", pkgHome);
+
+const configFile = pkgHome + `/config.json`;
+
 try {
   JSON.parse(fs.readFileSync(configFile).toString());
   // console.dir(json);
