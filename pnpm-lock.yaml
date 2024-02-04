@@ -146,6 +146,9 @@ importers:
       execa:
         specifier: ^8.0.1
         version: 8.0.1
+      fs-extra:
+        specifier: ^11.2.0
+        version: 11.2.0
       happy-dom:
         specifier: ^6.0.4
         version: 6.0.4
