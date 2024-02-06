@@ -1,8 +1,7 @@
 #!/usr/bin/env node
 
-import fs from "node:fs";
-import { homedir } from "os";
 import shell from "shelljs";
+import { writeConfig, getConfig, getSafeHome } from "./util";
 
 export const defaultCfg = {
   "Node.js": "https://github.com/npmstudy/your-node-v20-monoreopo-project",
@@ -10,25 +9,15 @@ export const defaultCfg = {
   Vue: "https://github.com/npmstudy/your-vite-react-monoreopo-project",
 };
 
-const pkgHome = homedir + `/.minecat`;
-shell.mkdir("-p", pkgHome);
-
-const configFile = pkgHome + `/config.json`;
+// ensure home dir existed, if not exist, create.
+getSafeHome();
 
 try {
-  JSON.parse(fs.readFileSync(configFile).toString());
-  // console.dir(json);
+  const json = getConfig();
+  console.dir(json);
 } catch (error) {
   if (error.errno === -2) {
     // if config.json is not exist， write default config to it.
     writeConfig(defaultCfg);
-  }
-}
-
-export async function writeConfig(cfg) {
-  try {
-    fs.writeFileSync(configFile, JSON.stringify(cfg, null, 4));
-  } catch (error) {
-    console.dir(error);
   }
 }

@@ -7,7 +7,7 @@ import fs, { readdirSync } from "fs";
 import shell from "shelljs";
 import { homedir } from "os";
 import debug from "debug";
-import { writeConfig } from "./postinstall";
+import { writeConfig, getConfig } from "./util";
 
 import { extractGitHubRepoInfo } from "./util";
 
@@ -26,9 +26,8 @@ const getDirectories = (source) =>
     .map((dirent) => dirent.name);
 
 export async function init() {
-  const configFile = homedir + `/.minecat/config.json`;
   try {
-    cfgJson = JSON.parse(fs.readFileSync(configFile).toString());
+    cfgJson = getConfig();
     // console.dir(json);
   } catch (error) {
     console.dir(error);
