@@ -1,0 +1,37 @@
+{
+  "name": "libargs",
+  "version": "0.0.1",
+  "description": "a configurable cli tool",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "author": "npmstudy <npmstudy@qq.com>",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup src -- --dts-resolve",
+    "build:fast": "tsup src",
+    "dev": "tsup src --watch",
+    "test": "vitest run",
+    "test:watch": "vitest watch",
+    "coverage": "vitest run --coverage"
+  },
+  "keywords": [
+    "awesome-keywords"
+  ],
+  "devDependencies": {
+    "@vitest/coverage-v8": "^1.0.1",
+    "desm": "^1.3.1",
+    "happy-dom": "^6.0.4"
+  },
+  "dependencies": {
+    "debug": "^4.3.4",
+    "kleur": "^4.1.5",
+    "yargs-parser": "^21.1.1"
+  }
+}
