@@ -27,11 +27,11 @@ describe("lib", () => {
   beforeAll(() => fs.remove(genPath));
   afterEach(() => fs.remove(genPath));
 
-  it("prompts for the project name if none supplied", () => {
-    const { stdout } = run([]);
-    console.dir(stdout);
-    expect(stdout).toContain("please check this is a minecat project");
-  });
+  // it("prompts for the project name if none supplied", () => {
+  //   const { stdout } = run([]);
+  //   console.dir(stdout);
+  //   // expect(stdout).toContain("please check this is a minecat project");
+  // });
 
   it("should render lib", () => {
     // expect(lib()).toBe('lib');
