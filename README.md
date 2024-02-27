@@ -1,3 +1,11 @@
+<p align="center">
+  <a href="https://github.com/npmstudy/minecat" target="_blank" rel="noopener noreferrer">
+    <img width="180" src="./docs/img/1.png" alt="Minecat logo">
+  </a>
+</p>
+<br/>
+
+
 # Minecat ⚡
 
 > a monorepo cli tool for Node.js、React
