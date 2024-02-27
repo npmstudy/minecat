@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import { join } from "desm";
+import type { CliConfig } from "../index";
 
 describe("lib", () => {
   it("should render lib", () => {
@@ -9,7 +10,7 @@ describe("lib", () => {
   it.only("should render lib", async () => {
     const { cli } = await import("../index.js");
 
-    const cfg = {
+    const cfg: CliConfig = {
       name: "mincat",
       desc: "headline",
       dir: join(import.meta.url, ".", "fixtures"),

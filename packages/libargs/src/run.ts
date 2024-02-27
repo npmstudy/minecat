@@ -1,5 +1,6 @@
 import yargs from "yargs-parser";
 import { printHelp } from "./util";
+import type { PrintTable } from "./util";
 /**
  * Run the given command with the given flags.
  * NOTE: This function provides no error handling, so be sure
@@ -19,16 +20,18 @@ export async function runCommand(cmd) {
 
   const input = cmd.input;
   if (input?.help || input?.h) {
-    const flag = Object.keys(cmd.flags).map(function (f) {
+    const flag: [string, string][] = Object.keys(cmd.flags).map(function (f) {
       return [f, cmd.flags[f]];
     });
+
+    const table: PrintTable = {
+      Flags: flag,
+    };
 
     printHelp({
       commandName: cmd.show,
       usage: cmd.usage || "[...flags]",
-      tables: {
-        Flags: flag,
-      },
+      tables: table,
       description: cmd.desc,
     });
     return 0;

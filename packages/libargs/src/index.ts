@@ -4,6 +4,8 @@ import yargs from "yargs-parser";
 import { runCommand } from "./run";
 import { printHelp } from "./util";
 
+import type { PrintTable } from "./util";
+
 /** Determine which command the user requested */
 function resolveCommand(supportedCommands, flags: yargs.Arguments) {
   const cmd = flags._[2] as string;
@@ -26,7 +28,10 @@ interface CommandFlags {
 
 // 定义命令的类型
 interface Command {
+  name?: string;
   desc: string;
+  show?: string;
+  dir?: string;
   usage?: string;
   fnName?: string;
   file?: string;
@@ -44,9 +49,10 @@ interface Flags {
 }
 
 // 定义整个对象的类型
-interface CliConfig {
-  name: string;
+export interface CliConfig {
+  name?: string;
   desc: string;
+  usage?: string;
   dir: string;
   commands: Commands;
   flags: Flags;
@@ -60,13 +66,18 @@ export async function cli(cfg: CliConfig, args: string[]) {
   // const cfg = arguments.callee.cfg;
   const supportedCommands = new Set(Object.keys(cfg.commands));
 
-  const cmds: C = Object.keys(cfg.commands).map((cmd) => {
-    return [cmd<string>, cfg.commands[cmd]["desc"]<string>];
+  const cmds: [string, string][] = Object.keys(cfg.commands).map((cmd) => {
+    return [cmd, cfg.commands[cmd]["desc"]];
   });
 
-  const flag: C = Object.keys(cfg.flags).map(function (f) {
+  const flag: [string, string][] = Object.keys(cfg.flags).map(function (f) {
     return [f, cfg.flags[f]];
   });
+
+  const table: PrintTable = {
+    Commands: cmds,
+    "Global Flags": flag,
+  };
 
   const cmd = resolveCommand(supportedCommands, flags);
   // console.dir(cmd == "help");

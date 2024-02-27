@@ -1,5 +1,7 @@
 import { bgGreen, bgWhite, black, bold, dim, green } from "kleur/colors";
 
+export type PrintTable = Record<string, [command: string, help: string][]>;
+
 export function printHelp({
   commandName,
   headline,
@@ -10,7 +12,7 @@ export function printHelp({
   commandName: string;
   headline?: string;
   usage?: string;
-  tables?: Record<string, [command: string, help: string][]>;
+  tables?: PrintTable;
   description?: string;
 }) {
   console.dir(tables);
