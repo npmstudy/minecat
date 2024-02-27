@@ -8,7 +8,7 @@
 
 # Minecat ⚡
 
-> a monorepo cli tool for Node.js、React
+> a monorepo cli for Node.js、React
 
 - 💡 monorepo with pnpm
 - ⚡️ Lightning Fast DX
@@ -20,7 +20,7 @@
 
 | Package   | Description        |
 | ----------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------- |
-| [minecat](./packages/core)| a monorepo cli tool for Node.js、React |
+| [minecat](./packages/core)| a monorepo cli for Node.js、React or Custom TPL |
 | [libargs](./packages/libargs/) | a cli tool for minecat |
 
 ## Contribution

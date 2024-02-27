@@ -1,5 +1,16 @@
 # minecat
 
+## 0.4.0
+
+### Minor Changes
+
+- bump
+
+### Patch Changes
+
+- Updated dependencies
+  - libargs@0.9.0
+
 ## 0.3.0
 
 ### Minor Changes
