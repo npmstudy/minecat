@@ -55,7 +55,7 @@ export const config = {
     },
   },
   flags: {
-    // "--config <path>": "Specify your config file.",
+    "--verbose": "show log.",
     // "--root <path>": "Specify your project root folder.",
     // "--site <url>": "Specify your project site.",
   },
