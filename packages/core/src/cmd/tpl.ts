@@ -1,6 +1,6 @@
 // import { printHelp } from "../util";
 
-export function ada(cmd) {
+export async function ada(cmd) {
   console.log(cmd);
   const flags = cmd.flags;
 

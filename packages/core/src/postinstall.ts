@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import shell from "shelljs";
+// import shell from "shelljs";
 import { writeConfig, getConfig, getSafeHome } from "./util";
 
 export const defaultCfg = {
@@ -14,10 +14,7 @@ getSafeHome();
 
 try {
   const json = getConfig();
-  console.dir(json);
+  // console.dir(json);
 } catch (error) {
-  if (error.errno === -2) {
-    // if config.json is not exist， write default config to it.
-    writeConfig(defaultCfg);
-  }
+  console.dir(error);
 }

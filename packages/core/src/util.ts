@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import { homedir } from "node:os";
 import shell from "shelljs";
+import { defaultCfg } from "./postinstall";
 
 export function extractGitHubRepoInfo(url: string) {
   if (!url) return null;
@@ -26,11 +27,17 @@ export function getConfigFile(): string {
 
 export function getConfig() {
   const configFile = getConfigFile();
-
+  // console.dir(configFile);
   try {
-    JSON.parse(fs.readFileSync(configFile).toString());
+    return JSON.parse(fs.readFileSync(configFile).toString());
   } catch (error) {
-    throw error;
+    if (error.errno === -2) {
+      // if config.json is not exist， write default config to it.
+      writeConfig(defaultCfg);
+      return defaultCfg;
+    } else {
+      throw error;
+    }
   }
 }
 

@@ -17,10 +17,10 @@ let proj_script_names;
 let pkg_list = {};
 let pkg_names = [];
 
-export async function add(cmd) {
-  if (cmd.input["_"].length === 0) {
-    return cmd.help();
-  }
+export async function ada(cmd) {
+  // if (cmd.input["_"].length === 0) {
+  //   return cmd.help();
+  // }
 
   const moduleName =
     cmd.input["_"].length !== 0 ? cmd.input["_"][0] : "yourproject";
@@ -66,68 +66,53 @@ export async function add(cmd) {
   const pkgHome = homedir + `/.minecat/` + proj_type + "/";
   const pkgs = getDirectories(pkgHome);
 
-  const appChoices = Object.keys(pkgs).map((x) => {
-    return { title: pkgs[x], value: pkgs[x] };
-  });
-
-  const questions: any = [
-    {
-      type: "text",
-      name: "newname",
-      initial: moduleName,
-      message: "What is the name of your new module?",
-    },
-    {
-      type: "select",
-      name: "tpl",
-      message: "What is your module template?",
-      choices: appChoices,
-    },
-    {
-      type: "confirm",
-      name: "confirm",
-      initial: true,
-      message: (prev, values) =>
-        `Please confirm that you add ${prev} module to project in current directory?`,
-    },
-  ];
-
-  const response = await prompts(questions);
-
-  // console.dir(response);
-
   if (!proj_type) {
     console.dir("当前不是minecat项目，或者没有在项目根目录");
     return;
   }
 
-  // 先判断newname是否存在
-  log(
-    "cp from " +
-      pkgHome +
-      response.tpl +
-      " to " +
-      process.cwd() +
-      "/packages/" +
-      response["newname"]
-  );
-  // 如果newname不存在，就拷贝tpl到newname
-  shell.cp(
-    "-Rf",
-    pkgHome + "/" + response.tpl,
-    process.cwd() + "/packages/" + response["newname"]
-  );
+  console.dir(proj_script_names);
 
-  // rename package name
   try {
-    const configFile =
-      process.cwd() + "/packages/" + response["newname"] + "/package.json";
-    const json = JSON.parse(fs.readFileSync(configFile).toString());
-    json.name = response["newname"];
-    fs.writeFileSync(configFile, JSON.stringify(json, null, 4));
-  } catch (error) {
-    throw error;
+    let scripts_choices = [];
+    for (var i in proj_script_names) {
+      let name = proj_script_names[i];
+      scripts_choices.push({ title: name, value: name });
+    }
+    const questions: any = [
+      {
+        type: "select",
+        name: "script",
+        message: "What is your script will run?",
+        choices: scripts_choices,
+      },
+      {
+        type: "confirm",
+        name: "confirm",
+        initial: true,
+        message: (prev, values) =>
+          `Please confirm that you choose ${prev} to init project in current directory?`,
+      },
+    ];
+    const response = await prompts(questions);
+
+    // console.log(response); // => { value: 24 }
+
+    if (response.confirm) {
+      log(response.script);
+
+      const cmd = `npx pnpm ${response.script}`;
+
+      if (shell.exec(cmd).code !== 0) {
+        shell.echo("Error: pnpm run failed: " + cmd);
+        shell.exit(1);
+      }
+    }
+  } catch (cancelled: any) {
+    console.log(cancelled.message);
+    return;
   }
 
   console.dir("done");
+  // console.dir(flags);
 }

@@ -22,20 +22,29 @@ export async function runCommand(cmd) {
   }
 
   const input = cmd.input;
-  const flag: [string, string][] = Object.keys(cmd.flags).map(function (f) {
-    return [f, cmd.flags[f]];
-  });
+  let flag: [string, string][];
+  let table: PrintTable = {};
 
-  const table: PrintTable = {
-    Flags: flag,
-  };
+  if (cmd.flags) {
+    flag = Object.keys(cmd.flags).map(function (f) {
+      return [f, cmd.flags[f]];
+    });
+
+    table = {
+      Flags: flag,
+    };
+  } else {
+    table = {
+      Flags: [[" - no flag", ""]],
+    };
+  }
 
   cmd.help = function () {
     printHelp({
       commandName: cmd.show,
       usage: cmd.usage || "[...flags]",
       tables: table,
-      description: cmd.desc,
+      description: `  ${cmd.desc}`,
     });
   };
 
@@ -44,7 +53,8 @@ export async function runCommand(cmd) {
     return 0;
   } else {
     // These commands can run directly without parsing the user config.
-    const fn = await import(cmd.dir + `/${cmd.file || cmd.name}`);
+    // 当cmd目录下，有同名目录，可能会有坑
+    const fn = await import(cmd.dir + `/${cmd.file || cmd.name}.js`);
     debug(fn);
     debug(cmd["fnName"] || "default");
     debug(fn[cmd["fnName"] || "default"]);

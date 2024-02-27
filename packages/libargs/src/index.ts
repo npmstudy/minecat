@@ -39,7 +39,7 @@ interface Command {
   usage?: string;
   fnName?: string;
   file?: string;
-  flags: CommandFlags;
+  flags?: CommandFlags;
 }
 
 // 定义commands的类型
@@ -58,8 +58,8 @@ export interface CliConfig {
   desc: string;
   usage?: string;
   dir: string;
-  commands: Commands;
-  flags: Flags;
+  commands?: Commands;
+  flags?: Flags;
 }
 
 /** The primary CLI action */
