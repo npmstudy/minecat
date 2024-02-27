@@ -10,7 +10,7 @@ export function printHelp({
   commandName: string;
   headline?: string;
   usage?: string;
-  tables?: Record<string, [command: string, help: string][]>;
+  tables?: any;
   description?: string;
 }) {
   const linebreak = () => "";
