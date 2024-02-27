@@ -49,8 +49,8 @@ describe("lib", () => {
     const spy = vi.spyOn(console, "log");
 
     let argv = [
-      "/Users/bytedance/.nvm/versions/node/v20.11.1/bin/node",
-      "/Users/bytedance/workspace/github/minecat/packages/libargs/src/test.ts",
+      "/Users/npmstudy/.nvm/versions/node/v20.11.1/bin/node",
+      "/Users/npmstudy/workspace/github/minecat/packages/libargs/src/test.ts",
       "add",
       "a=1",
       "b=2",
