@@ -9,7 +9,7 @@ import { homedir } from "os";
 import debug from "debug";
 import { writeConfig, getConfig } from "./util";
 
-import { init } from "./cmd";
+// import { init } from "./cmd";
 
 import { extractGitHubRepoInfo } from "./util";
 
@@ -76,12 +76,12 @@ export async function main() {
   return yargs(hideBin(process.argv))
     .command(
       "init",
-      "init a minecat project with pnpm",
+      "init a minecat project with pnpm"
       // (yargs) => {
       //   // init project
       //   // return;
       // },
-      init(cfgJson)
+      // init(cfgJson)
     )
     .command(
       "add [tpl] [newname]",
