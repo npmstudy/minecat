@@ -1,15 +1,10 @@
 import prompts from "prompts";
 import debug from "debug";
 import { homedir } from "os";
-import fs, { readdirSync } from "fs";
+import fs from "fs";
 import shell from "shelljs";
 const log = debug("minecat");
-
-// 获取某个目录下面的所有文件夹
-const getDirectories = (source) =>
-  readdirSync(source, { withFileTypes: true })
-    .filter((dirent) => dirent.isDirectory())
-    .map((dirent) => dirent.name);
+import { getDirectories } from "../util";
 
 let proj_type;
 let proj_package_json;
@@ -18,10 +13,6 @@ let pkg_list = {};
 let pkg_names = [];
 
 export async function add(cmd) {
-  // if (cmd.input["_"].length === 0) {
-  //   return cmd.help();
-  // }
-
   const moduleName =
     cmd.input["_"].length !== 0 ? cmd.input["_"][0] : "yourmodule";
 

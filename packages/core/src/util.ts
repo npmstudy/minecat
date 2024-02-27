@@ -1,7 +1,13 @@
-import fs from "node:fs";
+import fs, { readdirSync } from "node:fs";
 import { homedir } from "node:os";
 import shell from "shelljs";
 import { defaultCfg } from "./postinstall";
+
+// 获取某个目录下面的所有文件夹
+export const getDirectories = (source) =>
+  readdirSync(source, { withFileTypes: true })
+    .filter((dirent) => dirent.isDirectory())
+    .map((dirent) => dirent.name);
 
 export function extractGitHubRepoInfo(url: string) {
   if (!url) return null;

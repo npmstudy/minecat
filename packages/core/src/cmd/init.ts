@@ -1,37 +1,20 @@
-// import { process } from "./init2";
-
-import yargs from "yargs/yargs";
-import { hideBin } from "yargs/helpers";
 import prompts from "prompts";
 import { dclone } from "dclone";
-import fs, { readdirSync } from "fs";
 import shell from "shelljs";
 import { homedir } from "os";
 import debug from "debug";
-// import { writeConfig, getConfig } from "../util";
-const log = debug("minecat");
 import { extractGitHubRepoInfo } from "../util";
+import { getDirectories, getConfig } from "../util";
 
-import { writeConfig, getConfig } from "../util";
-
-const getDirectories = (source) =>
-  readdirSync(source, { withFileTypes: true })
-    .filter((dirent) => dirent.isDirectory())
-    .map((dirent) => dirent.name);
+const log = debug("minecat");
 
 let cfgJson;
 export async function init(cmd) {
-  if (cmd.input["_"].length === 0) {
-    // return cmd.help();
-    // 当没有project-name的时候，使用输入prompts获取。
-  }
-
   const projectName =
     cmd.input["_"].length !== 0 ? cmd.input["_"][0] : "yourproject";
 
   try {
     cfgJson = getConfig();
-    // console.dir(json);
   } catch (error) {
     console.dir(error);
   }
@@ -69,7 +52,7 @@ export async function init(cmd) {
 
     const response = await prompts(questions);
 
-    // console.dir(response);
+    log(response);
 
     if (response.confirm) {
       log(response.apptype);
@@ -91,7 +74,6 @@ export async function init(cmd) {
 
       const projectDir = process.cwd() + "/" + repoName;
       const originPkgDir = projectDir + "/packages";
-      // if (response.apptype === "Node.js") {
 
       //----------
       if (!shell.test("-d", originPkgDir)) {
@@ -107,8 +89,6 @@ export async function init(cmd) {
         const newname = process.cwd() + "/" + response.newname;
 
         shell.cp("-Rf", pkgHome + repoName, newname);
-
-        // console.dir(response.newname);
 
         const pkgs = getDirectories(newname + "/packages");
 

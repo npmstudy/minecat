@@ -1,15 +1,11 @@
 import prompts from "prompts";
 import debug from "debug";
 import { homedir } from "os";
-import fs, { readdirSync } from "fs";
+import fs from "fs";
 import shell from "shelljs";
-const log = debug("minecat");
+import { getDirectories } from "../util";
 
-// 获取某个目录下面的所有文件夹
-const getDirectories = (source) =>
-  readdirSync(source, { withFileTypes: true })
-    .filter((dirent) => dirent.isDirectory())
-    .map((dirent) => dirent.name);
+const log = debug("minecat");
 
 let proj_type;
 let proj_package_json;
@@ -18,13 +14,6 @@ let pkg_list = {};
 let pkg_names = [];
 
 export async function ada(cmd) {
-  // if (cmd.input["_"].length === 0) {
-  //   return cmd.help();
-  // }
-
-  const moduleName =
-    cmd.input["_"].length !== 0 ? cmd.input["_"][0] : "yourproject";
-
   try {
     const json = JSON.parse(
       fs.readFileSync(process.cwd() + "/package.json").toString()
@@ -63,9 +52,6 @@ export async function ada(cmd) {
     console.error(e);
   }
 
-  const pkgHome = homedir + `/.minecat/` + proj_type + "/";
-  const pkgs = getDirectories(pkgHome);
-
   if (!proj_type) {
     console.dir("当前不是minecat项目，或者没有在项目根目录");
     return;
@@ -96,7 +82,7 @@ export async function ada(cmd) {
     ];
     const response = await prompts(questions);
 
-    // console.log(response); // => { value: 24 }
+    log(response); // => { value: 24 }
 
     if (response.confirm) {
       log(response.script);
@@ -114,5 +100,4 @@ export async function ada(cmd) {
   }
 
   console.dir("done");
-  // console.dir(flags);
 }
