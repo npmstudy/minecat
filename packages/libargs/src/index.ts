@@ -19,17 +19,52 @@ export async function throwAndExit(cmd: string, err: unknown) {
   throw err;
 }
 
+// 定义命令标志的类型
+interface CommandFlags {
+  [flag: string]: string;
+}
+
+// 定义命令的类型
+interface Command {
+  desc: string;
+  usage?: string;
+  fnName?: string;
+  file?: string;
+  flags: CommandFlags;
+}
+
+// 定义commands的类型
+interface Commands {
+  [commandName: string]: Command;
+}
+
+// 定义flags的类型
+interface Flags {
+  [flag: string]: string;
+}
+
+// 定义整个对象的类型
+interface CliConfig {
+  name: string;
+  desc: string;
+  dir: string;
+  commands: Commands;
+  flags: Flags;
+}
+
+type C = [command: string, help: string][];
+
 /** The primary CLI action */
-export async function cli(cfg, args: string[]) {
+export async function cli(cfg: CliConfig, args: string[]) {
   const flags = yargs(args, { boolean: ["global"], alias: { g: "global" } });
   // const cfg = arguments.callee.cfg;
   const supportedCommands = new Set(Object.keys(cfg.commands));
 
-  const cmds = Object.keys(cfg.commands).map(function (cmd) {
-    return [cmd, cfg.commands[cmd]["desc"]];
+  const cmds: C = Object.keys(cfg.commands).map((cmd) => {
+    return [cmd<string>, cfg.commands[cmd]["desc"]<string>];
   });
 
-  const flag = Object.keys(cfg.flags).map(function (f) {
+  const flag: C = Object.keys(cfg.flags).map(function (f) {
     return [f, cfg.flags[f]];
   });
 

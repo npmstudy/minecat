@@ -10,9 +10,10 @@ export function printHelp({
   commandName: string;
   headline?: string;
   usage?: string;
-  tables?: any;
+  tables?: Record<string, [command: string, help: string][]>;
   description?: string;
 }) {
+  console.dir(tables);
   const linebreak = () => "";
   const title = (label: string) => `  ${bgWhite(black(` ${label} `))}`;
   const table = (
