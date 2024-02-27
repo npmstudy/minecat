@@ -74,6 +74,7 @@ write a file `cmd/ada.ts`
 
 ```js
 export function ada(cmd) {
+  // cmd.help();
   console.log(cmd);
   const flags = cmd.flags;
   console.dir(flags);

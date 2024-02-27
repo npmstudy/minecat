@@ -1,5 +1,7 @@
 import { bgGreen, bgWhite, black, bold, dim, green } from "kleur/colors";
+import Debug from "debug";
 
+const debug = Debug("libargs");
 export type PrintTable = Record<string, [command: string, help: string][]>;
 
 export function printHelp({
@@ -15,7 +17,7 @@ export function printHelp({
   tables?: PrintTable;
   description?: string;
 }) {
-  console.dir(tables);
+  debug(tables);
   const linebreak = () => "";
   const title = (label: string) => `  ${bgWhite(black(` ${label} `))}`;
   const table = (

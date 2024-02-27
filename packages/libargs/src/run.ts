@@ -1,6 +1,9 @@
 import yargs from "yargs-parser";
 import { printHelp } from "./util";
 import type { PrintTable } from "./util";
+import Debug from "debug";
+
+const debug = Debug("libargs");
 /**
  * Run the given command with the given flags.
  * NOTE: This function provides no error handling, so be sure
@@ -19,26 +22,32 @@ export async function runCommand(cmd) {
   }
 
   const input = cmd.input;
-  if (input?.help || input?.h) {
-    const flag: [string, string][] = Object.keys(cmd.flags).map(function (f) {
-      return [f, cmd.flags[f]];
-    });
+  const flag: [string, string][] = Object.keys(cmd.flags).map(function (f) {
+    return [f, cmd.flags[f]];
+  });
 
-    const table: PrintTable = {
-      Flags: flag,
-    };
+  const table: PrintTable = {
+    Flags: flag,
+  };
 
+  cmd.help = function () {
     printHelp({
       commandName: cmd.show,
       usage: cmd.usage || "[...flags]",
       tables: table,
       description: cmd.desc,
     });
+  };
+
+  if (input?.help || input?.h) {
+    cmd.help();
     return 0;
   } else {
     // These commands can run directly without parsing the user config.
     const fn = await import(cmd.dir + `/${cmd.file || cmd.name}`);
-    // console.dir(fn.default);
+    debug(fn);
+    debug(cmd["fnName"] || "default");
+    debug(fn[cmd["fnName"] || "default"]);
     await fn[cmd["fnName"] || "default"](cmd);
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "minecat",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "a monorepo cli tool for Node.js、React",
   "bin": {
     "minecat": "dist/index.js"
@@ -9,6 +9,7 @@
   "publishConfig": {
     "access": "public"
   },
+  "type": "module",
   "author": "npmstudy <npmstudy@qq.com>",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",

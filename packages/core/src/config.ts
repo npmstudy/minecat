@@ -1,6 +1,6 @@
 import { join } from "desm";
 
-export default {
+export const config = {
   name: "mincat",
   desc: "a monorepo cli tool for Node.js、React",
   dir: join(import.meta.url, ".", "cmd"),

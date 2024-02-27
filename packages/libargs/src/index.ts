@@ -1,6 +1,10 @@
 import * as colors from "kleur/colors";
 import yargs from "yargs-parser";
 
+import Debug from "debug";
+
+const debug = Debug("libargs");
+
 import { runCommand } from "./run";
 import { printHelp } from "./util";
 
@@ -58,10 +62,9 @@ export interface CliConfig {
   flags: Flags;
 }
 
-type C = [command: string, help: string][];
-
 /** The primary CLI action */
 export async function cli(cfg: CliConfig, args: string[]) {
+  debug(cfg);
   const flags = yargs(args, { boolean: ["global"], alias: { g: "global" } });
   // const cfg = arguments.callee.cfg;
   const supportedCommands = new Set(Object.keys(cfg.commands));
@@ -80,7 +83,6 @@ export async function cli(cfg: CliConfig, args: string[]) {
   };
 
   const cmd = resolveCommand(supportedCommands, flags);
-  // console.dir(cmd == "help");
 
   try {
     if (cmd == "help") {
@@ -95,17 +97,13 @@ export async function cli(cfg: CliConfig, args: string[]) {
       });
       return;
     } else {
-      // const a = flags._.slice(3);
-      // console.dir(a);
-
       flags._ = flags._.slice(3);
 
       cfg.commands[cmd].name = cmd;
       cfg.commands[cmd].show = `${cfg.name} ${cmd}`;
       cfg.commands[cmd].dir = cfg.dir;
       cfg.commands[cmd]["input"] = flags;
-
-      // console.dir(flags);
+      debug(cfg.commands[cmd]);
       await runCommand(cfg.commands[cmd]);
     }
   } catch (err) {

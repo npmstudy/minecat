@@ -1,14 +1,10 @@
 #!/usr/bin/env node
 
-import { join } from "desm";
-
-const { cli } = import("libargs");
-
-const cfg = import("./config");
-
 async function main(argv) {
-  // argv = [];
-  await cli(cfg, argv);
+  const { config } = await import("./config");
+  const { cli } = await import("libargs");
+
+  await cli(config, argv);
 }
 
 main(process.argv);
