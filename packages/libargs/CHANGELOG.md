@@ -1,5 +1,29 @@
 # libargs
 
+## 0.8.0
+
+### Minor Changes
+
+- add doc to minecat
+
+## 0.7.0
+
+### Minor Changes
+
+- bump
+
+## 0.6.0
+
+### Minor Changes
+
+- bump
+
+## 0.5.0
+
+### Minor Changes
+
+- bump
+
 ## 0.4.0
 
 ### Minor Changes
