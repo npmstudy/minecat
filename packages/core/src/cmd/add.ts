@@ -18,12 +18,12 @@ let pkg_list = {};
 let pkg_names = [];
 
 export async function add(cmd) {
-  if (cmd.input["_"].length === 0) {
-    return cmd.help();
-  }
+  // if (cmd.input["_"].length === 0) {
+  //   return cmd.help();
+  // }
 
   const moduleName =
-    cmd.input["_"].length !== 0 ? cmd.input["_"][0] : "yourproject";
+    cmd.input["_"].length !== 0 ? cmd.input["_"][0] : "yourmodule";
 
   try {
     const json = JSON.parse(

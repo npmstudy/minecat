@@ -36,7 +36,7 @@ export async function init(cmd) {
     console.dir(error);
   }
 
-  console.dir(cfgJson);
+  log(cfgJson);
 
   // await process(cfgJson);
   const appChoices = Object.keys(cfgJson).map((x) => {
@@ -88,12 +88,6 @@ export async function init(cmd) {
 
       const pkgHome = homedir + `/.minecat/` + response.apptype + "/";
       shell.mkdir("-p", pkgHome);
-
-      console.dir(process + "");
-
-      console.log(`Current working directory: ${process.cwd()}`);
-
-      console.dir(process.cwd());
 
       const projectDir = process.cwd() + "/" + repoName;
       const originPkgDir = projectDir + "/packages";
@@ -153,7 +147,7 @@ export async function init(cmd) {
         }
 
         console.log(`Usages: cd ${response.newname} && pnpm i && pnpm dev`);
-        console.dir("congratulations");
+        console.dir("done");
       } else {
         console.dir("failed，dir is exist");
       }
@@ -162,9 +156,4 @@ export async function init(cmd) {
     console.log(cancelled.message);
     return;
   }
-
-  // console.dir("projectName=" + projectName);
-  // console.dir(cmd);
-
-  // await init();
 }
