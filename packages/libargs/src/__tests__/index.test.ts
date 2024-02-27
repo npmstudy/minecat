@@ -7,7 +7,7 @@ describe("lib", () => {
     expect("lib").toBe("lib");
   });
 
-  it.only("should render lib", async () => {
+  it("should run cli ok", async () => {
     const { cli } = await import("../index.js");
 
     const cfg: CliConfig = {

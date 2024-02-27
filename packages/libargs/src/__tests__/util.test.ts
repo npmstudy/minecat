@@ -3,7 +3,7 @@ import { describe, expect, it, vi } from "vitest";
 import { printHelp } from "../util";
 
 describe("lib", () => {
-  it.skip("should render lib", () => {
+  it("should call conosle.log 1 time when call printHelp", () => {
     const spy = vi.spyOn(console, "log");
 
     printHelp({
