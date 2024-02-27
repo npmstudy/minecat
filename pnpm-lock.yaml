@@ -112,12 +112,18 @@ importers:
       debug:
         specifier: ^4.3.4
         version: 4.3.4(supports-color@5.5.0)
+      desm:
+        specifier: ^1.3.1
+        version: 1.3.1
       find-up:
         specifier: ^7.0.0
         version: 7.0.0
       kolorist:
         specifier: ^1.8.0
         version: 1.8.0
+      libargs:
+        specifier: workspace:*
+        version: link:../libargs
       minimist:
         specifier: ^1.2.8
         version: 1.2.8
@@ -2665,7 +2671,6 @@ packages:
 
   /desm@1.3.1:
     resolution: {integrity: sha512-vgTAOosB1aHrmzjGnzFCbjvXbk8QAOC/36JxJhcBkeAuUy8QwRFxAWBHemiDpUB3cbrBruFUdzpUS21aocvaWg==}
-    dev: true
 
   /destroy@1.2.0:
     resolution: {integrity: sha512-2sJGJTaXIIaR1w4iJSNoN0hnMY7Gpc/n8D4qSCJw8QqFWXf7cuAgnEHxBpweaVcPevC2l3KpjYCx3NypQQgaJg==}

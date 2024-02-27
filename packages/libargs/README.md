@@ -16,7 +16,7 @@ $ npm i - S libargs
 
 import { join } from "desm";
 
-const { cli } = await import("../index.js");
+const { cli } = await import("libargs");
 
 const cfg = {
   name: "mincat",
