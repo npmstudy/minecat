@@ -1,4 +1,3 @@
-import * as colors from "kleur/colors";
 import yargs from "yargs-parser";
 
 import Debug from "debug";
@@ -9,6 +8,8 @@ import { runCommand } from "./run";
 import { printHelp } from "./util";
 
 import type { PrintTable } from "./util";
+
+export * as colors from "kleur/colors";
 
 /** Determine which command the user requested */
 function resolveCommand(supportedCommands, flags: yargs.Arguments) {
