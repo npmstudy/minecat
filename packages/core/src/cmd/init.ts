@@ -3,6 +3,7 @@ import { dclone } from "dclone";
 import shell from "shelljs";
 import { homedir } from "os";
 import debug from "debug";
+import { colors } from "libargs";
 import { extractGitHubRepoInfo } from "../util";
 import { getDirectories, getConfig } from "../util";
 
@@ -125,8 +126,15 @@ export async function init(cmd) {
           );
           shell.exit(1);
         }
-
-        console.log(`Usages: cd ${response.newname} && pnpm i && pnpm dev`);
+        console.log(
+          colors.red(
+            colors.bold(`
+              -----------------------------------------
+              Usages: cd ${response.newname} && pnpm i && pnpm dev
+              -----------------------------------------
+            `)
+          )
+        );
         console.dir("done");
       } else {
         console.dir("failed，dir is exist");
