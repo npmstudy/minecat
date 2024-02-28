@@ -1,6 +1,4 @@
 import { describe, expect, it, vi } from "vitest";
-
-import { join } from "node:path";
 import {
   getDirectories,
   extractGitHubRepoInfo,
@@ -11,8 +9,6 @@ import {
 } from "../util";
 import { homedir } from "node:os";
 import fs from "node:fs";
-
-const CLI_PATH = join(__dirname, "../../dist/");
 
 describe("util", () => {
   it("should getDirectories /packages/* return 2（minecat & libargs）", () => {

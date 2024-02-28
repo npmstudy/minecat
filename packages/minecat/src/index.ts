@@ -3,7 +3,7 @@
 import { cli } from "libargs";
 import { config } from "./config";
 
-async function main(argv) {
+export async function main(argv) {
   await cli(config, argv);
 }
 
