@@ -57,7 +57,6 @@ export async function runCommand(cmd) {
     // These commands can run directly without parsing the user config.
     // 当cmd目录下，有同名目录，可能会有坑    
     const moduleURL = pathToFileURL(join(cmd.dir, `${cmd.file || cmd.name}.js`)).href;
-    console.log(moduleURL);
     const fn = await import(moduleURL);
     debug(fn);
     debug(cmd["fnName"] || "default");
