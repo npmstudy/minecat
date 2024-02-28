@@ -24,6 +24,10 @@
 | [minecat](./packages/core)| a monorepo cli for Node.js、React or Custom Template |
 | [libargs](./packages/libargs/) | a cli tool for minecat |
 
+## Documentation
+
+- [Minecat-v0.5教程](https://github.com/npmstudy/minecat/wiki/minecat-v0.5%E6%95%99%E7%A8%8B)
+
 ## Contribution
 
 See [Contributing Guide](CONTRIBUTING.md).
