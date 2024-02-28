@@ -57,7 +57,7 @@ export async function ada(cmd) {
     return;
   }
 
-  console.dir(proj_script_names);
+  log(proj_script_names);
 
   try {
     let scripts_choices = [];
