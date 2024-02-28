@@ -44,4 +44,4 @@ jobs:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         with:
           file: ./packages/libargs/coverage/coverage-final.json
-          flags: client
+          flags: libargs
