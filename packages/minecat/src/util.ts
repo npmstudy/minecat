@@ -1,7 +1,6 @@
 import fs, { readdirSync } from "node:fs";
 import { homedir } from "node:os";
-import shell from "shelljs";
-// import { defaultCfg } from "./postinstall";
+
 export const defaultCfg = {
   "Node.js": "https://github.com/npmstudy/your-node-v20-monoreopo-project",
   React: "https://github.com/npmstudy/your-vite-react-monoreopo-project",
@@ -25,8 +24,10 @@ export function extractGitHubRepoInfo(url: string) {
 
 export function getSafeHome(): string {
   const home = homedir + `/.minecat`;
-  if (!shell.test("-d", home)) {
-    shell.mkdir("-p", home);
+
+  if (!fs.existsSync(home)) {
+    fs.mkdirSync(home);
+    writeConfig(defaultCfg);
   }
 
   return home;
