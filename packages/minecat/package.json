@@ -15,7 +15,8 @@
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "postinstall.js"
   ],
   "scripts": {
     "build": "tsup src -- --dts-resolve",
