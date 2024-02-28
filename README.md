@@ -5,24 +5,24 @@
 </p>
 <br/>
 
-[![Node.js CI](https://github.com/npmstudy/minecat/actions/workflows/ci.yml/badge.svg)](https://github.com/npmstudy/minecat/actions/workflows/ci.yml)
+[![Node.js CI](https://github.com/npmstudy/minecat/actions/workflows/ci.yml/badge.svg)](https://github.com/npmstudy/minecat/actions/workflows/ci.yml)  [![codecov](https://codecov.io/gh/npmstudy/minecat/graph/badge.svg?token=sOdMHXaJ2U&)](https://codecov.io/gh/npmstudy/minecat)
 
 # Minecat ⚡
 
 > a monorepo cli for Node.js、React or Custom Template
 
-- 💡 monorepo with pnpm
+- 💡 Monorepo with PNPM
 - ⚡️ Lightning Fast DX
-- 🛠️ Rich Cli Features with prompts
-- 📦 Optimized Build with tsup & tsx
+- 🛠️ Rich Cli Features with Prompts
+- 📦 Optimized Build with Tsup & Tsx
 - 🔩 Custom Configuration with your tpl
 
 ## Packages
 
-| Package   | Description        |
-| ----------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------- |
-| [minecat](./packages/core)| a monorepo cli for Node.js、React or Custom Template |
-| [libargs](./packages/libargs/) | a cli tool for minecat |
+| Package   | Description        | Coverage  | NPM Version  |
+| ----------------------------------------------- | :------------------------------------------------------------- |:------------------------------------------------------------- |:------------------------------------------------------------- |
+| [minecat](./packages/core)| a monorepo cli for Node.js、React or Custom Template | [![codecov](https://codecov.io/gh/npmstudy/minecat/graph/badge.svg?token=sOdMHXaJ2U&&flag=minecat)](https://codecov.io/gh/npmstudy/minecat) | [![npm](https://img.shields.io/npm/v/minecat.svg)](https://www.npmjs.com/package/minecat) |
+| [libargs](./packages/libargs/) | a cli tool for minecat | [![codecov](https://codecov.io/gh/npmstudy/minecat/graph/badge.svg?token=sOdMHXaJ2U&&flag=libargs)](https://codecov.io/gh/npmstudy/minecat) | [![npm](https://img.shields.io/npm/v/libargs.svg)](https://www.npmjs.com/package/libargs) |
 
 ## Documentation
 

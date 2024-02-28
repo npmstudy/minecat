@@ -1,6 +1,4 @@
 import { describe, expect, it, vi } from "vitest";
-
-import { join } from "node:path";
 import {
   getDirectories,
   extractGitHubRepoInfo,
@@ -11,8 +9,6 @@ import {
 } from "../util";
 import { homedir } from "node:os";
 import fs from "node:fs";
-
-const CLI_PATH = join(__dirname, "../../dist/");
 
 describe("util", () => {
   it("should getDirectories /packages/* return 2（minecat & libargs）", () => {
@@ -31,7 +27,7 @@ describe("util", () => {
   it("should getSafeHome return ~/.minecat", () => {
     const home = homedir + `/.minecat`;
     if (fs.existsSync(home)) {
-      fs.rmdirSync(home, { recursive: true, force: true });
+      fs.rmdirSync(home, { recursive: true });
     }
 
     expect(fs.existsSync(home)).toBe(false);

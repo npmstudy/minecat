@@ -1,9 +1,9 @@
 {
   "name": "minecat",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "a monorepo cli tool for Node.js、React",
   "bin": {
-    "minecat": "dist/index.js"
+    "minecat": "dist/cli.js"
   },
   "license": "MIT",
   "publishConfig": {
