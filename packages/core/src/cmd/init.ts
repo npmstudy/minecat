@@ -4,6 +4,7 @@ import shell from "shelljs";
 import { homedir } from "os";
 import debug from "debug";
 import { colors } from "libargs";
+import path from "path"; 
 import { extractGitHubRepoInfo } from "../util";
 import { getDirectories, getConfig } from "../util";
 
@@ -70,11 +71,12 @@ export async function init(cmd) {
         return;
       }
 
-      const pkgHome = homedir + `/.minecat/` + response.apptype + "/";
-      shell.mkdir("-p", pkgHome);
+      const pkgHome = path.join(homedir(), '.minecat', response.apptype,'/');
+      
+      shell.mkdir("-p", pkgHome)
 
-      const projectDir = process.cwd() + "/" + repoName;
-      const originPkgDir = projectDir + "/packages";
+      const projectDir = path.join(process.cwd(), repoName);
+      const originPkgDir = path.join(projectDir, "packages");
 
       //----------
       if (!shell.test("-d", originPkgDir)) {
@@ -84,27 +86,29 @@ export async function init(cmd) {
           await dclone({
             dir: "https://github.com/" + userName + "/" + repoName,
           });
-
-          shell.mv("-f", projectDir, pkgHome);
+          shell.mkdir('-p', pkgHome);
+          shell.cp("-Rf", projectDir, pkgHome);
+          shell.rm('-rf', projectDir);
+        
         }
-        const newname = process.cwd() + "/" + response.newname;
+        const newname = path.join(process.cwd(), response.newname);
+        
+        shell.cp("-Rf", path.join(pkgHome, repoName, '/'), newname);
 
-        shell.cp("-Rf", pkgHome + repoName, newname);
-
-        const pkgs = getDirectories(newname + "/packages");
+        const pkgs = getDirectories(path.join(newname, "packages"));
 
         // console.log(pkgs);
 
         // mv pkg to ~/.minecat/Node.js/xxx
         for (const i in pkgs) {
           const pkg = pkgs[i];
-          const pkgDir = newname + "/packages/" + pkg;
+          const pkgDir = path.join(newname, "packages", pkg);
 
           shell.cp("-Rf", pkgDir, pkgHome);
-          console.log("add module at " + pkgHome + pkg);
+          console.log("add module at " + path.join(pkgHome, pkg));
         }
 
-        shell.rm("-rf", newname + "/.git");
+        shell.rm("-rf", path.join(newname, ".git"));
 
         // Run external tool synchronously
         if (
