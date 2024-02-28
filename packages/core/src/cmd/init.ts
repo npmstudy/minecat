@@ -92,7 +92,7 @@ export async function init(cmd) {
 
         const pkgs = getDirectories(newname + "/packages");
 
-        console.log(pkgs);
+        // console.log(pkgs);
 
         // mv pkg to ~/.minecat/Node.js/xxx
         for (const i in pkgs) {
