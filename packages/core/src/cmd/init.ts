@@ -19,6 +19,7 @@ export async function init(cmd) {
   } catch (error) {
     console.dir(error);
   }
+console.log(cfgJson);
 
   log(cfgJson);
 

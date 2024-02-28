@@ -1,3 +1,5 @@
+import { fileURLToPath, pathToFileURL } from 'url';
+import { join } from 'path';
 import yargs from "yargs-parser";
 import { printHelp } from "./util";
 import type { PrintTable } from "./util";
@@ -53,8 +55,10 @@ export async function runCommand(cmd) {
     return 0;
   } else {
     // These commands can run directly without parsing the user config.
-    // 当cmd目录下，有同名目录，可能会有坑
-    const fn = await import(cmd.dir + `/${cmd.file || cmd.name}.js`);
+    // 当cmd目录下，有同名目录，可能会有坑    
+    const moduleURL = pathToFileURL(join(cmd.dir, `${cmd.file || cmd.name}.js`)).href;
+    console.log(moduleURL);
+    const fn = await import(moduleURL);
     debug(fn);
     debug(cmd["fnName"] || "default");
     debug(fn[cmd["fnName"] || "default"]);
