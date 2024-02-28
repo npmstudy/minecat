@@ -5,7 +5,7 @@
 </p>
 <br/>
 
-[![Node.js CI](https://github.com/npmstudy/minecat/actions/workflows/ci.yml/badge.svg)](https://github.com/npmstudy/minecat/actions/workflows/ci.yml)
+[![Node.js CI](https://github.com/npmstudy/minecat/actions/workflows/ci.yml/badge.svg)](https://github.com/npmstudy/minecat/actions/workflows/ci.yml) | [![codecov](https://codecov.io/gh/npmstudy/minecat/graph/badge.svg?token=sOdMHXaJ2U)](https://codecov.io/gh/npmstudy/minecat)
 
 # Minecat ⚡
 
