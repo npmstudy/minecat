@@ -30,35 +30,18 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Upload @tomrpc/core coverage reports to Codecov
+      - name: Upload minecat coverage reports to Codecov
         uses: codecov/codecov-action@v3
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         with:
-          file: ./packages/core/coverage/coverage-final.json
-          flags: core
+          file: ./packages/minecat/coverage/coverage-final.json
+          flags: minecat
 
-      - name: Upload @tomrpc/client coverage reports to Codecov
+      - name: Upload libargs coverage reports to Codecov
         uses: codecov/codecov-action@v3
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         with:
-          file: ./packages/client/coverage/coverage-final.json
+          file: ./packages/libargs/coverage/coverage-final.json
           flags: client
-
-      - name: Upload @tomrpc/app coverage reports to Codecov
-        uses: codecov/codecov-action@v3
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-        with:
-          file: ./packages/app/coverage/coverage-final.json
-          flags: app
-
-      - name: Upload @tomrpc/mount coverage reports to Codecov
-        uses: codecov/codecov-action@v3
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-        with:
-          file: ./packages/mount/coverage/coverage-final.json
-          flags: mount
-
