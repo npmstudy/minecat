@@ -21,7 +21,7 @@ async function main(argv) {
   const { cli } = await import("libargs");
 
   const cfg: CliConfig = {
-    name: "mincat",
+    name: "minecat",
     desc: "headline",
     dir: join(import.meta.url, "./src/__tests__/", "fixtures"),
     commands: {
@@ -78,7 +78,7 @@ export function ada(cmd) {
 
 ## Config
 
-- [requied] name: "mincat",
+- [requied] name: "minecat",
 - [requied] desc: "headline",
 - [requied] dir: join(import.meta.url, ".", "cmd"),
 
