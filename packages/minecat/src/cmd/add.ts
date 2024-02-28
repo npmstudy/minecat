@@ -5,15 +5,15 @@ import fs from "fs";
 import shell from "shelljs";
 import { getDirectories } from "../util";
 import type {
-  MineCatPackageJson,
+  MinecatPackageJson,
   MinecatProjectType,
 } from "../types/package-json";
 
 const log = debug("minecat");
 
 let proj_type: MinecatProjectType;
-let proj_package_json: MineCatPackageJson;
-let proj_script_names: Array<keyof MineCatPackageJson["scripts"]>;
+let proj_package_json: MinecatPackageJson;
+let proj_script_names: Array<keyof MinecatPackageJson["scripts"]>;
 let pkg_list = {};
 let pkg_names = [];
 
@@ -22,7 +22,7 @@ export async function add(cmd) {
     cmd.input["_"].length !== 0 ? cmd.input["_"][0] : "yourmodule";
 
   try {
-    const json: MineCatPackageJson = JSON.parse(
+    const json: MinecatPackageJson = JSON.parse(
       fs.readFileSync(process.cwd() + "/package.json").toString()
     );
     if (!json.minecat) {
@@ -35,9 +35,9 @@ export async function add(cmd) {
       // console.dir(proj_script_names);
       log("this is a minecat project with type = " + json.minecat.type);
 
-      const originPkgDir = process.cwd() + "/packages";
+      const originalPkgDir = process.cwd() + "/packages";
 
-      const pkgs = getDirectories(originPkgDir);
+      const pkgs = getDirectories(originalPkgDir);
 
       log(pkgs);
 
