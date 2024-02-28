@@ -27,6 +27,7 @@
 ## Documentation
 
 - [Minecat-v0.5教程](https://github.com/npmstudy/minecat/wiki/minecat-v0.5%E6%95%99%E7%A8%8B)
+- [libargs用法](https://github.com/npmstudy/minecat/wiki/libargs用法)
 
 ## Contribution
 
