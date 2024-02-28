@@ -4,7 +4,7 @@ import shell from "shelljs";
 import { defaultCfg } from "./postinstall";
 
 // 获取某个目录下面的所有文件夹
-export const getDirectories = (source) =>
+export const getDirectories = (source: string) =>
   readdirSync(source, { withFileTypes: true })
     .filter((dirent) => dirent.isDirectory())
     .map((dirent) => dirent.name);
