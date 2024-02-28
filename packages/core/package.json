@@ -24,7 +24,7 @@
     "test": "vitest run",
     "test:watch": "vitest watch",
     "coverage": "vitest run --coverage",
-    "postinstall": "node dist/postinstall.js"
+    "postinstall": "node postinstall.js"
   },
   "keywords": [
     "awesome-keywords"

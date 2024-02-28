@@ -1,7 +1,12 @@
 import fs, { readdirSync } from "node:fs";
 import { homedir } from "node:os";
 import shell from "shelljs";
-import { defaultCfg } from "./postinstall";
+// import { defaultCfg } from "./postinstall";
+export const defaultCfg = {
+  "Node.js": "https://github.com/npmstudy/your-node-v20-monoreopo-project",
+  React: "https://github.com/npmstudy/your-vite-react-monoreopo-project",
+  Vue: "https://github.com/npmstudy/your-vite-react-monoreopo-project",
+};
 
 // 获取某个目录下面的所有文件夹
 export const getDirectories = (source: string) =>

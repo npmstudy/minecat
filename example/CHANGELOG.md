@@ -22,12 +22,14 @@
   - minecat@0.2.0
 
 ## 1.0.9
+## 1.0.2
 
 ### Patch Changes
 
 - Updated dependencies
   - minecat@0.1.0
 
+<<<<<<< HEAD
 ## 1.0.8
 
 ### Patch Changes
