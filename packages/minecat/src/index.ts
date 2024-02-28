@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
-async function main(argv) {
-  const { config } = await import("./config");
-  const { cli } = await import("libargs");
+import { cli } from "libargs";
+import { config } from "./config";
 
+async function main(argv) {
   await cli(config, argv);
 }
 
