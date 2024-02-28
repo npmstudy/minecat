@@ -21,8 +21,8 @@
 
 | Package   | Description        | Coverage  | NPM Version  |
 | ----------------------------------------------- | :------------------------------------------------------------- |:------------------------------------------------------------- |:------------------------------------------------------------- |
-| [minecat](./packages/core)| a monorepo cli for Node.js、React or Custom Template | [![codecov](https://codecov.io/gh/npmstudy/minecat/graph/badge.svg?token=sOdMHXaJ2U&&flag=minecat)](https://codecov.io/gh/npmstudy/minecat) | [![npm](https://img.shields.io/npm/v/@tomrpc/core.svg)](https://www.npmjs.com/package/minecat) |
-| [libargs](./packages/libargs/) | a cli tool for minecat | [![codecov](https://codecov.io/gh/npmstudy/minecat/graph/badge.svg?token=sOdMHXaJ2U&&flag=libargs)](https://codecov.io/gh/npmstudy/minecat) | [![npm](https://img.shields.io/npm/v/@tomrpc/core.svg)](https://www.npmjs.com/package/libargs) |
+| [minecat](./packages/core)| a monorepo cli for Node.js、React or Custom Template | [![codecov](https://codecov.io/gh/npmstudy/minecat/graph/badge.svg?token=sOdMHXaJ2U&&flag=minecat)](https://codecov.io/gh/npmstudy/minecat) | [![npm](https://img.shields.io/npm/v/minecat.svg)](https://www.npmjs.com/package/minecat) |
+| [libargs](./packages/libargs/) | a cli tool for minecat | [![codecov](https://codecov.io/gh/npmstudy/minecat/graph/badge.svg?token=sOdMHXaJ2U&&flag=libargs)](https://codecov.io/gh/npmstudy/minecat) | [![npm](https://img.shields.io/npm/v/libargs.svg)](https://www.npmjs.com/package/libargs) |
 
 ## Documentation
 
