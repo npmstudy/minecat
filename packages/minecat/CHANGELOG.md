@@ -1,5 +1,11 @@
 # minecat
 
+## 0.5.1
+
+### Patch Changes
+
+- with postinstall.js
+
 ## 0.5.0
 
 ### Minor Changes
