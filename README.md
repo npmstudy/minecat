@@ -11,10 +11,10 @@
 
 > a monorepo cli for Node.js、React or Custom Template
 
-- 💡 monorepo with pnpm
+- 💡 Monorepo with PNPM
 - ⚡️ Lightning Fast DX
-- 🛠️ Rich Cli Features with prompts
-- 📦 Optimized Build with tsup & tsx
+- 🛠️ Rich Cli Features with Prompts
+- 📦 Optimized Build with Tsup & Tsx
 - 🔩 Custom Configuration with your tpl
 
 ## Packages
