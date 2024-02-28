@@ -5,7 +5,7 @@
 </p>
 <br/>
 
-[![Node.js CI](https://github.com/npmstudy/minecat/actions/workflows/ci.yml/badge.svg)](https://github.com/npmstudy/minecat/actions/workflows/ci.yml)  [![codecov](https://codecov.io/gh/npmstudy/minecat/graph/badge.svg?token=sOdMHXaJ2U)](https://codecov.io/gh/npmstudy/minecat)
+[![Node.js CI](https://github.com/npmstudy/minecat/actions/workflows/ci.yml/badge.svg)](https://github.com/npmstudy/minecat/actions/workflows/ci.yml)  [![codecov](https://codecov.io/gh/npmstudy/minecat/graph/badge.svg?token=sOdMHXaJ2U&)](https://codecov.io/gh/npmstudy/minecat)
 
 # Minecat ⚡
 
@@ -19,10 +19,10 @@
 
 ## Packages
 
-| Package   | Description        |
-| ----------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------- |
-| [minecat](./packages/core)| a monorepo cli for Node.js、React or Custom Template |
-| [libargs](./packages/libargs/) | a cli tool for minecat |
+| Package   | Description        | Coverage  |
+| ----------------------------------------------- | :------------------------------------------------------------- |:------------------------------------------------------------- |
+| [minecat](./packages/core)| a monorepo cli for Node.js、React or Custom Template | [![codecov](https://codecov.io/gh/npmstudy/minecat/graph/badge.svg?token=sOdMHXaJ2U&&flag=minecat)](https://codecov.io/gh/npmstudy/minecat) |
+| [libargs](./packages/libargs/) | a cli tool for minecat | [![codecov](https://codecov.io/gh/npmstudy/minecat/graph/badge.svg?token=sOdMHXaJ2U&&flag=libargs)](https://codecov.io/gh/npmstudy/minecat) |
 
 ## Documentation
 
