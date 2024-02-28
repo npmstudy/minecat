@@ -1,5 +1,12 @@
 # example
 
+## 1.0.13
+
+### Patch Changes
+
+- Updated dependencies
+  - minecat@0.5.0
+
 ## 1.0.12
 
 ### Patch Changes
@@ -22,6 +29,7 @@
   - minecat@0.2.0
 
 ## 1.0.9
+
 ## 1.0.2
 
 ### Patch Changes
@@ -30,6 +38,7 @@
   - minecat@0.1.0
 
 <<<<<<< HEAD
+
 ## 1.0.8
 
 ### Patch Changes
