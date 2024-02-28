@@ -31,7 +31,7 @@ describe("util", () => {
   it("should getSafeHome return ~/.minecat", () => {
     const home = homedir + `/.minecat`;
     if (fs.existsSync(home)) {
-      fs.rmdirSync(home, { recursive: true, force: true });
+      fs.rmdirSync(home, { recursive: true });
     }
 
     expect(fs.existsSync(home)).toBe(false);
