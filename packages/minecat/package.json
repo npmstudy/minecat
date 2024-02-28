@@ -1,6 +1,6 @@
 {
   "name": "minecat",
-  "version": "0.4.0",
+  "version": "0.5.1",
   "description": "a monorepo cli tool for Node.js、React",
   "bin": {
     "minecat": "dist/index.js"
@@ -15,7 +15,8 @@
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "postinstall.js"
   ],
   "scripts": {
     "build": "tsup src -- --dts-resolve",

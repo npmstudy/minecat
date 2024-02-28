@@ -1,5 +1,11 @@
 # libargs
 
+## 0.10.0
+
+### Minor Changes
+
+- bump version
+
 ## 0.9.0
 
 ### Minor Changes
