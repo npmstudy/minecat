@@ -7,7 +7,7 @@ describe("lib", () => {
     const spy = vi.spyOn(console, "log");
 
     printHelp({
-      commandName: "mincat sync",
+      commandName: "minecat sync",
       usage: "[...flags]",
       tables: {
         Flags: [["--help (-h)", "See all available flags."]],

@@ -7,7 +7,7 @@ async function main(argv) {
   const { cli } = await import("./src/index");
 
   const cfg: CliConfig = {
-    name: "mincat",
+    name: "minecat",
     desc: "headline",
     dir: join(import.meta.url, "./src/__tests__/", "fixtures"),
     commands: {

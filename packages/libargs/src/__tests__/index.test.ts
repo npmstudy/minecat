@@ -11,7 +11,7 @@ describe("lib", () => {
     const { cli } = await import("../index.js");
 
     const cfg: CliConfig = {
-      name: "mincat",
+      name: "minecat",
       desc: "headline",
       dir: join(import.meta.url, ".", "fixtures"),
       commands: {
