@@ -29,7 +29,6 @@
 - Updated dependencies
   - minecat@0.1.0
 
-<<<<<<< HEAD
 ## 1.0.8
 
 ### Patch Changes
