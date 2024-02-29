@@ -1,5 +1,16 @@
 # minecat
 
+## 0.7.0
+
+### Minor Changes
+
+- 103a83d: test for ci release
+
+### Patch Changes
+
+- Updated dependencies [103a83d]
+  - libargs@0.13.0
+
 ## 0.6.1
 
 ### Patch Changes
