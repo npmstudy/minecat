@@ -24,7 +24,7 @@ export async function init(cmd) {
 
     const originPkgDir = getOriginPkgDir(url);
 
-    //----------
+    // 以下根据获得的promptInput，来进行clone、目录、git等操作
     if (!shell.test("-d", originPkgDir)) {
       // 不存在originPkgDir，才可以执行下面的clone逻辑
       cloneAndCp(promptInput, url);
@@ -55,7 +55,7 @@ export async function init(cmd) {
 /**
  * @param promptInput
  */
-function mkdirPkgHome(promptInput) {
+export function mkdirPkgHome(promptInput) {
   const pkgHome = homedir + `/.minecat/` + promptInput.apptype + "/";
   shell.mkdir("-p", pkgHome);
 }
@@ -63,7 +63,7 @@ function mkdirPkgHome(promptInput) {
 /**
  * @param url
  */
-function getOriginPkgDir(url) {
+export function getOriginPkgDir(url) {
   const { repoName } = getGitInfo(url);
   return process.cwd() + "/" + repoName + "/packages";
 }
@@ -71,7 +71,7 @@ function getOriginPkgDir(url) {
 /**
  * @param projectName
  */
-async function getParams(projectName) {
+export async function getParams(projectName) {
   const cfgJson = getConfig();
 
   log(cfgJson);
@@ -115,7 +115,7 @@ async function getParams(projectName) {
  * @param promptInput
  * @param url repo url
  */
-async function cloneAndCp(response, url) {
+export async function cloneAndCp(response, url) {
   const pkgHome = homedir + `/.minecat/` + response.apptype + "/";
   const { userName, repoName } = getGitInfo(url);
   const projectDir = process.cwd() + "/" + repoName;
@@ -135,7 +135,7 @@ async function cloneAndCp(response, url) {
 }
 
 //url =  cfgJson[response.apptype]
-function getGitInfo(url) {
+export function getGitInfo(url) {
   const { owner, name } = extractGitHubRepoInfo(url);
 
   let userName = owner;
@@ -152,7 +152,7 @@ function getGitInfo(url) {
 /**
  * @param promptInput
  */
-function movePkgToCache(promptInput) {
+export function movePkgToCache(promptInput) {
   const pkgHome = homedir + `/.minecat/` + promptInput.apptype + "/";
   const cloneToLocalDir = process.cwd() + "/" + promptInput.newname;
 
@@ -169,7 +169,7 @@ function movePkgToCache(promptInput) {
 /**
  * @param promptInput = response.newname
  */
-function resetGitInfo(promptInput) {
+export function resetGitInfo(promptInput) {
   const cloneToLocalDir = process.cwd() + "/" + promptInput.newname;
 
   // remove .git && git init & git config
