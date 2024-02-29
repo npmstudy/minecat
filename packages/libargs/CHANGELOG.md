@@ -1,5 +1,15 @@
 # libargs
 
+## 0.12.0
+
+### Minor Changes
+
+- 5ce3d49: feat: libargs support command alias
+
+### Patch Changes
+
+- bump
+
 ## 0.11.0
 
 ### Minor Changes
