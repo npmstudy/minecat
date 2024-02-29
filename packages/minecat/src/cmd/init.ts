@@ -5,6 +5,7 @@ import { homedir } from "os";
 import debug from "debug";
 import { colors } from "libargs";
 import { extractGitHubRepoInfo, getDirectories, getConfig } from "../utils";
+import path from "path";
 
 const log = debug("minecat");
 
@@ -27,7 +28,7 @@ export async function init(cmd) {
       // 以下根据获得的promptInput，来进行clone、目录、git等操作
       if (!shell.test("-d", originPkgDir)) {
         // 不存在originPkgDir，才可以执行下面的clone逻辑
-        cloneAndCp(promptInput, url);
+        await cloneAndCp(promptInput, url);
 
         // mv pkg to ~/.minecat/Node.js/xxx
         movePkgToCache(promptInput);
@@ -59,7 +60,8 @@ export async function init(cmd) {
  * @param promptInput
  */
 export function mkdirPkgHome(promptInput) {
-  const pkgHome = homedir + `/.minecat/` + promptInput.apptype + "/";
+  const pkgHome = path.join(homedir(),`.minecat` , promptInput.apptype + "/") ;
+
   shell.mkdir("-p", pkgHome);
 }
 
@@ -68,7 +70,7 @@ export function mkdirPkgHome(promptInput) {
  */
 export function getOriginPkgDir(url) {
   const { repoName } = getGitInfo(url);
-  return process.cwd() + "/" + repoName + "/packages";
+  return path.join(process.cwd() , repoName , "packages")
 }
 
 /**
@@ -119,20 +121,25 @@ export async function getParams(projectName) {
  * @param url repo url
  */
 export async function cloneAndCp(response, url) {
-  const pkgHome = homedir + `/.minecat/` + response.apptype + "/";
+  const pkgHome = path.join(homedir(), '.minecat', response.apptype,'/');
+
   const { userName, repoName } = getGitInfo(url);
-  const projectDir = process.cwd() + "/" + repoName;
+  const projectDir =  path.join(process.cwd() ,repoName);
 
   if (!shell.test("-d", pkgHome + repoName)) {
     await dclone({
       dir: "https://github.com/" + userName + "/" + repoName,
     });
-
-    shell.mv("-f", projectDir, pkgHome);
+  
+    // 在windows 情况下，不能直接移动
+    // 采用先创建，复制、删除的流程
+    shell.mkdir('-p', pkgHome);
+    shell.cp("-Rf", projectDir, pkgHome);
+    shell.rm('-rf', projectDir);
   }
 
   // clone local dirname
-  const cloneToLocalDir = process.cwd() + "/" + response.newname;
+  const cloneToLocalDir = path.join(process.cwd(), response.newname);
 
   shell.cp("-Rf", pkgHome + repoName, cloneToLocalDir);
 }
@@ -156,13 +163,13 @@ export function getGitInfo(url) {
  * @param promptInput
  */
 export function movePkgToCache(promptInput) {
-  const pkgHome = homedir + `/.minecat/` + promptInput.apptype + "/";
-  const cloneToLocalDir = process.cwd() + "/" + promptInput.newname;
+  const pkgHome = path.join(homedir(), '.minecat', promptInput.apptype,'/');
+  const cloneToLocalDir = path.join(process.cwd(),  promptInput.newname);
 
   const pkgs = getDirectories(cloneToLocalDir + "/packages");
   for (const i in pkgs) {
     const pkg = pkgs[i];
-    const pkgDir = cloneToLocalDir + "/packages/" + pkg;
+    const pkgDir = path.join(cloneToLocalDir, "packages", pkg);
 
     shell.cp("-Rf", pkgDir, pkgHome);
     console.log("add module at " + pkgHome + pkg);
@@ -173,10 +180,10 @@ export function movePkgToCache(promptInput) {
  * @param promptInput = response.newname
  */
 export function resetGitInfo(promptInput) {
-  const cloneToLocalDir = process.cwd() + "/" + promptInput.newname;
+  const cloneToLocalDir = path.join(process.cwd(), promptInput.newname);
 
   // remove .git && git init & git config
-  shell.rm("-rf", cloneToLocalDir + "/.git");
+  shell.rm("-rf", path.join(cloneToLocalDir, ".git"));
 
   // Run external tool synchronously
   if (shell.exec(`git config --global init.defaultBranch main`).code !== 0) {
