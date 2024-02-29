@@ -4,8 +4,7 @@ import shell from "shelljs";
 import { homedir } from "os";
 import debug from "debug";
 import { colors } from "libargs";
-import { extractGitHubRepoInfo } from "../util";
-import { getDirectories, getConfig } from "../util";
+import { extractGitHubRepoInfo, getDirectories, getConfig } from "../utils";
 
 const log = debug("minecat");
 
