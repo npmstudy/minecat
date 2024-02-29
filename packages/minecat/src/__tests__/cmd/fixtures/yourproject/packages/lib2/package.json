@@ -1,7 +1,7 @@
 {
-  "name": "libargs",
-  "version": "0.11.0",
-  "description": "a configurable cli tool",
+  "name": "lib2",
+  "version": "0.0.1",
+  "description": "My Awesome lib",
   "license": "MIT",
   "publishConfig": {
     "access": "public"
@@ -25,14 +25,7 @@
     "awesome-keywords"
   ],
   "devDependencies": {
-    "@types/node": "^18.17.9",
     "@vitest/coverage-v8": "^1.0.1",
-    "desm": "^1.3.1",
     "happy-dom": "^6.0.4"
-  },
-  "dependencies": {
-    "debug": "^4.3.4",
-    "kleur": "^4.1.5",
-    "yargs-parser": "^21.1.1"
   }
 }
