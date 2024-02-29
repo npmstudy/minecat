@@ -1,6 +1,6 @@
 import prompts from "prompts";
 import debug from "debug";
-import { writeConfig, getConfig } from "../util";
+import { writeConfig, getConfig } from "../utils";
 const log = debug("minecat");
 
 let cfgJson;

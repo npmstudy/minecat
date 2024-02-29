@@ -4,21 +4,15 @@ import shell from "shelljs";
 import { homedir } from "os";
 import debug from "debug";
 import { colors } from "libargs";
-import { extractGitHubRepoInfo } from "../util";
-import { getDirectories, getConfig } from "../util";
+import { extractGitHubRepoInfo, getDirectories, getConfig } from "../utils";
 
 const log = debug("minecat");
 
-let cfgJson;
 export async function init(cmd) {
   const projectName =
     cmd.input["_"].length !== 0 ? cmd.input["_"][0] : "yourproject";
 
-  try {
-    cfgJson = getConfig();
-  } catch (error) {
-    console.dir(error);
-  }
+  const cfgJson = getConfig();
 
   log(cfgJson);
 
@@ -58,17 +52,8 @@ export async function init(cmd) {
     if (response.confirm) {
       log(response.apptype);
 
-      const { owner, name } = extractGitHubRepoInfo(cfgJson[response.apptype]);
-
-      let userName = owner;
-      let repoName = name;
-
-      if (!userName || !repoName) {
-        console.dir(
-          "extractGitHubRepoInfo error, url=" + cfgJson[response.apptype]
-        );
-        return;
-      }
+      const url = cfgJson[response.apptype];
+      const { userName, repoName } = getGitInfo(url);
 
       const pkgHome = homedir + `/.minecat/` + response.apptype + "/";
       shell.mkdir("-p", pkgHome);
@@ -79,53 +64,15 @@ export async function init(cmd) {
       //----------
       if (!shell.test("-d", originPkgDir)) {
         // 不存在originPkgDir，才可以执行下面的clone逻辑
-
-        if (!shell.test("-d", pkgHome + repoName)) {
-          await dclone({
-            dir: "https://github.com/" + userName + "/" + repoName,
-          });
-
-          shell.mv("-f", projectDir, pkgHome);
-        }
-        const newname = process.cwd() + "/" + response.newname;
-
-        shell.cp("-Rf", pkgHome + repoName, newname);
-
-        const pkgs = getDirectories(newname + "/packages");
-
-        // console.log(pkgs);
+        cloneAndCp(response, url);
 
         // mv pkg to ~/.minecat/Node.js/xxx
-        for (const i in pkgs) {
-          const pkg = pkgs[i];
-          const pkgDir = newname + "/packages/" + pkg;
+        movePkgToCache(response);
 
-          shell.cp("-Rf", pkgDir, pkgHome);
-          console.log("add module at " + pkgHome + pkg);
-        }
+        // remove .git && git init & git config
+        resetGitInfo(response.newname);
 
-        shell.rm("-rf", newname + "/.git");
-
-        // Run external tool synchronously
-        if (
-          shell.exec(`git config --global init.defaultBranch main`).code !== 0
-        ) {
-          shell.echo(
-            "Error: git config --global init.defaultBranch main failed: "
-          );
-          shell.exit(1);
-        }
-
-        if (
-          shell.exec(
-            `cd ${response.newname} && git init && git add . && git commit -am 'init'`
-          ).code !== 0
-        ) {
-          shell.echo(
-            "Error: git config --global init.defaultBranch main failed: "
-          );
-          shell.exit(1);
-        }
+        // log usages
         console.log(
           colors.red(
             colors.bold(`
@@ -143,5 +90,84 @@ export async function init(cmd) {
   } catch (cancelled: any) {
     console.log(cancelled.message);
     return;
+  }
+}
+
+/**
+ * @param promptInput
+ * @param url repo url
+ */
+async function cloneAndCp(response, url) {
+  const pkgHome = homedir + `/.minecat/` + response.apptype + "/";
+  const { userName, repoName } = getGitInfo(url);
+  const projectDir = process.cwd() + "/" + repoName;
+
+  if (!shell.test("-d", pkgHome + repoName)) {
+    await dclone({
+      dir: "https://github.com/" + userName + "/" + repoName,
+    });
+
+    shell.mv("-f", projectDir, pkgHome);
+  }
+
+  // clone local dirname
+  const cloneToLocalDir = process.cwd() + "/" + response.newname;
+
+  shell.cp("-Rf", pkgHome + repoName, cloneToLocalDir);
+}
+
+//url =  cfgJson[response.apptype]
+function getGitInfo(url) {
+  const { owner, name } = extractGitHubRepoInfo(url);
+
+  let userName = owner;
+  let repoName = name;
+
+  if (!userName || !repoName) {
+    console.dir("extractGitHubRepoInfo error, url=" + url);
+    return;
+  }
+
+  return { userName, repoName };
+}
+
+/**
+ * @param promptInput
+ */
+function movePkgToCache(promptInput) {
+  const pkgHome = homedir + `/.minecat/` + promptInput.apptype + "/";
+  const cloneToLocalDir = process.cwd() + "/" + promptInput.newname;
+
+  const pkgs = getDirectories(cloneToLocalDir + "/packages");
+  for (const i in pkgs) {
+    const pkg = pkgs[i];
+    const pkgDir = cloneToLocalDir + "/packages/" + pkg;
+
+    shell.cp("-Rf", pkgDir, pkgHome);
+    console.log("add module at " + pkgHome + pkg);
+  }
+}
+
+/**
+ * @param newdir = response.newname
+ */
+function resetGitInfo(newdir) {
+  const cloneToLocalDir = process.cwd() + "/" + newdir;
+
+  // remove .git && git init & git config
+  shell.rm("-rf", cloneToLocalDir + "/.git");
+
+  // Run external tool synchronously
+  if (shell.exec(`git config --global init.defaultBranch main`).code !== 0) {
+    shell.echo("Error: git config --global init.defaultBranch main failed: ");
+    shell.exit(1);
+  }
+
+  if (
+    shell.exec(`cd ${newdir} && git init && git add . && git commit -am 'init'`)
+      .code !== 0
+  ) {
+    shell.echo("Error: git config --global init.defaultBranch main failed: ");
+    shell.exit(1);
   }
 }
