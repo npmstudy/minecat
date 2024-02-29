@@ -9,15 +9,18 @@ async function main(argv) {
   const cfg: CliConfig = {
     name: "minecat",
     desc: "headline",
+    version: "1.0.1",
     dir: join(import.meta.url, "./src/__tests__/", "fixtures"),
     commands: {
       add: {
         desc: "'Add an integration.'",
         fnName: "ada",
+        file: "add",
         flags: {
           "--config <path>": "Specify your config file.",
           "--root <path>": "Specify your project root folder.",
         },
+        alias: "a",
       },
       init: {
         desc: "'init an integration.'",
@@ -25,6 +28,7 @@ async function main(argv) {
           "--config1 <path>": "Specify your config file.",
           "--root1 <path>": "Specify your project root folder.",
         },
+        alias: "i",
       },
       ada: {
         desc: "'ada an integration.'",
