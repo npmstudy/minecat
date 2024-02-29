@@ -5,6 +5,7 @@ import { homedir } from "os";
 import debug from "debug";
 import { colors } from "libargs";
 import { extractGitHubRepoInfo, getDirectories, getConfig } from "../utils";
+import path from "path";
 
 const log = debug("minecat");
 
@@ -27,7 +28,7 @@ export async function init(cmd) {
       // 以下根据获得的promptInput，来进行clone、目录、git等操作
       if (!shell.test("-d", originPkgDir)) {
         // 不存在originPkgDir，才可以执行下面的clone逻辑
-        cloneAndCp(promptInput, url);
+        await cloneAndCp(promptInput, url);
 
         // mv pkg to ~/.minecat/Node.js/xxx
         movePkgToCache(promptInput);
@@ -59,7 +60,8 @@ export async function init(cmd) {
  * @param promptInput
  */
 export function mkdirPkgHome(promptInput) {
-  const pkgHome = homedir + `/.minecat/` + promptInput.apptype + "/";
+  const pkgHome = path.join(homedir(),`.minecat` , promptInput.apptype + "/") ;
+
   shell.mkdir("-p", pkgHome);
 }
 
@@ -68,7 +70,7 @@ export function mkdirPkgHome(promptInput) {
  */
 export function getOriginPkgDir(url) {
   const { repoName } = getGitInfo(url);
-  return process.cwd() + "/" + repoName + "/packages";
+  return path.join(process.cwd() , repoName , "packages")
 }
 
 /**
@@ -119,7 +121,8 @@ export async function getParams(projectName) {
  * @param url repo url
  */
 export async function cloneAndCp(response, url) {
-  const pkgHome = homedir + `/.minecat/` + response.apptype + "/";
+  const pkgHome = path.join(homedir(), '.minecat', response.apptype,'/');
+
   const { userName, repoName } = getGitInfo(url);
   const projectDir =  path.join(process.cwd() ,repoName);
 
@@ -160,8 +163,8 @@ export function getGitInfo(url) {
  * @param promptInput
  */
 export function movePkgToCache(promptInput) {
-  const pkgHome = homedir + `/.minecat/` + promptInput.apptype + "/";
-  const cloneToLocalDir = process.cwd() + "/" + promptInput.newname;
+  const pkgHome = path.join(homedir(), '.minecat', promptInput.apptype,'/');
+  const cloneToLocalDir = path.join(process.cwd(),  promptInput.newname);
 
   const pkgs = getDirectories(cloneToLocalDir + "/packages");
   for (const i in pkgs) {
@@ -177,7 +180,7 @@ export function movePkgToCache(promptInput) {
  * @param promptInput = response.newname
  */
 export function resetGitInfo(promptInput) {
-  const cloneToLocalDir = process.cwd() + "/" + promptInput.newname;
+  const cloneToLocalDir = path.join(process.cwd(), promptInput.newname);
 
   // remove .git && git init & git config
   shell.rm("-rf", path.join(cloneToLocalDir, ".git"));
