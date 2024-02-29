@@ -48,3 +48,40 @@ jobs:
         with:
           file: ./packages/libargs/coverage/coverage-final.json
           flags: libargs
+
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.x'
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v3
+        with:
+          version: 8
+      - name: Install deps and build (with cache)
+        run: pnpm install --no-frozen-lockfile
+      - name: Dev
+        run: pnpm run build
+      - name: Test
+        run: pnpm run test
+      - name: Coverage
+        run: pnpm run coverage
+      - name: Build
+        run: pnpm run build
+      - name: Upload minecat coverage reports to Codecov
+        uses: codecov/codecov-action@v3
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+        with:
+          file: ./packages/minecat/coverage/coverage-final.json
+          flags: minecat
+      - name: Upload libargs coverage reports to Codecov
+        uses: codecov/codecov-action@v3
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+        with:
+          file: ./packages/libargs/coverage/coverage-final.json
+          flags: libargs
