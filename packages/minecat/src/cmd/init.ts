@@ -223,17 +223,18 @@ export function resetGitInfo(promptInput) {
   shell.rm("-rf", path.join(cloneToLocalDir, ".git"));
 
   // Run external tool synchronously
-  if (shell.exec(`git config --global init.defaultBranch main`).code !== 0) {
-    shell.echo("Error: git config --global init.defaultBranch main failed: ");
-    shell.exit(1);
-  }
+  try {
+    shell.exec(`git config --global init.defaultBranch main`);
 
-  if (
-    shell.exec(
-      `cd ${promptInput.newname} && git init && git add . && git commit -am 'init'`
-    ).code !== 0
-  ) {
-    shell.echo("Error: git config --global init.defaultBranch main failed: ");
-    shell.exit(1);
+    if (
+      shell.exec(
+        `cd ${cloneToLocalDir} && git init && git add . && git commit -am 'init'`
+      ).code !== 0
+    ) {
+      shell.echo("Error: git config --global init.defaultBranch main failed: ");
+      shell.exit(1);
+    }
+  } catch (error) {
+    console.dir(error);
   }
 }

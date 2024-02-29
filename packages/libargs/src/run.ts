@@ -1,6 +1,7 @@
 import yargs from "yargs-parser";
 import { join } from 'path';
-import { pathToFileURL } from 'url';
+import os from "os";
+import { pathToFileURL } from "url";
 import { printHelp } from "./util";
 import type { PrintTable } from "./util";
 import Debug from "debug";
@@ -56,7 +57,22 @@ export async function runCommand(cmd) {
   } else {
     // These commands can run directly without parsing the user config.
     // 当cmd目录下，有同名目录，可能会有坑
-    const moduleURL = pathToFileURL(join(cmd.dir, `${cmd.file || cmd.name}.js`)).href;
+    var isWin = os.platform() === "win32";
+    var moduleURL;
+    if (isWin) {
+      moduleURL = pathToFileURL(
+        join(cmd.dir, `${cmd.file || cmd.name}.js`)
+      ).href;
+    } else {
+      moduleURL = join(
+        cmd.dir.replace("src", "dist"),
+        `${cmd.file || cmd.name}.js`
+      );
+    }
+
+    // console.dir(cmd);
+    // console.dir(moduleURL);
+
     const fn = await import(moduleURL);
     debug(fn);
     debug(cmd["fnName"] || "default");
