@@ -57,6 +57,7 @@ interface Flags {
 export interface CliConfig {
   name?: string;
   desc: string;
+  version: string;
   usage?: string;
   dir: string;
   commands?: Commands;
@@ -89,6 +90,7 @@ export async function cli(cfg: CliConfig, args: string[]) {
     if (cmd == "help") {
       printHelp({
         commandName: cfg.name,
+        version: cfg.version,
         usage: cfg.usage || "[command] [...flags]",
         headline: cfg.desc,
         tables: {

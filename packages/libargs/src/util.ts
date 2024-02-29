@@ -6,12 +6,14 @@ export type PrintTable = Record<string, [command: string, help: string][]>;
 
 export function printHelp({
   commandName,
+  version,
   headline,
   usage,
   tables,
   description,
 }: {
   commandName: string;
+  version: string;
   headline?: string;
   usage?: string;
   tables?: PrintTable;
@@ -45,7 +47,7 @@ export function printHelp({
     message.push(
       linebreak(),
       `  ${bgGreen(black(` ${commandName} `))} ${green(
-        `v${process.env.PACKAGE_VERSION ?? ""}`
+        `v${version}`
       )} ${headline}`
     );
   }
