@@ -5,12 +5,14 @@ const debug = Debug("libargs");
 export type PrintTable = Record<string, [command: string, help: string][]>;
 
 export function printHelp({
+  version,
   commandName,
   headline,
   usage,
   tables,
   description,
 }: {
+  version: string;
   commandName: string;
   headline?: string;
   usage?: string;
@@ -44,9 +46,9 @@ export function printHelp({
   if (headline) {
     message.push(
       linebreak(),
-      `  ${bgGreen(black(` ${commandName} `))} ${green(
-        `v${process.env.PACKAGE_VERSION ?? ""}`
-      )} ${headline}`
+      `  ${bgGreen(black(` ${commandName} `))} ${
+        version ? green(`v${version}`) : ""
+      } ${headline}`
     );
   }
 
