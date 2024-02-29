@@ -1,5 +1,11 @@
 # libargs
 
+## 0.11.0
+
+### Minor Changes
+
+- bump
+
 ## 0.10.0
 
 ### Minor Changes
