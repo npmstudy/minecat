@@ -1,5 +1,14 @@
 # minecat
 
+## 0.6.1
+
+### Patch Changes
+
+- bump
+- Updated dependencies
+- Updated dependencies [5ce3d49]
+  - libargs@0.12.0
+
 ## 0.6.0
 
 ### Minor Changes

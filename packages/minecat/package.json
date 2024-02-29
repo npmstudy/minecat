@@ -1,6 +1,6 @@
 {
   "name": "minecat",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "a monorepo cli tool for Node.js、React",
   "bin": {
     "minecat": "dist/cli.js"
