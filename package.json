@@ -10,6 +10,7 @@
   "scripts": {
     "build": "nx run-many -t build",
     "build:fast": "nx run-many -t build:fast",
+    "clean": "rimraf 'packages/**/node_modules' 'example/node_modules' 'node_modules'",
     "dev": "npm run build && nx run-many -t dev",
     "test": "nx run-many -t test",
     "test:watch": "nx run-many -t test:watch",
@@ -50,6 +51,7 @@
     "minecat": "workspace:^",
     "nx": "16.3.2",
     "prettier": "^2.8.8",
+    "rimraf": "^5.0.5",
     "size-limit": "^8.2.6",
     "tsup": "^8.0.0",
     "tsx": "^4.7.0",
