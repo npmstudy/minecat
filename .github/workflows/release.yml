@@ -1,3 +1,4 @@
+# 整个流程的名字
 name: Release
 
 on:
@@ -5,38 +6,42 @@ on:
     branches:
       - main
 
-permissions:
-  contents: write
-  pull-requests: write
-  packages: write
-
-# Automatically cancel in-progress actions on the same branch
-concurrency:
-  group: ${{ github.workflow }}-${{ github.event_name == 'pull_request_target' && github.head_ref || github.ref }}
-  cancel-in-progress: true
+defaults:
+  run:
+    shell: bash
 
 jobs:
-  build:
-    name: Build Packages
+  changelog:
+    name: Changelog PR or Release
+    if: ${{ github.repository_owner == 'npmstudy' }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Use Node.js
+      - uses: actions/checkout@v3
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v2.2.1
+        with:
+          version: ^7.0
+
+      - name: Setup Node
         uses: actions/setup-node@v3
         with:
-          node-version: '20.x'
-      - name: Install PNPM
-        run: npm install -g pnpm
-      - name: Install deps and build (with cache)
+          node-version: 16
+          cache: "pnpm"
+
+      - name: Install dependencies
         run: pnpm install
-      - run: pnpm run build
-      - uses: changesets/action@v1
-        if: ${{ github.event_name != 'pull_request' }}
+
+      - name: Build Packages
+        run: pnpm run build
+
+      - name: Create Release Pull Request or Publish
+        id: changesets
+        uses: changesets/action@v1
         with:
           version: pnpm run ci:version
           publish: pnpm run ci:publish
-          commit: '[ci] release'
-          title: '[ci] release'
+          commit: "[ci] release"
+          title: "[ci] release"
         env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
