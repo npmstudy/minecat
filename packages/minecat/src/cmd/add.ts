@@ -3,7 +3,7 @@ import debug from "debug";
 import { homedir } from "os";
 import fs from "fs";
 import shell from "shelljs";
-import { getDirectories } from "../util";
+import { getDirectories } from "../utils";
 import type {
   MinecatPackageJson,
   MinecatProjectType,

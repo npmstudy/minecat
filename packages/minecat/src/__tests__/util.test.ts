@@ -4,9 +4,9 @@ import {
   extractGitHubRepoInfo,
   getSafeHome,
   getConfig,
-  defaultCfg,
+  DEFAULT_CONFIGS,
   getConfigFile,
-} from "../util";
+} from "../utils";
 import { homedir } from "node:os";
 import fs from "node:fs";
 
@@ -34,11 +34,11 @@ describe("util", () => {
     const spy = vi.spyOn(fs, "mkdirSync");
     const dir = getSafeHome();
 
-    expect(spy).toHaveBeenCalled();
+    expect(spy).toHaveBeenCalledTimes(1);
     expect(dir).toBe(home);
 
     const cfg = getConfig();
-    expect(cfg["Node.js"]).toBe(defaultCfg["Node.js"]);
+    expect(cfg["Node.js"]).toBe(DEFAULT_CONFIGS["Node.js"]);
   });
 
   it("should getConfigFile return ~/.minecat/config.json", () => {
