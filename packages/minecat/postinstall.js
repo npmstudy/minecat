@@ -13,6 +13,16 @@ export function getSafeHome() {
   return home;
 }
 
+export function writeConfig(cfg) {
+  const configFile = getConfigFile();
+
+  try {
+    fs.writeFileSync(configFile, JSON.stringify(cfg, null, 4));
+  } catch (error) {
+    console.dir(error);
+  }
+}
+
 export function getConfigFile() {
   return getSafeHome() + `/config.json`;
 }
