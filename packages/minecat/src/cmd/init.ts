@@ -17,36 +17,40 @@ export async function init(cmd) {
   log(promptInput);
 
   if (promptInput.confirm) {
-    log(promptInput.apptype);
-
     mkdirPkgHome(promptInput);
 
     const originPkgDir = getOriginPkgDir(url);
 
-    // 以下根据获得的promptInput，来进行clone、目录、git等操作
-    if (!shell.test("-d", originPkgDir)) {
-      // 不存在originPkgDir，才可以执行下面的clone逻辑
-      cloneAndCp(promptInput, url);
+    log(originPkgDir);
 
-      // mv pkg to ~/.minecat/Node.js/xxx
-      movePkgToCache(promptInput);
+    try {
+      // 以下根据获得的promptInput，来进行clone、目录、git等操作
+      if (!shell.test("-d", originPkgDir)) {
+        // 不存在originPkgDir，才可以执行下面的clone逻辑
+        cloneAndCp(promptInput, url);
 
-      // remove .git && git init & git config
-      resetGitInfo(promptInput);
+        // mv pkg to ~/.minecat/Node.js/xxx
+        movePkgToCache(promptInput);
 
-      // log usages
-      console.log(
-        colors.red(
-          colors.bold(`
+        // remove .git && git init & git config
+        resetGitInfo(promptInput);
+
+        // log usages
+        console.log(
+          colors.red(
+            colors.bold(`
               -----------------------------------------
               Usages: cd ${promptInput.newname} && pnpm i && pnpm dev
               -----------------------------------------
             `)
-        )
-      );
-      console.dir("done");
-    } else {
-      console.dir("failed，dir is exist");
+          )
+        );
+        console.dir("done");
+      } else {
+        console.dir("failed，dir is exist");
+      }
+    } catch (error) {
+      // console.dir(error);
     }
   }
 }
