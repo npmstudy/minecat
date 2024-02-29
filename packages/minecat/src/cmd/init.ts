@@ -1,11 +1,12 @@
 import prompts from "prompts";
 import { dclone } from "dclone";
 import shell from "shelljs";
-import { homedir } from "os";
+import os from "node:os";
 import debug from "debug";
 import { colors } from "libargs";
 import { extractGitHubRepoInfo, getDirectories, getConfig } from "../utils";
 import path from "path";
+import fs from "node:fs";
 
 const log = debug("minecat");
 
@@ -58,23 +59,30 @@ export async function init(cmd) {
 
 /**
  * @param promptInput
+ * Testd
  */
 export function mkdirPkgHome(promptInput) {
-  const pkgHome = path.join(homedir(),`.minecat` , promptInput.apptype + "/") ;
+  const pkgHome = path.join(
+    os.homedir(),
+    `.minecat`,
+    promptInput.apptype + "/"
+  );
 
   shell.mkdir("-p", pkgHome);
 }
 
 /**
  * @param url
+ * Testd
  */
 export function getOriginPkgDir(url) {
   const { repoName } = getGitInfo(url);
-  return path.join(process.cwd() , repoName , "packages")
+  return path.join(process.cwd(), repoName, "packages");
 }
 
 /**
  * @param projectName
+ * Testd
  */
 export async function getParams(projectName) {
   const cfgJson = getConfig();
@@ -116,32 +124,61 @@ export async function getParams(projectName) {
   }
 }
 
+function safeMkdir(dirname) {
+  if (!fs.existsSync(dirname)) {
+    fs.mkdirSync(dirname, { recursive: true });
+  }
+}
+
 /**
  * @param promptInput
  * @param url repo url
  */
-export async function cloneAndCp(response, url) {
-  const pkgHome = path.join(homedir(), '.minecat', response.apptype,'/');
+export async function cloneAndCp(promptInput, url) {
+  log("promptInput = ");
+  log(promptInput);
+
+  const pkgHome = path.join(os.homedir(), ".minecat", promptInput.apptype, "/");
+  safeMkdir(pkgHome);
+
+  log("pkgHome = " + pkgHome);
 
   const { userName, repoName } = getGitInfo(url);
-  const projectDir =  path.join(process.cwd() ,repoName);
+  log("userName = " + userName);
+  log("repoName = " + repoName);
 
-  if (!shell.test("-d", pkgHome + repoName)) {
-    await dclone({
-      dir: "https://github.com/" + userName + "/" + repoName,
-    });
-  
-    // 在windows 情况下，不能直接移动
-    // 采用先创建，复制、删除的流程
-    shell.mkdir('-p', pkgHome);
-    shell.cp("-Rf", projectDir, pkgHome);
-    shell.rm('-rf', projectDir);
+  const projectDir = path.join(process.cwd(), repoName);
+
+  try {
+    safeMkdir(projectDir);
+    // 如果~/.minecat/apptype/repoName不存在，就dcone
+    if (!shell.test("-d", pkgHome + repoName)) {
+      log("如果~/.minecat/apptype/repoName不存在，就dcone");
+      await dclone({
+        dir: "https://github.com/" + userName + "/" + repoName,
+      });
+
+      // 在windows 情况下，不能直接移动
+      // 采用先创建，复制、删除的流程
+      shell.cp("-Rf", projectDir, pkgHome);
+      log("cp projectDir = " + projectDir);
+      log("cp pkgHome = " + pkgHome);
+      shell.rm("-rf", projectDir);
+    }
+
+    // 如果~/.minecat/apptype/repoName存在，就走本地缓存
+    // clone local dirname
+    log("clone local dirname");
+    const cloneToLocalDir = path.join(process.cwd(), promptInput.newname);
+
+    log("cloneToLocalDir before=" + pkgHome + repoName);
+    log("cloneToLocalDir=" + cloneToLocalDir);
+
+    // 移动
+    shell.cp("-Rf", pkgHome + repoName, cloneToLocalDir);
+  } catch (error) {
+    console.dir(error);
   }
-
-  // clone local dirname
-  const cloneToLocalDir = path.join(process.cwd(), response.newname);
-
-  shell.cp("-Rf", pkgHome + repoName, cloneToLocalDir);
 }
 
 //url =  cfgJson[response.apptype]
@@ -163,8 +200,8 @@ export function getGitInfo(url) {
  * @param promptInput
  */
 export function movePkgToCache(promptInput) {
-  const pkgHome = path.join(homedir(), '.minecat', promptInput.apptype,'/');
-  const cloneToLocalDir = path.join(process.cwd(),  promptInput.newname);
+  const pkgHome = path.join(os.homedir(), ".minecat", promptInput.apptype, "/");
+  const cloneToLocalDir = path.join(process.cwd(), promptInput.newname);
 
   const pkgs = getDirectories(cloneToLocalDir + "/packages");
   for (const i in pkgs) {
@@ -186,17 +223,18 @@ export function resetGitInfo(promptInput) {
   shell.rm("-rf", path.join(cloneToLocalDir, ".git"));
 
   // Run external tool synchronously
-  if (shell.exec(`git config --global init.defaultBranch main`).code !== 0) {
-    shell.echo("Error: git config --global init.defaultBranch main failed: ");
-    shell.exit(1);
-  }
+  try {
+    shell.exec(`git config --global init.defaultBranch main`);
 
-  if (
-    shell.exec(
-      `cd ${promptInput.newname} && git init && git add . && git commit -am 'init'`
-    ).code !== 0
-  ) {
-    shell.echo("Error: git config --global init.defaultBranch main failed: ");
-    shell.exit(1);
+    if (
+      shell.exec(
+        `cd ${cloneToLocalDir} && git init && git add . && git commit -am 'init'`
+      ).code !== 0
+    ) {
+      shell.echo("Error: git config --global init.defaultBranch main failed: ");
+      shell.exit(1);
+    }
+  } catch (error) {
+    console.dir(error);
   }
 }

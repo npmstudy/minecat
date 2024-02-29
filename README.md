@@ -36,3 +36,7 @@ See [Contributing Guide](CONTRIBUTING.md).
 ## License
 
 MIT @ npmstudy
+
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=npmstudy/minecat&type=Date)](https://star-history.com/#npmstudy/minecat&Date)
