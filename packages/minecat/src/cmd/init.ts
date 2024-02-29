@@ -4,8 +4,7 @@ import shell from "shelljs";
 import { homedir } from "os";
 import debug from "debug";
 import { colors } from "libargs";
-import { extractGitHubRepoInfo } from "../util";
-import { getDirectories, getConfig } from "../util";
+import { extractGitHubRepoInfo, getDirectories, getConfig } from "../utils";
 
 const log = debug("minecat");
 
@@ -13,14 +12,68 @@ export async function init(cmd) {
   const projectName =
     cmd.input["_"].length !== 0 ? cmd.input["_"][0] : "yourproject";
 
+  const { url, promptInput } = await getParams(projectName);
+
+  log(promptInput);
+
+  if (promptInput.confirm) {
+    log(promptInput.apptype);
+
+    mkdirPkgHome(promptInput);
+
+    const originPkgDir = getOriginPkgDir(url);
+
+    // 以下根据获得的promptInput，来进行clone、目录、git等操作
+    if (!shell.test("-d", originPkgDir)) {
+      // 不存在originPkgDir，才可以执行下面的clone逻辑
+      cloneAndCp(promptInput, url);
+
+      // mv pkg to ~/.minecat/Node.js/xxx
+      movePkgToCache(promptInput);
+
+      // remove .git && git init & git config
+      resetGitInfo(promptInput);
+
+      // log usages
+      console.log(
+        colors.red(
+          colors.bold(`
+              -----------------------------------------
+              Usages: cd ${promptInput.newname} && pnpm i && pnpm dev
+              -----------------------------------------
+            `)
+        )
+      );
+      console.dir("done");
+    } else {
+      console.dir("failed，dir is exist");
+    }
+  }
+}
+
+/**
+ * @param promptInput
+ */
+export function mkdirPkgHome(promptInput) {
+  const pkgHome = homedir + `/.minecat/` + promptInput.apptype + "/";
+  shell.mkdir("-p", pkgHome);
+}
+
+/**
+ * @param url
+ */
+export function getOriginPkgDir(url) {
+  const { repoName } = getGitInfo(url);
+  return process.cwd() + "/" + repoName + "/packages";
+}
+
+/**
+ * @param projectName
+ */
+export async function getParams(projectName) {
   const cfgJson = getConfig();
 
   log(cfgJson);
-
-  // await process(cfgJson);
-  const appChoices = Object.keys(cfgJson).map((x) => {
-    return { title: x, value: x };
-  });
 
   try {
     const questions: any = [
@@ -28,8 +81,9 @@ export async function init(cmd) {
         type: "select",
         name: "apptype",
         message: "What is your project type?",
-
-        choices: appChoices,
+        choices: Object.keys(cfgJson).map((x) => {
+          return { title: x, value: x };
+        }),
       },
       {
         type: "text",
@@ -46,48 +100,10 @@ export async function init(cmd) {
       },
     ];
 
-    const response = await prompts(questions);
+    const promptInput = await prompts(questions);
+    const url = cfgJson[promptInput.apptype];
 
-    log(response);
-
-    if (response.confirm) {
-      log(response.apptype);
-
-      const url = cfgJson[response.apptype];
-      const { userName, repoName } = getGitInfo(url);
-
-      const pkgHome = homedir + `/.minecat/` + response.apptype + "/";
-      shell.mkdir("-p", pkgHome);
-
-      const projectDir = process.cwd() + "/" + repoName;
-      const originPkgDir = projectDir + "/packages";
-
-      //----------
-      if (!shell.test("-d", originPkgDir)) {
-        // 不存在originPkgDir，才可以执行下面的clone逻辑
-        cloneAndCp(response, url);
-
-        // mv pkg to ~/.minecat/Node.js/xxx
-        movePkgToCache(response);
-
-        // remove .git && git init & git config
-        resetGitInfo(response.newname);
-
-        // log usages
-        console.log(
-          colors.red(
-            colors.bold(`
-              -----------------------------------------
-              Usages: cd ${response.newname} && pnpm i && pnpm dev
-              -----------------------------------------
-            `)
-          )
-        );
-        console.dir("done");
-      } else {
-        console.dir("failed，dir is exist");
-      }
-    }
+    return { url, promptInput };
   } catch (cancelled: any) {
     console.log(cancelled.message);
     return;
@@ -98,7 +114,7 @@ export async function init(cmd) {
  * @param promptInput
  * @param url repo url
  */
-async function cloneAndCp(response, url) {
+export async function cloneAndCp(response, url) {
   const pkgHome = homedir + `/.minecat/` + response.apptype + "/";
   const { userName, repoName } = getGitInfo(url);
   const projectDir = process.cwd() + "/" + repoName;
@@ -118,7 +134,7 @@ async function cloneAndCp(response, url) {
 }
 
 //url =  cfgJson[response.apptype]
-function getGitInfo(url) {
+export function getGitInfo(url) {
   const { owner, name } = extractGitHubRepoInfo(url);
 
   let userName = owner;
@@ -135,7 +151,7 @@ function getGitInfo(url) {
 /**
  * @param promptInput
  */
-function movePkgToCache(promptInput) {
+export function movePkgToCache(promptInput) {
   const pkgHome = homedir + `/.minecat/` + promptInput.apptype + "/";
   const cloneToLocalDir = process.cwd() + "/" + promptInput.newname;
 
@@ -150,10 +166,10 @@ function movePkgToCache(promptInput) {
 }
 
 /**
- * @param newdir = response.newname
+ * @param promptInput = response.newname
  */
-function resetGitInfo(newdir) {
-  const cloneToLocalDir = process.cwd() + "/" + newdir;
+export function resetGitInfo(promptInput) {
+  const cloneToLocalDir = process.cwd() + "/" + promptInput.newname;
 
   // remove .git && git init & git config
   shell.rm("-rf", cloneToLocalDir + "/.git");
@@ -165,8 +181,9 @@ function resetGitInfo(newdir) {
   }
 
   if (
-    shell.exec(`cd ${newdir} && git init && git add . && git commit -am 'init'`)
-      .code !== 0
+    shell.exec(
+      `cd ${promptInput.newname} && git init && git add . && git commit -am 'init'`
+    ).code !== 0
   ) {
     shell.echo("Error: git config --global init.defaultBranch main failed: ");
     shell.exit(1);
