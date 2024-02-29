@@ -1,8 +1,10 @@
 import { join } from "desm";
 import type { CliConfig } from 'libargs'
+import { version } from "../package.json";
 
 export const config: CliConfig = {
   name: "minecat",
+  version: version,
   desc: "a monorepo cli tool for Node.js、React",
   dir: join(import.meta.url, ".", "cmd"),
   commands: {
@@ -30,7 +32,7 @@ export const config: CliConfig = {
       usage: "<packages>",
       // file: "aba",
       fnName: "ada",
-      alias: 'i',
+      alias: "i",
       flags: {
         // "--config1 <path>": "Specify your config file.",
         // "--root1 <path>": "Specify your project root folder.",
@@ -40,7 +42,7 @@ export const config: CliConfig = {
       desc: "pnpm run script from current project",
       // file: "aba",
       fnName: "ada",
-      alias: 'r',
+      alias: "r",
       flags: {
         // "--config1 <path>": "Specify your config file.",
         // "--root1 <path>": "Specify your project root folder.",
@@ -51,7 +53,7 @@ export const config: CliConfig = {
       usage: "<tpl_name> <repo_url>",
       // file: "aba",
       fnName: "ada",
-      alias: 'c',
+      alias: "c",
       flags: {
         // "--config1 <path>": "Specify your config file.",
         // "--root1 <path>": "Specify your project root folder.",

@@ -93,9 +93,7 @@ export async function cli(cfg: CliConfig, args: string[]) {
   // console.dir(cfg.commands[cmd]);
   const cmds: [string, string][] = Object.keys(cfg.commands).map((cmd) => {
     return [
-      cfg.commands[cmd]["alias"]
-        ? `${cmd} <${cfg.commands[cmd]["alias"]}>`
-        : cmd,
+      cfg.commands[cmd]["alias"] ? `${cfg.commands[cmd]["alias"]},${cmd}` : cmd,
       cfg.commands[cmd]["desc"],
     ];
   });
