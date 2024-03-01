@@ -1,5 +1,13 @@
 # minecat
 
+## 0.7.2
+
+### Patch Changes
+
+- 28793ca: bump for ci
+- Updated dependencies [28793ca]
+  - libargs@0.13.2
+
 ## 0.7.1
 
 ### Patch Changes
