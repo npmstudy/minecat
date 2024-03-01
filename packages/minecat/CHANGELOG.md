@@ -1,5 +1,13 @@
 # minecat
 
+## 0.7.6
+
+### Patch Changes
+
+- a0be2b0: for test ci
+- Updated dependencies [a0be2b0]
+  - libargs@0.13.6
+
 ## 0.7.5
 
 ### Patch Changes

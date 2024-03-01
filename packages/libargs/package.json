@@ -1,6 +1,6 @@
 {
   "name": "libargs",
-  "version": "0.13.5",
+  "version": "0.13.6",
   "description": "a configurable cli tool",
   "license": "MIT",
   "publishConfig": {
