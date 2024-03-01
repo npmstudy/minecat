@@ -1,5 +1,13 @@
 # minecat
 
+## 0.7.1
+
+### Patch Changes
+
+- 3a29b98: for ci
+- Updated dependencies [3a29b98]
+  - libargs@0.13.1
+
 ## 0.7.0
 
 ### Minor Changes
