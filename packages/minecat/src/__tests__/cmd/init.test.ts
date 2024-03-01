@@ -37,6 +37,11 @@ describe("cmd/init", () => {
     if (fs.existsSync(dir2)) {
       fs.rmdirSync(dir2, { recursive: true });
     }
+
+    // const dir3 = join(import.meta.url, "../../../../../", repoName);
+    // if (fs.existsSync(dir3)) {
+    //   fs.rmdirSync(dir3, { recursive: true });
+    // }
   });
 
 

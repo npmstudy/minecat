@@ -37,17 +37,24 @@ export async function ada(cmd) {
       message: (prev, values) => `Please confirm ?`,
     },
   ];
-  const response = await prompts(questions);
-  log(response);
-  log(cfgJson);
 
-  if (response["newrepo"].indexOf("http") !== -1) {
-    cfgJson[response["newtpl"]] = response["newrepo"];
-    await writeConfig(cfgJson);
+  try {
+    const response = await prompts(questions);
+    // console.log(response);
+    // console.log(cfgJson);
 
-    console.dir(cfgJson);
-    console.dir("done!");
-  } else {
-    console.dir("请重新输入repo 地址");
+    if (response["newrepo"].indexOf("http") !== -1) {
+      cfgJson[response["newtpl"]] = response["newrepo"];
+      await writeConfig(cfgJson);
+
+      console.dir("config ada start!");
+      console.dir(cfgJson);
+      console.dir("done!");
+    } else {
+      console.dir("请重新输入repo 地址");
+    }
+  } catch (error) {
+    console.dir(error);
   }
 }
+
