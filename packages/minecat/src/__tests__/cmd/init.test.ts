@@ -74,8 +74,9 @@ describe("cmd/init", () => {
 
     const cloneToLocalDir = path.join(process.cwd(), promptInput.newname);
 
-    if (fs.existsSync(cloneToLocalDir))
+    if (fs.existsSync(cloneToLocalDir)) {
       fs.rmdirSync(cloneToLocalDir, { recursive: true });
+    }
 
     if (!fs.existsSync(cloneToLocalDir)) {
       fs.mkdirSync(cloneToLocalDir, { recursive: true });
@@ -179,7 +180,11 @@ describe("cmd/init", () => {
 
     const promptInput = { apptype: "Node.js" };
     // 如果目录存在，就删掉
-    const pkgHome = os.homedir + `/.minecat/` + promptInput.apptype + "/";
+    const pkgHome = path.join(
+      os.homedir(),
+      `.minecat`,
+      promptInput.apptype + "/"
+    );
 
     if (fs.existsSync(pkgHome) === true) {
       fs.rmdirSync(pkgHome, { recursive: true });
@@ -260,11 +265,11 @@ describe("cmd/init", () => {
       await cloneAndCp(promptInput, url);
 
       expect(
-        fs.existsSync(path.join(pkgHome, "./your-node-v20-monoreopo-project"))
+        fs.existsSync(path.join(pkgHome, "your-node-v20-monoreopo-project"))
       ).toBe(true);
 
       // 从your-node-v20-monoreopo-project 被rename为yourproject
-      const newname = path.join(process.cwd(), "./" + promptInput.newname);
+      const newname = path.join(process.cwd(), promptInput.newname);
 
       expect(fs.existsSync(newname)).toBe(true);
 
@@ -273,8 +278,8 @@ describe("cmd/init", () => {
         fs.rmdirSync(newname, { recursive: true });
       }
 
-      if (fs.existsSync(os.homedir()) === true) {
-        fs.rmdirSync(os.homedir(), { recursive: true });
+      if (fs.existsSync(path.join(os.homedir())) === true) {
+        fs.rmdirSync(path.join(os.homedir()), { recursive: true });
       }
     },
     { timeout: 100000 }
