@@ -12,12 +12,29 @@ import type { PrintTable } from "./util";
 export * as colors from "kleur/colors";
 
 /** Determine which command the user requested */
-function resolveCommand(supportedCommands, flags: yargs.Arguments) {
+function resolveCommand(
+  commands: CliConfig["commands"],
+  flags: yargs.Arguments
+) {
+  const clonedCommands = { ...commands };
+  const cmdKeys = new Set(Object.keys(clonedCommands));
+  const cmdAlias = new Set(Object.values(clonedCommands).map((it) => it.alias));
+
+  // console.dir("clonedCommands");
+  // console.dir(clonedCommands);
   const cmd = flags._[2] as string;
   if (flags.version) return "version";
 
-  if (supportedCommands.has(cmd)) {
+  if (!cmd) return "help";
+
+  if (cmdKeys.has(cmd)) {
     return cmd;
+  }
+  if (cmdAlias.has(cmd)) {
+    // 根据alias查找cmd
+    return Object.entries(clonedCommands)
+      .map(([k, v]) => ({ ...v, cmdKey: k }))
+      .find((it) => it.alias === cmd).cmdKey;
   }
   return "help";
 }
@@ -41,6 +58,7 @@ interface Command {
   fnName?: string;
   file?: string;
   flags?: CommandFlags;
+  alias?: string;
 }
 
 // 定义commands的类型
@@ -56,6 +74,7 @@ interface Flags {
 // 定义整个对象的类型
 export interface CliConfig {
   name?: string;
+  version?: string;
   desc: string;
   usage?: string;
   dir: string;
@@ -67,11 +86,16 @@ export interface CliConfig {
 export async function cli(cfg: CliConfig, args: string[]) {
   debug(cfg);
   const flags = yargs(args, { boolean: ["global"], alias: { g: "global" } });
+  // console.log("🚀 ~ cli ~ flags:", flags)
   // const cfg = arguments.callee.cfg;
-  const supportedCommands = new Set(Object.keys(cfg.commands));
-
+  // const supportedCommands = new Set(Object.keys(cfg.commands));
+  // console.log("🚀 ~ cli ~ supportedCommands:", supportedCommands)
+  // console.dir(cfg.commands[cmd]);
   const cmds: [string, string][] = Object.keys(cfg.commands).map((cmd) => {
-    return [cmd, cfg.commands[cmd]["desc"]];
+    return [
+      cfg.commands[cmd]["alias"] ? `${cfg.commands[cmd]["alias"]},${cmd}` : cmd,
+      cfg.commands[cmd]["desc"],
+    ];
   });
 
   const flag: [string, string][] = Object.keys(cfg.flags).map(function (f) {
@@ -83,11 +107,12 @@ export async function cli(cfg: CliConfig, args: string[]) {
     "Global Flags": flag,
   };
 
-  const cmd = resolveCommand(supportedCommands, flags);
+  const cmd = resolveCommand(cfg.commands, flags);
 
   try {
     if (cmd == "help") {
       printHelp({
+        version: cfg?.version,
         commandName: cfg.name,
         usage: cfg.usage || "[command] [...flags]",
         headline: cfg.desc,

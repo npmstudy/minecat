@@ -1,5 +1,21 @@
 # libargs
 
+## 0.13.0
+
+### Minor Changes
+
+- 103a83d: test for ci release
+
+## 0.12.0
+
+### Minor Changes
+
+- 5ce3d49: feat: libargs support command alias
+
+### Patch Changes
+
+- bump
+
 ## 0.11.0
 
 ### Minor Changes
