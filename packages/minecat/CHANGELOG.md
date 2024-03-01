@@ -1,5 +1,13 @@
 # minecat
 
+## 0.7.3
+
+### Patch Changes
+
+- be3b98c: bump
+- Updated dependencies [be3b98c]
+  - libargs@0.13.3
+
 ## 0.7.2
 
 ### Patch Changes
