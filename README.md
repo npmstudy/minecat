@@ -1,4 +1,5 @@
-<p align="center">
+<div align="center">
+<p>
   <a href="https://github.com/npmstudy/minecat" target="_blank" rel="noopener noreferrer">
     <img width="180" src="./docs/img/1.png" alt="Minecat logo">
   </a>
@@ -6,6 +7,8 @@
 <br/>
 
 [![Node.js CI](https://github.com/npmstudy/minecat/actions/workflows/ci.yml/badge.svg)](https://github.com/npmstudy/minecat/actions/workflows/ci.yml)  [![codecov](https://codecov.io/gh/npmstudy/minecat/graph/badge.svg?token=sOdMHXaJ2U&)](https://codecov.io/gh/npmstudy/minecat)
+
+</div>
 
 # Minecat ⚡
 
