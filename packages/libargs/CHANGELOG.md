@@ -1,5 +1,11 @@
 # libargs
 
+## 0.13.7
+
+### Patch Changes
+
+- a20c038: for windows
+
 ## 0.13.6
 
 ### Patch Changes

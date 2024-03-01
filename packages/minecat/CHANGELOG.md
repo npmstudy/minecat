@@ -1,5 +1,13 @@
 # minecat
 
+## 0.7.7
+
+### Patch Changes
+
+- a20c038: for windows
+- Updated dependencies [a20c038]
+  - libargs@0.13.7
+
 ## 0.7.6
 
 ### Patch Changes
