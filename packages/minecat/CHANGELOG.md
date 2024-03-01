@@ -1,5 +1,13 @@
 # minecat
 
+## 0.7.4
+
+### Patch Changes
+
+- 3b9591a: test for env token
+- Updated dependencies [3b9591a]
+  - libargs@0.13.4
+
 ## 0.7.3
 
 ### Patch Changes
