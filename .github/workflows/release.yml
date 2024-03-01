@@ -1,7 +1,5 @@
 # 整个流程的名字
 name: Release
-env:
-  NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
 on:
   push:
