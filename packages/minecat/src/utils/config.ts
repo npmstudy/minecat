@@ -18,8 +18,9 @@ export function getConfig() {
 
   try {
     return JSON.parse(readFileSync(configFile).toString());
-  } catch (error) {
-    if (error.errno === -2) {
+  } catch (error) {    
+    // MacOS errno = -2, WinOS error = -405
+    if (error.errno === -2 || error.errno === -4058) {
       // if config.json is not exist, write default config to it.
       writeConfig(DEFAULT_CONFIGS);
       return DEFAULT_CONFIGS;
