@@ -1,5 +1,12 @@
 # minecat
 
+## 0.7.5
+
+### Patch Changes
+
+- Updated dependencies [0a0fd2f]
+  - libargs@0.13.5
+
 ## 0.7.4
 
 ### Patch Changes
