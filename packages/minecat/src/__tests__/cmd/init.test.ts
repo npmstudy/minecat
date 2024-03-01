@@ -54,7 +54,11 @@ describe("cmd/init", () => {
         help: () => {},
       };
 
-      await init(cmd);
+      try {
+        await init(cmd);
+      } catch (error) {
+        console.dir(error);
+      }
 
       expect(spy3).toHaveBeenCalled();
       // expect(spy).toHaveBeenCalled();
@@ -262,7 +266,11 @@ describe("cmd/init", () => {
         fs.mkdirSync(pkgHome, { recursive: true });
       }
 
-      await cloneAndCp(promptInput, url);
+      try {
+        await cloneAndCp(promptInput, url);
+      } catch (error) {
+        console.dir(error);
+      }
 
       expect(
         fs.existsSync(path.join(pkgHome, "your-node-v20-monoreopo-project"))

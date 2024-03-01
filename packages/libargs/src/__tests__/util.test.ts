@@ -7,6 +7,7 @@ describe("lib", () => {
     const spy = vi.spyOn(console, "log");
 
     printHelp({
+      version: null,
       commandName: "minecat sync",
       usage: "[...flags]",
       tables: {

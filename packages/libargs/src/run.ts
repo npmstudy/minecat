@@ -44,6 +44,7 @@ export async function runCommand(cmd) {
 
   cmd.help = function () {
     printHelp({
+      version: cmd?.version,
       commandName: cmd.show,
       usage: cmd.usage || "[...flags]",
       tables: table,
@@ -70,13 +71,14 @@ export async function runCommand(cmd) {
       );
     }
 
-    // console.dir(cmd);
-    // console.dir(moduleURL);
-
-    const fn = await import(moduleURL);
-    debug(fn);
-    debug(cmd["fnName"] || "default");
-    debug(fn[cmd["fnName"] || "default"]);
-    await fn[cmd["fnName"] || "default"](cmd);
+    try {
+      const fn = await import(moduleURL);
+      debug(fn);
+      debug(cmd["fnName"] || "default");
+      debug(fn[cmd["fnName"] || "default"]);
+      await fn[cmd["fnName"] || "default"](cmd);
+    } catch (error) {
+      console.dir(error);
+    }
   }
 }
