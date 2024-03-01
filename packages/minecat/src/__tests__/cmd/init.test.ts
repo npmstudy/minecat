@@ -60,7 +60,7 @@ describe("cmd/init", () => {
         console.dir(error);
       }
 
-      // expect(spy3).toHaveBeenCalled();
+      expect(spy3).toHaveBeenCalled();
       // expect(spy).toHaveBeenCalled();
 
       vi.restoreAllMocks();
