@@ -46,6 +46,8 @@ describe("cmd/config.ts", () => {
     // 不管文件里是啥，写入默认配置
     writeConfig(DEFAULT_CONFIGS);
 
+    await sleep(500);
+
     const cfg1 = JSON.parse(fs.readFileSync(cfgFile).toString());
 
     // console.dir(cfg1);
