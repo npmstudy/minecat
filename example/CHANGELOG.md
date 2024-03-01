@@ -1,5 +1,11 @@
 # example
 
+## 1.0.23
+
+### Patch Changes
+
+- minecat@0.7.5
+
 ## 1.0.22
 
 ### Patch Changes
