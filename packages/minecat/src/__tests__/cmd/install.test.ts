@@ -23,15 +23,7 @@ const initInstallProject = async () => {
   prompt.inject(injected);
 
   let cmd = {
-    desc: "init a minecat project with pnpm.",
-    file: "init",
-    usage: "<project-name>",
-    fnName: "init",
-    name: "init",
-    show: "minecat init",
-    dir: "/Users/npmstudy/workspace/github/minecat/packages/minecat/src/cmd",
     input: { _: [] },
-    help: () => {},
   };
 
   try {
@@ -45,13 +37,12 @@ describe("cmd/install", () => {
   beforeAll(async () => {
     // console.dir("beforeAll");
     await initInstallProject();
-  });
-
-  it("should getPackageJson()", async () => {
     vi.spyOn(process, "cwd").mockReturnValue(
       join(import.meta.url, "../../../test-install")
     );
+  });
 
+  it("should getPackageJson()", async () => {
     const json = getPackageJson();
 
     const mockJson = {
@@ -129,10 +120,6 @@ describe("cmd/install", () => {
   });
 
   it("should getPkgPackageJson()", () => {
-    vi.spyOn(process, "cwd").mockReturnValue(
-      join(import.meta.url, "../../../test-install")
-    );
-
     const libJson = getPkgPackageJson("lib");
     const lib2Json = getPkgPackageJson("lib2");
 
@@ -197,30 +184,12 @@ describe("cmd/install", () => {
   });
 
   it("should getOriginPkgDir()", () => {
-    vi.spyOn(process, "cwd").mockReturnValue(
-      join(import.meta.url, "../../../test-install")
-    );
-
-    const pkgDir = getOriginPkgDir();
-
-    expect(pkgDir).toStrictEqual(path.join(process.cwd(), "packages"));
-  });
-
-  it("should getOriginPkgDir()", () => {
-    vi.spyOn(process, "cwd").mockReturnValue(
-      join(import.meta.url, "../../../test-install")
-    );
-
     const pkgDir = getOriginPkgDir();
 
     expect(pkgDir).toStrictEqual(path.join(process.cwd(), "packages"));
   });
 
   it("should getProjInfo()", () => {
-    vi.spyOn(process, "cwd").mockReturnValue(
-      join(import.meta.url, "../../../test-install")
-    );
-
     const json = getPackageJson();
     const projInfo = getProjInfo(json);
 
@@ -274,10 +243,6 @@ describe("cmd/install", () => {
   });
 
   it("should pnpmAddShell()", async () => {
-    vi.spyOn(process, "cwd").mockReturnValue(
-      join(import.meta.url, "../../../test-install")
-    );
-
     const promptRes = {
       pkgname: "lib",
       dependencytype: "dev dependency",
@@ -290,7 +255,7 @@ describe("cmd/install", () => {
     expect(hasBuffer).toBe(true);
   });
 
-  it("should init()", async () => {
+  it("should install()", async () => {
     const pkgname = "lib2";
     const dependencytype = "dev dependency";
     const confirm = true;
@@ -310,6 +275,8 @@ describe("cmd/install", () => {
   });
 
   afterAll(() => {
+    vi.spyOn(process, "cwd").mockReturnValue(join(import.meta.url, "../../.."));
+
     shell.exec(`rm -rf test-install`);
   });
 });
