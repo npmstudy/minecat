@@ -1,6 +1,5 @@
 import prompts from "prompts";
 import debug from "debug";
-import { homedir } from "os";
 import fs from "fs";
 import shell from "shelljs";
 import { getDirectories } from "../utils";
@@ -34,7 +33,11 @@ export async function ada(cmd) {
 
       if (cmd.verbose) console.log("install packages: " + depts);
 
-      pnpmAddPkg(projInfo, depts);
+      const response = await getPromptRes(projInfo);
+
+      if (response.confirm) {
+        pnpmAddShell(response, depts);
+      }
 
       console.dir("done!");
     }
@@ -94,7 +97,7 @@ export function getProjInfo(json) {
   };
 }
 
-export async function pnpmAddPkg(projInfo, depts: string[]) {
+export async function getPromptRes(projInfo) {
   let pgk_choices = [];
   for (var i in projInfo.pkg_names) {
     let name = projInfo.pkg_names[i];
@@ -127,24 +130,28 @@ export async function pnpmAddPkg(projInfo, depts: string[]) {
     ];
     const response = await prompts(questions);
 
-    if (response.confirm) {
-      // if (cmd.verbose) console.log(response);
-      const dept_type =
-        response.dependencytype === "proddependency" ? "-P" : "-D";
-
-      const cmd = `npx pnpm add ${depts.join(" ")} --filter ${
-        response.pkgname
-      } ${dept_type}`;
-      // if (cmd.verbose) console.dir(cmd);
-
-      // Run external tool synchronously
-      if (shell.exec(cmd).code !== 0) {
-        shell.echo("Error: pnpm add failed: " + cmd);
-        shell.exit(1);
-      }
-    }
+    return response;
   } catch (cancelled: any) {
     console.log(cancelled.message);
-    return;
+    throw cancelled;
+  }
+}
+
+export function pnpmAddShell(
+  response: prompts.Answers<string>,
+  depts: string[]
+) {
+  // if (cmd.verbose) console.log(response);
+  const dept_type = response.dependencytype === "proddependency" ? "-P" : "-D";
+
+  const cmd = `npx pnpm add ${depts.join(" ")} --filter ${
+    response.pkgname
+  } ${dept_type}`;
+  // if (cmd.verbose) console.dir(cmd);
+
+  // Run external tool synchronously
+  if (shell.exec(cmd).code !== 0) {
+    shell.echo("Error: pnpm add failed: " + cmd);
+    shell.exit(1);
   }
 }
