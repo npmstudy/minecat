@@ -6,7 +6,7 @@ a configurable cli tool.
 
 
 ```sh
-$ npm i - S libargs
+$ npm i -S libargs
 ```
 
 ## Usage
