@@ -21,6 +21,30 @@ describe("cmd/init", () => {
     // console.dir("beforeAll");
   });
 
+  afterAll(function () {
+    console.dir("afterAll clean unuse folder");
+    const dir = join(import.meta.url, "sss");
+    // console.dir(dir);
+    // console.dir(fs.existsSync(dir));
+    if (fs.existsSync(dir)) {
+      fs.rmdirSync(dir, { recursive: true });
+    }
+
+    const repoName = "your-node-v20-monoreopo-project";
+    const dir2 = join(import.meta.url, "../../..", repoName);
+    // console.dir(dir2);
+    // console.dir(fs.existsSync(dir2));
+    if (fs.existsSync(dir2)) {
+      fs.rmdirSync(dir2, { recursive: true });
+    }
+
+    // const dir3 = join(import.meta.url, "../../../../../", repoName);
+    // if (fs.existsSync(dir3)) {
+    //   fs.rmdirSync(dir3, { recursive: true });
+    // }
+  });
+
+
   it(
     "should cli()",
     async () => {
@@ -60,7 +84,7 @@ describe("cmd/init", () => {
         console.dir(error);
       }
 
-      // expect(spy3).toHaveBeenCalled();
+      expect(spy3).toHaveBeenCalled();
       // expect(spy).toHaveBeenCalled();
 
       vi.restoreAllMocks();
