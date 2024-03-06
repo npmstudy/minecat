@@ -1,5 +1,11 @@
 # minecat
 
+## 0.7.8
+
+### Patch Changes
+
+- 9d9cc59: add minecat run test
+
 ## 0.7.7
 
 ### Patch Changes
