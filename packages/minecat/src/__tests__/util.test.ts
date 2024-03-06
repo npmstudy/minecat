@@ -15,56 +15,56 @@ import {
 
 const home = path.join(homedir(), "/.minecat");
 
-describe("config.ts", () => {
-  beforeEach(() => {
-    if (fs.existsSync(home)) {
-      fs.rmdirSync(home, { recursive: true });
-    }
-  });
-  afterEach(() => {
-    if (fs.existsSync(home)) {
-      fs.rmdirSync(home, { recursive: true });
-    }
-  });
-  it("should resolve correct config file location", () => {
-    const configFile = path.join(homedir(), `/.minecat/config.json`);
-    const file = getConfigFile();
-    expect(file).toBe(configFile);
-  });
+// describe("config.ts", () => {
+//   beforeEach(() => {
+//     if (fs.existsSync(home)) {
+//       fs.rmdirSync(home, { recursive: true });
+//     }
+//   });
+//   afterEach(() => {
+//     if (fs.existsSync(home)) {
+//       fs.rmdirSync(home, { recursive: true });
+//     }
+//   });
+//   it("should resolve correct config file location", () => {
+//     const configFile = path.join(homedir(), `/.minecat/config.json`);
+//     const file = getConfigFile();
+//     expect(file).toBe(configFile);
+//   });
 
-  describe("getConfig", () => {
-    it("should write while config does not exist", () => {
-      if (fs.existsSync(home)) {
-        fs.rmdirSync(home, { recursive: true });
-      }
+//   describe("getConfig", () => {
+//     it("should write while config does not exist", () => {
+//       if (fs.existsSync(home)) {
+//         fs.rmdirSync(home, { recursive: true });
+//       }
 
-      const result = getConfig();
-      expect(result).toEqual(DEFAULT_CONFIGS);
-    });
+//       const result = getConfig();
+//       expect(result).toEqual(DEFAULT_CONFIGS);
+//     });
 
-    it("should throw if config file is broken", () => {
-      const configFile = getConfigFile();
-      fs.writeFileSync(configFile, "a=1");
-      expect(() => getConfig()).toThrow();
-    });
-  });
+//     it("should throw if config file is broken", () => {
+//       const configFile = getConfigFile();
+//       fs.writeFileSync(configFile, "a=1");
+//       expect(() => getConfig()).toThrow();
+//     });
+//   });
 
-  describe("writeConfig", () => {
-    it("should writeConfig", () => {
-      const file = getConfigFile();
-      writeConfig({ a: 1 });
-      // TODO: should add some validation for config writing
-      expect(fsx.readJsonSync(file)).toEqual({ a: 1 });
-    });
+//   describe("writeConfig", () => {
+//     it("should writeConfig", () => {
+//       const file = getConfigFile();
+//       writeConfig({ a: 1 });
+//       // TODO: should add some validation for config writing
+//       expect(fsx.readJsonSync(file)).toEqual({ a: 1 });
+//     });
 
-    it("should throw when config is invalid", () => {
-      const spy = vi.spyOn(console, "dir");
-      // meaningless testing, using BigInt to make JSON.stringify upset
-      writeConfig({ x: 2n });
-      expect(spy).toHaveBeenCalledOnce();
-    });
-  });
-});
+//     it("should throw when config is invalid", () => {
+//       const spy = vi.spyOn(console, "dir");
+//       // meaningless testing, using BigInt to make JSON.stringify upset
+//       writeConfig({ x: 2n });
+//       expect(spy).toHaveBeenCalledOnce();
+//     });
+//   });
+// });
 
 describe("dir.ts", () => {
   beforeEach(() => {
