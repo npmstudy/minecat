@@ -1,14 +1,18 @@
 import { describe, expect, it, vi } from "vitest";
-import { ada } from "../../cmd/run";
-import { writeConfig, DEFAULT_CONFIGS } from "../../utils";
+import * as Run from "../../cmd/run";
 import prompt from "prompts";
 import fs from "node:fs";
 import path from "node:path";
-import os from "node:os";
+import { join } from "desm";
 
 describe("cmd/run.ts", () => {
   it("should call console.dir() when minecat run dev", async () => {
     const spy = vi.spyOn(console, "dir");
+
+    const spy2 = vi.spyOn(Run, "getProjectScriptsName").mockReturnValue({
+      // proj_type: "Node.js",
+      proj_script_names: ["build", "dev"],
+    });
 
     let cmd = {
       desc: "init a minecat project with pnpm.",
@@ -23,7 +27,7 @@ describe("cmd/run.ts", () => {
     };
 
     try {
-      await ada(cmd);
+      await Run.ada(cmd);
     } catch (error) {
       console.dir(error);
     }
@@ -47,7 +51,7 @@ describe("cmd/run.ts", () => {
     };
 
     try {
-      await ada(cmd);
+      await Run.ada(cmd);
     } catch (error) {
       console.dir(error);
     }
@@ -79,7 +83,7 @@ describe("cmd/run.ts", () => {
     try {
       // console.dir(fs.existsSync(cfgFile));
       // 调用核心测试逻辑
-      await ada(cmd);
+      await Run.ada(cmd);
     } catch (error) {
       console.dir(error);
     }
@@ -109,7 +113,7 @@ describe("cmd/run.ts", () => {
     try {
       // console.dir(fs.existsSync(cfgFile));
       // 调用核心测试逻辑
-      await ada(cmd);
+      await Run.ada(cmd);
     } catch (error) {
       console.dir(error);
     }
