@@ -33,7 +33,7 @@ export async function getPrompt(currentCmd, proj_script_names) {
   const isValid = proj_script_names.includes(currentCmd);
 
   if (!isValid) {
-    console.dir(`your input cmd is ${currentCmd}, not support in package.json`);
+    console.log(`your input cmd is ${currentCmd}, not support in package.json`);
   }
 
   const first = isValid
@@ -60,32 +60,30 @@ export async function getPrompt(currentCmd, proj_script_names) {
         `Please confirm that you choose ${prev} to init project in current directory?`,
     },
   ];
-  const response = await prompts(questions);
+
+  return await prompts(questions);
 }
 
 export function getProjectScriptsName(): any {
   let proj_type;
   let proj_script_names;
-  try {
-    const json = JSON.parse(
-      fs.readFileSync(process.cwd() + "/package.json").toString()
-    );
-    console.dir(json);
-    if (!json.minecat) {
-      console.log("please check this is a minecat project");
-      return;
-    } else {
-      // proj_package_json = json;
-      proj_type = json?.minecat?.type;
-      proj_script_names = Object.keys(json.scripts);
-      // console.dir(proj_script_names);
-      log("this is a minecat project with type = " + json.minecat.type);
 
-      // pkg_names = Object.keys(pkg_list);
+  const json = JSON.parse(
+    fs.readFileSync(process.cwd() + "/package.json").toString()
+  );
+  console.dir(json);
+  if (!json.minecat) {
+    console.log("please check this is a minecat project");
+    return;
+  } else {
+    // proj_package_json = json;
+    proj_type = json?.minecat?.type;
+    proj_script_names = Object.keys(json.scripts);
+    // console.dir(proj_script_names);
+    log("this is a minecat project with type = " + json.minecat.type);
 
-      return { proj_type: proj_type, proj_script_names: proj_script_names };
-    }
-  } catch (e) {
-    console.error(e);
+    // pkg_names = Object.keys(pkg_list);
+
+    return { proj_type: proj_type, proj_script_names: proj_script_names };
   }
 }
