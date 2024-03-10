@@ -15,12 +15,13 @@ import {
 
 describe("cmd/add.ts", () => {
   it("should call getPrompts correct", async () => {
+    vi.restoreAllMocks();
     const injected = ["newname", "lib", true];
 
     // 准备测试数据
     prompt.inject(injected);
 
-    const { response } = await getPrompts("yourmodule");
+    const { response } = await getPrompts("Node.js", "yourmodule");
 
     console.dir("getPrompt");
     console.dir(response);

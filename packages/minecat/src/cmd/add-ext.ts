@@ -96,10 +96,13 @@ export function getProjectType(): MinecatProjectType {
   return proj_type;
 }
 
-export async function getPrompts(moduleName) {
-  const proj_type = getProjectType();
+export async function getPrompts(proj_type, moduleName) {
+  const pkgHome = `${homedir()}/.minecat/${proj_type}/`;
 
-  const pkgHome = path.resolve(homedir(), `./.minecat/`, proj_type, "/");
+  if (!fs.existsSync(pkgHome)) {
+    fs.mkdirSync(pkgHome, { recursive: true });
+  }
+
   const pkgs = getDirectories(pkgHome);
 
   const appChoices = Object.keys(pkgs).map((x) => {

@@ -5,7 +5,12 @@ import type {
   MinecatProjectType,
 } from "../types/package-json";
 
-import { getPrompts, moveTplToDestination, renamePackageName } from "./add-ext";
+import {
+  getPrompts,
+  moveTplToDestination,
+  renamePackageName,
+  getProjectType,
+} from "./add-ext";
 
 const log = debug("minecat");
 
@@ -15,7 +20,9 @@ export async function add(cmd) {
   const moduleName =
     cmd.input["_"].length !== 0 ? cmd.input["_"][0] : "yourmodule";
 
-  const { response, pkgHome } = await getPrompts(moduleName);
+  const proj_type = getProjectType();
+
+  const { response, pkgHome } = await getPrompts(proj_type, moduleName);
   // console.dir(response);
 
   if (!proj_type) {

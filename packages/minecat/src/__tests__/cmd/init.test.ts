@@ -44,7 +44,6 @@ describe("cmd/init", () => {
     // }
   });
 
-
   it(
     "should cli()",
     async () => {
