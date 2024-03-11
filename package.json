@@ -1,11 +1,9 @@
 {
   "name": "minecat-monorepo",
   "private": true,
+  "description": "minecat monorepo",
   "minecat": {
     "type": "Node.js"
-  },
-  "engines": {
-    "node": "^20.0.0"
   },
   "scripts": {
     "build": "nx run-many -t build",
@@ -15,74 +13,39 @@
     "test": "nx run-many -t test",
     "test:watch": "nx run-many -t test:watch",
     "coverage": "nx run-many -t coverage",
-    "size": "size-limit",
     "prepare": "npm run build && husky install",
-    "prettier": "prettier",
-    "lint": "eslint ./packages/*",
-    "lint:fix": "eslint ./packages/* --fix",
     "type-check": "tsc --noEmit",
     "project-graph": "nx graph",
     "release": "npm run build && npm run changeset && npm run ci:version && npm run ci:publish",
     "changeset": "changeset",
     "ci:version": "changeset version",
     "ci:publish": "changeset publish",
-    "example": "npm run build && pnpm -F example dev"
+    "example": "npm run build && pnpm -F example dev",
+    "lint": "biome check . --apply-unsafe"
   },
-  "description": "PNPM monorepo template",
   "license": "MIT",
   "devDependencies": {
+    "@biomejs/biome": "1.6.0",
     "@changesets/cli": "^2.27.1",
     "@commitlint/config-conventional": "^17.7.0",
-    "@size-limit/preset-small-lib": "^8.2.6",
     "@types/node": "^18.17.9",
-    "@typescript-eslint/eslint-plugin": "^5.62.0",
-    "@typescript-eslint/parser": "^5.62.0",
     "commitlint": "^17.7.1",
     "concurrently": "^8.2.1",
-    "eslint": "^8.47.0",
-    "eslint-config-prettier": "^8.10.0",
-    "eslint-import-resolver-typescript": "^3.6.0",
-    "eslint-plugin-import": "^2.28.1",
-    "eslint-plugin-prettier": "^4.2.1",
-    "eslint-plugin-react": "^7.33.2",
     "husky": "^8.0.3",
     "libargs": "workspace:^",
-    "lint-staged": "^13.3.0",
     "minecat": "workspace:^",
     "nx": "16.3.2",
-    "prettier": "^2.8.8",
     "rimraf": "^5.0.5",
-    "size-limit": "^8.2.6",
     "tsup": "^8.0.0",
     "tsx": "^4.7.0",
     "typescript": "^5.3.3",
     "vite": "^5.0.12",
     "vitest": "^1.2.1"
   },
+  "engines": {
+    "node": "^20.0.0"
+  },
   "packageManager": "pnpm@8.6.0",
-  "size-limit": [
-    {
-      "path": "./lib/dist/index.js",
-      "limit": "15 kb"
-    },
-    {
-      "path": "./lib/dist/index.mjs",
-      "limit": "15 kb"
-    }
-  ],
-  "version": "1.0.0",
-  "main": "commitlint.config.js",
-  "directories": {
-    "doc": "docs",
-    "example": "example"
-  },
-  "dependencies": {
-    "eslint-import-resolver-node": "^0.3.9",
-    "eslint-module-utils": "^2.8.0",
-    "eslint-scope": "^7.2.2",
-    "eslint-visitor-keys": "^3.4.3",
-    "prettier-linter-helpers": "^1.0.0"
-  },
   "keywords": [],
   "author": ""
 }
