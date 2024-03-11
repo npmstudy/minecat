@@ -54,6 +54,7 @@ interface Command {
   desc: string;
   show?: string;
   dir?: string;
+  input?: yargs.Arguments;
   usage?: string;
   fnName?: string;
   file?: string;

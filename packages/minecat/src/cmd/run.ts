@@ -21,7 +21,7 @@ export async function ada(cmd) {
 
   log(proj_script_names);
   try {
-    const response = getPrompt(currentCmd, proj_script_names);
+    const response = await getPrompt(currentCmd, proj_script_names);
 
     log(response); // => { value: 24 }
 

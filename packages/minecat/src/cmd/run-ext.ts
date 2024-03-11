@@ -2,6 +2,7 @@
 import fs from "node:fs";
 import debug from "debug";
 import prompts from "prompts";
+import type { PromptObject } from "prompts";
 import shell from "shelljs";
 
 const log = debug("minecat");
@@ -36,7 +37,7 @@ export async function getPrompt(currentCmd, proj_script_names) {
     console.log(`your input cmd is ${currentCmd}, not support in package.json`);
   }
 
-  const first = isValid
+  const first: PromptObject = isValid
     ? {
         type: "text",
         name: "script",
@@ -50,7 +51,7 @@ export async function getPrompt(currentCmd, proj_script_names) {
         choices: scripts_choices,
       };
 
-  const questions: any = [
+  const questions: PromptObject[] = [
     first,
     {
       type: "confirm",
