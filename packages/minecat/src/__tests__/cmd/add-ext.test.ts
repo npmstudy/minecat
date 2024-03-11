@@ -1,69 +1,69 @@
-import { describe, expect, it, vi } from "vitest";
-import * as Run from "../../cmd/run-ext";
-import prompt from "prompts";
 import fs from "node:fs";
 import path from "node:path";
 import { join } from "desm";
+import prompt from "prompts";
 import shell from "shelljs";
+import { describe, expect, it, vi } from "vitest";
+import * as Run from "../../cmd/run-ext";
 
 import {
+  getProjectType,
   getPrompts,
   renamePackageName,
-  getProjectType,
 } from "../../cmd/add-ext";
 
 describe("cmd/add.ts", () => {
-   it("should call renamePackageName correct", async () => {
-     const spy = vi
-       .spyOn(process, "cwd")
-       .mockReturnValue(join(import.meta.url, "./fixtures/run"));
+  it("should call renamePackageName correct", async () => {
+    const spy = vi
+      .spyOn(process, "cwd")
+      .mockReturnValue(join(import.meta.url, "./fixtures/run"));
 
-     const newname = "minecat-newname";
+    const newname = "minecat-newname";
 
-     const from = path.join(process.cwd(), "/packages/", newname);
-     fs.mkdirSync(from, { recursive: true });
+    const from = path.join(process.cwd(), "/packages/", newname);
+    fs.mkdirSync(from, { recursive: true });
 
-     const configFile = path.join(
-       process.cwd(),
-       "/packages/",
-       newname,
-       "/package.json"
-     );
+    const configFile = path.join(
+      process.cwd(),
+      "/packages/",
+      newname,
+      "/package.json",
+    );
 
-     if (!fs.existsSync(configFile)) {
-       fs.writeFileSync(
-         path.join(configFile),
-         JSON.stringify({ name: "minecat" }, null, 4)
-       );
-     }
+    if (!fs.existsSync(configFile)) {
+      fs.writeFileSync(
+        path.join(configFile),
+        JSON.stringify({ name: "minecat" }, null, 4),
+      );
+    }
 
-     renamePackageName(newname);
+    renamePackageName(newname);
 
-     //  console.dir("getPrompt");
-     //  console.dir(response);
+    //  console.dir("getPrompt");
+    //  console.dir(response);
 
-     const res = JSON.parse(fs.readFileSync(configFile).toString());
+    const res = JSON.parse(fs.readFileSync(configFile).toString());
 
-     expect(res["name"]).toBe("minecat-newname");
+    expect(res.name).toBe("minecat-newname");
 
-     // 清理
-     fs.rmdirSync(from, { recursive: true });
-   });
+    // 清理
+    fs.rmdirSync(from, { recursive: true });
+  });
 
-   it("should call getPrompts correct", async () => {
-     vi.restoreAllMocks();
-     const injected = ["newname", "lib", true];
+  it("should call getPrompts correct", async () => {
+    vi.restoreAllMocks();
+    const injected = ["newname", "lib", true];
 
-     // 准备测试数据
-     prompt.inject(injected);
+    // 准备测试数据
+    prompt.inject(injected);
 
-     const { response } = await getPrompts("Node.js", "yourmodule");
+    const { response } = await getPrompts("Node.js", "yourmodule");
 
-     //  console.dir("getPrompt");
-     //  console.dir(response);
+    //  console.dir("getPrompt");
+    //  console.dir(response);
 
-     expect(response["newname"]).toBe("newname");
-   });
+    expect(response.newname).toBe("newname");
+  });
 
   it("should call getProjectType return correct", async () => {
     const spy = vi

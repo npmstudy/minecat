@@ -1,15 +1,15 @@
-import prompts from "prompts";
+import fs from "node:fs";
+import { homedir } from "node:os";
 import debug from "debug";
-import { homedir } from "os";
-import fs from "fs";
+import prompts from "prompts";
 import shell from "shelljs";
-import { getDirectories } from "../utils";
 import type {
   MinecatPackageJson,
   MinecatProjectType,
 } from "../types/package-json";
+import { getDirectories } from "../utils";
 
-import path from "path";
+import path from "node:path";
 
 const log = debug("minecat");
 
@@ -19,7 +19,7 @@ export function renamePackageName(newname) {
       process.cwd(),
       "/packages/",
       newname,
-      "/package.json"
+      "/package.json",
     );
     const json = JSON.parse(fs.readFileSync(configFile).toString());
     json.name = newname;
@@ -33,37 +33,35 @@ export function getProjectType(): MinecatProjectType {
   let proj_type: MinecatProjectType;
   try {
     const json: MinecatPackageJson = JSON.parse(
-      fs.readFileSync(path.join(process.cwd(), "/package.json")).toString()
+      fs.readFileSync(path.join(process.cwd(), "/package.json")).toString(),
     );
     if (!json.minecat) {
       console.log("please check this is a minecat project");
       return;
-    } else {
-      // proj_package_json = json;
-      proj_type = json.minecat.type;
-      // proj_script_names = Object.keys(json.scripts);
-      // console.dir(proj_script_names);
-      log("this is a minecat project with type = " + json.minecat.type);
+    }
+    // proj_package_json = json;
+    proj_type = json.minecat.type;
+    // proj_script_names = Object.keys(json.scripts);
+    // console.dir(proj_script_names);
+    log(`this is a minecat project with type = ${json.minecat.type}`);
 
-      const originalPkgDir = path.join(process.cwd(), "/packages");
+    const originalPkgDir = path.join(process.cwd(), "/packages");
 
-      const pkgs = getDirectories(originalPkgDir);
+    const pkgs = getDirectories(originalPkgDir);
 
-      log(pkgs);
+    log(pkgs);
 
-      // mv pkg to ~/.minecat/Node.js/xxx
-      for (const i in pkgs) {
-        const json = JSON.parse(
-          fs
-            .readFileSync(
-              path.join(process.cwd(), "/packages/", pkgs[i], "/package.json")
-            )
-            .toString()
-        );
+    // mv pkg to ~/.minecat/Node.js/xxx
+    for (const i in pkgs) {
+      const json = JSON.parse(
+        fs
+          .readFileSync(
+            path.join(process.cwd(), "/packages/", pkgs[i], "/package.json"),
+          )
+          .toString(),
+      );
 
-        // pkg_list[json.name] = json;
-      }
-      // pkg_names = Object.keys(pkg_list);
+      // pkg_list[json.name] = json;
     }
   } catch (e) {
     console.error(e);

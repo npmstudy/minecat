@@ -1,9 +1,9 @@
-import { homedir } from "node:os";
 import fs from "node:fs";
-import path from "path"
+import { homedir } from "node:os";
+import path from "node:path";
 
 export function getSafeHomeDir(): string {
-  const home = path.join(homedir + `/.minecat`);
+  const home = path.join(`${homedir}/.minecat`);
   if (!fs.existsSync(home)) {
     fs.mkdirSync(home);
     // writeConfig(DEFAULT_CONFIGS);

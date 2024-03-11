@@ -13,7 +13,7 @@ describe("lib", () => {
       tables: {
         Flags: [["--help (-h)", "See all available flags."]],
       },
-      description: `Generates TypeScript types for all Minecat modules.`,
+      description: "Generates TypeScript types for all Minecat modules.",
     });
     // expect("lib").toBe("lib");
     // console.dir("2323");

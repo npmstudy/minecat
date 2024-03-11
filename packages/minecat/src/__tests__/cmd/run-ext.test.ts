@@ -1,14 +1,14 @@
-import { describe, expect, it, vi } from "vitest";
-import * as Run from "../../cmd/run-ext";
-import prompt from "prompts";
 import fs from "node:fs";
 import path from "node:path";
 import { join } from "desm";
+import prompt from "prompts";
 import shell from "shelljs";
+import { describe, expect, it, vi } from "vitest";
+import * as Run from "../../cmd/run-ext";
 
 describe("cmd/run.ts", () => {
   it("should call getCurrentCmd return correct", async () => {
-    let cmd = {
+    const cmd = {
       desc: "init a minecat project with pnpm.",
       file: "init",
       usage: "<project-name>",
@@ -54,7 +54,7 @@ describe("cmd/run.ts", () => {
     console.dir("getPrompt");
     console.dir(response);
 
-    expect(response["script"]).toBe("dev");
+    expect(response.script).toBe("dev");
   });
 
   it("should call getPrompt invalid", async () => {
