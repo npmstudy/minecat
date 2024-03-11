@@ -1,5 +1,5 @@
-import { describe, expect, it, vi } from "vitest";
 import { join } from "desm";
+import { describe, expect, it, vi } from "vitest";
 import type { CliConfig } from "../index";
 
 describe("lib", () => {
@@ -18,7 +18,7 @@ describe("lib", () => {
         add: {
           desc: "'Add an integration.'",
           fnName: "ada",
-          alias: 'a',
+          alias: "a",
           flags: {
             "--config <path>": "Specify your config file.",
             "--root <path>": "Specify your project root folder.",
@@ -26,7 +26,7 @@ describe("lib", () => {
         },
         init: {
           desc: "'init an integration.'",
-          alias: 'i',
+          alias: "i",
           flags: {
             "--config1 <path>": "Specify your config file.",
             "--root1 <path>": "Specify your project root folder.",
@@ -51,7 +51,7 @@ describe("lib", () => {
 
     const spy = vi.spyOn(console, "log");
 
-    let argv = [
+    const argv = [
       "/Users/npmstudy/.nvm/versions/node/v20.11.1/bin/node",
       "/Users/npmstudy/workspace/github/minecat/packages/libargs/src/test.ts",
       "add",
@@ -77,7 +77,7 @@ describe("lib", () => {
         add: {
           desc: "'Add an integration.'",
           fnName: "ada",
-          alias: 'a',
+          alias: "a",
           flags: {
             "--config <path>": "Specify your config file.",
             "--root <path>": "Specify your project root folder.",
@@ -93,7 +93,7 @@ describe("lib", () => {
 
     const spy = vi.spyOn(console, "log");
 
-    let argv = [
+    const argv = [
       "/Users/npmstudy/.nvm/versions/node/v20.11.1/bin/node",
       "/Users/npmstudy/workspace/github/minecat/packages/libargs/src/test.ts",
       "a",
@@ -104,5 +104,5 @@ describe("lib", () => {
     await cli(cfg, argv);
 
     expect(spy).toHaveBeenCalled();
-  })
+  });
 });

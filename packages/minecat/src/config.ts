@@ -1,5 +1,5 @@
 import { join } from "desm";
-import type { CliConfig } from 'libargs'
+import type { CliConfig } from "libargs";
 import { version } from "../package.json";
 
 export const config: CliConfig = {

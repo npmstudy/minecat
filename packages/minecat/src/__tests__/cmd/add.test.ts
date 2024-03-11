@@ -1,9 +1,9 @@
-import { describe, expect, it, vi } from "vitest";
-import * as Run from "../../cmd/add";
-import prompt from "prompts";
 import fs from "node:fs";
 import path from "node:path";
 import { join } from "desm";
+import prompt from "prompts";
+import { describe, expect, it, vi } from "vitest";
+import * as Run from "../../cmd/add";
 
 describe("cmd/run.ts", () => {
   it("should call console.dir() when minecat run dev", async () => {
