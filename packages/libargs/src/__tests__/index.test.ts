@@ -3,12 +3,12 @@ import { describe, expect, it, vi } from "vitest";
 import type { CliConfig } from "../index";
 
 describe("lib", () => {
-  it("should render lib", () => {
-    expect("lib").toBe("lib");
-  });
+	it("should render lib", () => {
+		expect("lib").toBe("lib");
+	});
 
-  it("should run cli ok", async () => {
-    const { cli } = await import("../index.js");
+	it("should run cli ok", async () => {
+		const { cli } = await import("../index.js");
 
     const cfg: CliConfig = {
       name: "minecat",
@@ -49,7 +49,7 @@ describe("lib", () => {
       },
     };
 
-    const spy = vi.spyOn(console, "log");
+		const spy = vi.spyOn(console, "log");
 
     const argv = [
       "/Users/npmstudy/.nvm/versions/node/v20.11.1/bin/node",
@@ -62,12 +62,12 @@ describe("lib", () => {
     // argv = [];
     await cli(cfg, argv);
 
-    // expect("lib").toBe("lib");
-    expect(spy).toHaveBeenCalled();
-  });
+		// expect("lib").toBe("lib");
+		expect(spy).toHaveBeenCalled();
+	});
 
-  it("should command alias work", async () => {
-    const { cli } = await import("../index.js");
+	it("should command alias work", async () => {
+		const { cli } = await import("../index.js");
 
     const cfg: CliConfig = {
       name: "minecat",
@@ -91,7 +91,7 @@ describe("lib", () => {
       },
     };
 
-    const spy = vi.spyOn(console, "log");
+		const spy = vi.spyOn(console, "log");
 
     const argv = [
       "/Users/npmstudy/.nvm/versions/node/v20.11.1/bin/node",
