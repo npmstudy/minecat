@@ -1,18 +1,18 @@
-import prompts from "prompts";
-import type { PromptObject } from "prompts";
-import { dclone } from "dclone";
-import shell from "shelljs";
+import fs from "node:fs";
 import os from "node:os";
+import path from "node:path";
+import { dclone } from "dclone";
 import debug from "debug";
 import { colors } from "libargs";
-import { extractGitHubRepoInfo, getDirectories, getConfig } from "../utils";
-import path from "node:path";
-import fs from "node:fs";
+import prompts from "prompts";
+import type { PromptObject } from 'prompts'
+import shell from "shelljs";
+import { extractGitHubRepoInfo, getConfig, getDirectories } from "../utils";
 
 const log = debug("minecat");
 
 export async function init(cmd) {
-	const projectName = cmd.input._.length !== 0 ? cmd.input._[0] : "yourproject";
+  const projectName = cmd.input._.length !== 0 ? cmd.input._[0] : "yourproject";
 
 	const { url, promptInput } = await getParams(projectName);
 
@@ -45,16 +45,16 @@ export async function init(cmd) {
               Usages: cd ${promptInput.newname} && pnpm i && pnpm dev
               -----------------------------------------
             `),
-					),
-				);
-				console.dir("done");
-			} else {
-				console.dir("failed，dir is exist");
-			}
-		} catch (error) {
-			// console.dir(error);
-		}
-	}
+          ),
+        );
+        console.dir("done");
+      } else {
+        console.dir("failed，dir is exist");
+      }
+    } catch (error) {
+      // console.dir(error);
+    }
+  }
 }
 
 /**
@@ -62,11 +62,11 @@ export async function init(cmd) {
  * Testd
  */
 export function mkdirPkgHome(promptInput) {
-	const pkgHome = path.join(
-		os.homedir(),
-		".minecat",
-		`${promptInput.apptype}/`,
-	);
+  const pkgHome = path.join(
+    os.homedir(),
+    ".minecat",
+    `${promptInput.apptype}/`,
+  );
 
 	shell.mkdir("-p", pkgHome);
 }
@@ -141,38 +141,38 @@ export async function cloneAndCp(promptInput, url) {
 	const pkgHome = path.join(os.homedir(), ".minecat", promptInput.apptype, "/");
 	safeMkdir(pkgHome);
 
-	log(`pkgHome = ${pkgHome}`);
+  log(`pkgHome = ${pkgHome}`);
 
-	const { userName, repoName } = getGitInfo(url);
-	log(`userName = ${userName}`);
-	log(`repoName = ${repoName}`);
+  const { userName, repoName } = getGitInfo(url);
+  log(`userName = ${userName}`);
+  log(`repoName = ${repoName}`);
 
 	const projectDir = path.join(process.cwd(), repoName);
 
-	try {
-		safeMkdir(projectDir);
-		// 如果~/.minecat/apptype/repoName不存在，就dcone
-		if (!shell.test("-d", pkgHome + repoName)) {
-			log("如果~/.minecat/apptype/repoName不存在，就dcone");
-			await dclone({
-				dir: `https://github.com/${userName}/${repoName}`,
-			});
+  try {
+    safeMkdir(projectDir);
+    // 如果~/.minecat/apptype/repoName不存在，就dcone
+    if (!shell.test("-d", pkgHome + repoName)) {
+      log("如果~/.minecat/apptype/repoName不存在，就dcone");
+      await dclone({
+        dir: `https://github.com/${userName}/${repoName}`,
+      });
 
-			// 在windows 情况下，不能直接移动
-			// 采用先创建，复制、删除的流程
-			shell.cp("-Rf", projectDir, pkgHome);
-			log(`cp projectDir = ${projectDir}`);
-			log(`cp pkgHome = ${pkgHome}`);
-			shell.rm("-rf", projectDir);
-		}
+      // 在windows 情况下，不能直接移动
+      // 采用先创建，复制、删除的流程
+      shell.cp("-Rf", projectDir, pkgHome);
+      log(`cp projectDir = ${projectDir}`);
+      log(`cp pkgHome = ${pkgHome}`);
+      shell.rm("-rf", projectDir);
+    }
 
 		// 如果~/.minecat/apptype/repoName存在，就走本地缓存
 		// clone local dirname
 		log("clone local dirname");
 		const cloneToLocalDir = path.join(process.cwd(), promptInput.newname);
 
-		log(`cloneToLocalDir before=${pkgHome}${repoName}`);
-		log(`cloneToLocalDir=${cloneToLocalDir}`);
+    log(`cloneToLocalDir before=${pkgHome}${repoName}`);
+    log(`cloneToLocalDir=${cloneToLocalDir}`);
 
 		// 移动
 		shell.cp("-Rf", pkgHome + repoName, cloneToLocalDir);
@@ -185,13 +185,13 @@ export async function cloneAndCp(promptInput, url) {
 export function getGitInfo(url: string) {
 	const { owner, name } = extractGitHubRepoInfo(url);
 
-	const userName = owner;
-	const repoName = name;
+  const userName = owner;
+  const repoName = name;
 
-	if (!userName || !repoName) {
-		console.dir(`extractGitHubRepoInfo error, url=${url}`);
-		return;
-	}
+  if (!userName || !repoName) {
+    console.dir(`extractGitHubRepoInfo error, url=${url}`);
+    return;
+  }
 
 	return { userName, repoName };
 }
@@ -203,14 +203,14 @@ export function movePkgToCache(promptInput) {
 	const pkgHome = path.join(os.homedir(), ".minecat", promptInput.apptype, "/");
 	const cloneToLocalDir = path.join(process.cwd(), promptInput.newname);
 
-	const pkgs = getDirectories(`${cloneToLocalDir}/packages`);
-	for (const i in pkgs) {
-		const pkg = pkgs[i];
-		const pkgDir = path.join(cloneToLocalDir, "packages", pkg);
+  const pkgs = getDirectories(`${cloneToLocalDir}/packages`);
+  for (const i in pkgs) {
+    const pkg = pkgs[i];
+    const pkgDir = path.join(cloneToLocalDir, "packages", pkg);
 
-		shell.cp("-Rf", pkgDir, pkgHome);
-		console.log(`add module at ${pkgHome}${pkg}`);
-	}
+    shell.cp("-Rf", pkgDir, pkgHome);
+    console.log(`add module at ${pkgHome}${pkg}`);
+  }
 }
 
 /**
@@ -222,19 +222,19 @@ export function resetGitInfo(promptInput) {
 	// remove .git && git init & git config
 	shell.rm("-rf", path.join(cloneToLocalDir, ".git"));
 
-	// Run external tool synchronously
-	try {
-		shell.exec("git config --global init.defaultBranch main");
+  // Run external tool synchronously
+  try {
+    shell.exec("git config --global init.defaultBranch main");
 
-		if (
-			shell.exec(
-				`cd ${cloneToLocalDir} && git init && git add . && git commit -am 'init'`,
-			).code !== 0
-		) {
-			shell.echo("Error: git config --global init.defaultBranch main failed: ");
-			shell.exit(1);
-		}
-	} catch (error) {
-		console.dir(error);
-	}
+    if (
+      shell.exec(
+        `cd ${cloneToLocalDir} && git init && git add . && git commit -am 'init'`,
+      ).code !== 0
+    ) {
+      shell.echo("Error: git config --global init.defaultBranch main failed: ");
+      shell.exit(1);
+    }
+  } catch (error) {
+    console.dir(error);
+  }
 }

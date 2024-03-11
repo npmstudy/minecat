@@ -1,39 +1,39 @@
-import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
-import { homedir } from "node:os";
 import fs from "node:fs";
-import fsx from "fs-extra";
+import { homedir } from "node:os";
 import path from "node:path";
 import { join } from "desm";
+import fsx from "fs-extra";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
-	DEFAULT_CONFIGS,
-	extractGitHubRepoInfo,
-	getConfig,
-	getConfigFile,
-	getDirectories,
-	getSafeHomeDir,
-	writeConfig,
-	moveTo,
+  DEFAULT_CONFIGS,
+  extractGitHubRepoInfo,
+  getConfig,
+  getConfigFile,
+  getDirectories,
+  getSafeHomeDir,
+  moveTo,
+  writeConfig,
 } from "../utils";
 
 const home = path.join(homedir(), "/.minecat");
 
 describe("config.ts", () => {
-	beforeEach(() => {
-		vi.restoreAllMocks();
-		if (fs.existsSync(home)) {
-			fs.rmdirSync(home, { recursive: true });
-		}
-	});
-	afterEach(() => {
-		if (fs.existsSync(home)) {
-			fs.rmdirSync(home, { recursive: true });
-		}
-	});
-	it("should resolve correct config file location", () => {
-		const configFile = path.join(homedir(), "/.minecat/config.json");
-		const file = getConfigFile();
-		expect(file).toBe(configFile);
-	});
+  beforeEach(() => {
+    vi.restoreAllMocks();
+    if (fs.existsSync(home)) {
+      fs.rmdirSync(home, { recursive: true });
+    }
+  });
+  afterEach(() => {
+    if (fs.existsSync(home)) {
+      fs.rmdirSync(home, { recursive: true });
+    }
+  });
+  it("should resolve correct config file location", () => {
+    const configFile = path.join(homedir(), "/.minecat/config.json");
+    const file = getConfigFile();
+    expect(file).toBe(configFile);
+  });
 
 	describe("getConfig", () => {
 		it("should write while config does not exist", () => {
@@ -97,13 +97,13 @@ describe("utils/dir.ts", () => {
 });
 
 describe("utils/parse.ts", () => {
-	it("should extractGitHubRepoInfo a git repo return username and reponame", () => {
-		const { owner, name } = extractGitHubRepoInfo(
-			"https://github.com/npmstudy/your-node-v20-monoreopo-project",
-		);
-		expect(owner).toBe("npmstudy");
-		expect(name).toBe("your-node-v20-monoreopo-project");
-	});
+  it("should extractGitHubRepoInfo a git repo return username and reponame", () => {
+    const { owner, name } = extractGitHubRepoInfo(
+      "https://github.com/npmstudy/your-node-v20-monoreopo-project",
+    );
+    expect(owner).toBe("npmstudy");
+    expect(name).toBe("your-node-v20-monoreopo-project");
+  });
 });
 
 describe("utils/shell.ts", () => {

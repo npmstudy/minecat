@@ -63,33 +63,31 @@ export async function cli(cfg: CliConfig, args: string[]) {
 
 	const cmd = resolveCommand(cfg.commands, flags);
 
-	try {
-		if (cmd === "help") {
-			const tables: PrintTable = {
-				Commands: cmds,
-				"Global Flags": flag,
-			};
+  try {
+    if (cmd === "help") {
+      printHelp({
+        version: cfg?.version,
+        commandName: cfg.name,
+        usage: cfg.usage || "[command] [...flags]",
+        headline: cfg.desc,
+        tables: {
+          Commands: cmds,
+          "Global Flags": flag,
+        },
+      });
+      return;
+    }
+    flags._ = flags._.slice(3);
 
-			printHelp({
-				version: cfg?.version,
-				commandName: cfg.name,
-				usage: cfg.usage || "[command] [...flags]",
-				headline: cfg.desc,
-				tables,
-			});
-			return;
-		}
-		flags._ = flags._.slice(3);
-
-		cfg.commands[cmd].name = cmd;
-		cfg.commands[cmd].show = `${cfg.name} ${cmd}`;
-		cfg.commands[cmd].dir = cfg.dir;
-		cfg.commands[cmd].input = flags;
-		debug(cfg.commands[cmd]);
-		await runCommand(cfg.commands[cmd]);
-	} catch (err) {
-		await throwAndExit(cmd, err);
-	}
+    cfg.commands[cmd].name = cmd;
+    cfg.commands[cmd].show = `${cfg.name} ${cmd}`;
+    cfg.commands[cmd].dir = cfg.dir;
+    cfg.commands[cmd].input = flags;
+    debug(cfg.commands[cmd]);
+    await runCommand(cfg.commands[cmd]);
+  } catch (err) {
+    await throwAndExit(cmd, err);
+  }
 }
 
 export * as colors from "kleur/colors";

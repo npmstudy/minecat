@@ -1,6 +1,6 @@
-import prompts from "prompts";
 import debug from "debug";
-import { writeConfig, getConfig } from "../utils";
+import prompts from "prompts";
+import { getConfig, writeConfig } from "../utils";
 const log = debug("minecat");
 
 let cfgJson;
@@ -12,7 +12,7 @@ export async function ada(cmd) {
     console.dir(error);
   }
 
-  if (cmd.input["_"][0] === "list") {
+  if (cmd.input._[0] === "list") {
     console.dir("---------current configuration--------");
     return console.dir(cfgJson);
   }
@@ -34,7 +34,7 @@ export async function ada(cmd) {
       type: "confirm",
       name: "confirm",
       initial: true,
-      message: (prev, values) => `Please confirm ?`,
+      message: (prev, values) => "Please confirm ?",
     },
   ];
 
@@ -43,8 +43,8 @@ export async function ada(cmd) {
     // console.log(response);
     // console.log(cfgJson);
 
-    if (response["newrepo"].indexOf("http") !== -1) {
-      cfgJson[response["newtpl"]] = response["newrepo"];
+    if (response.newrepo.indexOf("http") !== -1) {
+      cfgJson[response.newtpl] = response.newrepo;
       await writeConfig(cfgJson);
 
       console.dir("config ada start!");
@@ -57,4 +57,3 @@ export async function ada(cmd) {
     console.dir(error);
   }
 }
-

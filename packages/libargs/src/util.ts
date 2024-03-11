@@ -1,5 +1,5 @@
-import { bgGreen, bgWhite, black, bold, dim, green } from "kleur/colors";
 import Debug from "debug";
+import { bgGreen, bgWhite, black, bold, dim, green } from "kleur/colors";
 
 const debug = Debug("libargs");
 export type PrintTable = Record<string, [command: string, help: string][]>;

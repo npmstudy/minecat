@@ -1,27 +1,27 @@
-import { describe, expect, it, beforeAll, vi } from "vitest";
+import fs from "node:fs";
+import os from "node:os";
+import path from "node:path";
+import { join } from "desm";
+import prompt from "prompts";
 import shell from "shelljs";
+import { beforeAll, describe, expect, it, vi } from "vitest";
 import {
+  cloneAndCp,
   getGitInfo,
-  mkdirPkgHome,
-  getParams,
   getOriginPkgDir,
+  getParams,
+  init,
+  mkdirPkgHome,
   movePkgToCache,
   resetGitInfo,
-  cloneAndCp,
-  init,
 } from "../../cmd/init";
-import fs from "node:fs";
-import path from "node:path";
-import os from "node:os";
-import prompt from "prompts";
-import { join } from "desm";
 
 describe("cmd/init", () => {
-  beforeAll(function () {
+  beforeAll(() => {
     // console.dir("beforeAll");
   });
 
-  afterAll(function () {
+  afterAll(() => {
     console.dir("afterAll clean unuse folder");
     const dir = join(import.meta.url, "sss");
     // console.dir(dir);
@@ -65,7 +65,7 @@ describe("cmd/init", () => {
       prompt.inject(injected);
 
       // const spy = vi.spyOn(libargs, "cli");
-      let cmd = {
+      const cmd = {
         desc: "init a minecat project with pnpm.",
         file: "init",
         usage: "<project-name>",
@@ -88,7 +88,7 @@ describe("cmd/init", () => {
 
       vi.restoreAllMocks();
     },
-    { timeout: 100000 }
+    { timeout: 100000 },
   );
 
   it("should resetGitInfo ()", () => {
@@ -111,7 +111,7 @@ describe("cmd/init", () => {
 
     // console.dir("text");
     const result = shell.exec(
-      `cd ${cloneToLocalDir} && git init && git remote add origin git@github.com:npmstudy/minecat.git`
+      `cd ${cloneToLocalDir} && git init && git remote add origin git@github.com:npmstudy/minecat.git`,
     );
 
     // console.dir(result);
@@ -187,7 +187,7 @@ describe("cmd/init", () => {
     const repoName = "your-node-v20-monoreopo-project";
 
     const originPkgDir = getOriginPkgDir(
-      "https://github.com/npmstudy/your-node-v20-monoreopo-project"
+      "https://github.com/npmstudy/your-node-v20-monoreopo-project",
     );
 
     expect(originPkgDir).toBe(path.join(process.cwd(), repoName, "packages"));
@@ -195,7 +195,7 @@ describe("cmd/init", () => {
 
   it("should getGitInfo()", () => {
     const { userName, repoName } = getGitInfo(
-      "https://github.com/npmstudy/your-node-v20-monoreopo-project"
+      "https://github.com/npmstudy/your-node-v20-monoreopo-project",
     );
 
     expect(userName).toBe("npmstudy");
@@ -209,8 +209,8 @@ describe("cmd/init", () => {
     // 如果目录存在，就删掉
     const pkgHome = path.join(
       os.homedir(),
-      `.minecat`,
-      promptInput.apptype + "/"
+      ".minecat",
+      `${promptInput.apptype}/`,
     );
 
     if (fs.existsSync(pkgHome) === true) {
@@ -231,7 +231,7 @@ describe("cmd/init", () => {
 
   it("should getParams()", async () => {
     const { userName, repoName } = getGitInfo(
-      "https://github.com/npmstudy/your-node-v20-monoreopo-project"
+      "https://github.com/npmstudy/your-node-v20-monoreopo-project",
     );
 
     const apptype = "Node.js";
@@ -248,7 +248,7 @@ describe("cmd/init", () => {
     // console.dir(promptInput);
 
     expect(url).toBe(
-      "https://github.com/npmstudy/your-node-v20-monoreopo-project"
+      "https://github.com/npmstudy/your-node-v20-monoreopo-project",
     );
     expect(promptInput.apptype).toBe(apptype);
     expect(promptInput.newname).toBe(newname);
@@ -274,14 +274,14 @@ describe("cmd/init", () => {
       const url = "https://github.com/npmstudy/your-node-v20-monoreopo-project";
 
       const { userName, repoName } = getGitInfo(
-        "https://github.com/npmstudy/your-node-v20-monoreopo-project"
+        "https://github.com/npmstudy/your-node-v20-monoreopo-project",
       );
 
       const pkgHome = path.join(
         os.homedir(),
         ".minecat",
         promptInput.apptype,
-        "/"
+        "/",
       );
 
       // 如果目录不存在，就创建
@@ -296,7 +296,7 @@ describe("cmd/init", () => {
       }
 
       expect(
-        fs.existsSync(path.join(pkgHome, "your-node-v20-monoreopo-project"))
+        fs.existsSync(path.join(pkgHome, "your-node-v20-monoreopo-project")),
       ).toBe(true);
 
       // 从your-node-v20-monoreopo-project 被rename为yourproject
@@ -313,6 +313,6 @@ describe("cmd/init", () => {
         fs.rmdirSync(path.join(os.homedir()), { recursive: true });
       }
     },
-    { timeout: 100000 }
+    { timeout: 100000 },
   );
 });

@@ -1,16 +1,16 @@
+import fs from "node:fs";
+import os from "node:os";
+import path from "node:path";
+import prompt from "prompts";
 import { describe, expect, it, vi } from "vitest";
 import { ada } from "../../cmd/config";
-import { writeConfig, DEFAULT_CONFIGS } from "../../utils";
-import prompt from "prompts";
-import fs from "node:fs";
-import path from "node:path";
-import os from "node:os";
+import { DEFAULT_CONFIGS, writeConfig } from "../../utils";
 
 describe("cmd/config.ts", () => {
   it("should call console.dir() when minecat config list", async () => {
     const spy = vi.spyOn(console, "dir");
 
-    let cmd = {
+    const cmd = {
       desc: "init a minecat project with pnpm.",
       file: "init",
       usage: "<project-name>",
@@ -38,10 +38,10 @@ describe("cmd/config.ts", () => {
     const sleep = (delay) =>
       new Promise((resolve) => setTimeout(resolve, delay));
 
-    const cfgFile = path.join(os.homedir(), `.minecat`, "/config.json");
+    const cfgFile = path.join(os.homedir(), ".minecat", "/config.json");
 
-    if (!fs.existsSync(path.join(os.homedir(), `.minecat`))) {
-      fs.mkdirSync(path.join(os.homedir(), `.minecat`), { recursive: true });
+    if (!fs.existsSync(path.join(os.homedir(), ".minecat"))) {
+      fs.mkdirSync(path.join(os.homedir(), ".minecat"), { recursive: true });
     }
     // 不管文件里是啥，写入默认配置
     writeConfig(DEFAULT_CONFIGS);
@@ -53,7 +53,7 @@ describe("cmd/config.ts", () => {
     // console.dir(cfg1);
 
     expect(cfg1["Node.js"]).toBe(
-      "https://github.com/npmstudy/your-node-v20-monoreopo-project"
+      "https://github.com/npmstudy/your-node-v20-monoreopo-project",
     );
 
     const injected = [
@@ -65,7 +65,7 @@ describe("cmd/config.ts", () => {
     // 准备测试数据
     prompt.inject(injected);
 
-    let cmd = {
+    const cmd = {
       desc: "config a minecat project with pnpm.",
       file: "config",
       usage: "<project-name>",
