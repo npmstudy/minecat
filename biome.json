@@ -13,7 +13,8 @@
       "example/**/*.ts",
       "packages/**/*.js",
       "example/**/*.js"
-    ]
+    ],
+    "ignore": ["node_modules", "dist"]
   },
   "linter": {
     "enabled": true,
