@@ -8,40 +8,62 @@ import shell from "shelljs";
 
 import {
   getPrompts,
-  moveTplToDestination,
   renamePackageName,
   getProjectType,
 } from "../../cmd/add-ext";
 
 describe("cmd/add.ts", () => {
-  it("should call getPrompts correct", async () => {
-    vi.restoreAllMocks();
-    const injected = ["newname", "lib", true];
+   it("should call renamePackageName correct", async () => {
+     const spy = vi
+       .spyOn(process, "cwd")
+       .mockReturnValue(join(import.meta.url, "./fixtures/run"));
 
-    // 准备测试数据
-    prompt.inject(injected);
+     const newname = "minecat-newname";
 
-    const { response } = await getPrompts("Node.js", "yourmodule");
+     const from = path.join(process.cwd(), "/packages/", newname);
+     fs.mkdirSync(from, { recursive: true });
 
-    console.dir("getPrompt");
-    console.dir(response);
+     const configFile = path.join(
+       process.cwd(),
+       "/packages/",
+       newname,
+       "/package.json"
+     );
 
-    expect(response["newname"]).toBe("newname");
-  });
+     if (!fs.existsSync(configFile)) {
+       fs.writeFileSync(
+         path.join(configFile),
+         JSON.stringify({ name: "minecat" }, null, 4)
+       );
+     }
 
-  // it("should call getPrompts correct", async () => {
-  //   const injected = ["newname", "lib", true];
+     renamePackageName(newname);
 
-  //   // 准备测试数据
-  //   prompt.inject(injected);
+     //  console.dir("getPrompt");
+     //  console.dir(response);
 
-  //   const response = await getPrompts("newname");
+     const res = JSON.parse(fs.readFileSync(configFile).toString());
 
-  //   console.dir("getPrompt");
-  //   console.dir(response);
+     expect(res["name"]).toBe("minecat-newname");
 
-  //   expect(response["script"]).toBe("newname");
-  // });
+     // 清理
+     fs.rmdirSync(from, { recursive: true });
+   });
+
+   it("should call getPrompts correct", async () => {
+     vi.restoreAllMocks();
+     const injected = ["newname", "lib", true];
+
+     // 准备测试数据
+     prompt.inject(injected);
+
+     const { response } = await getPrompts("Node.js", "yourmodule");
+
+     //  console.dir("getPrompt");
+     //  console.dir(response);
+
+     expect(response["newname"]).toBe("newname");
+   });
 
   it("should call getProjectType return correct", async () => {
     const spy = vi

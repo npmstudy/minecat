@@ -75,3 +75,6 @@ test/e2e/mmi/dist/
 
 demo
 packages/minecat/src/__tests__/cmd/sss/
+
+# v8 coverage cache in windows
+v8-compile-cache-*/

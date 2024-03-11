@@ -5,7 +5,8 @@
   "main": "index.js",
   "private": true,
   "scripts": {
-    "dev": "tsx watch src/app.ts"
+    "dev": "tsx watch src/app.ts",
+    "minecat": "minecat"
   },
   "devDependencies": {
     "@types/koa": "^2.13.9",
@@ -14,6 +15,6 @@
     "typescript": "^4.9.5"
   },
   "dependencies": {
-    "minecat": "workspace:*"
+    "minecat": "workspace:minecat@*"
   }
 }
