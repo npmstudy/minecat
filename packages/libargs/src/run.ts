@@ -1,9 +1,9 @@
 import { join } from "node:path";
 import os from "node:os";
 import { pathToFileURL } from "node:url";
-import { printHelp } from "./util";
 import type { PrintTable } from "./util";
 import Debug from "debug";
+import type { Command } from "./types";
 
 const debug = Debug("libargs");
 /**
@@ -11,7 +11,7 @@ const debug = Debug("libargs");
  * NOTE: This function provides no error handling, so be sure
  * to present user-friendly error output where the fn is called.
  **/
-export async function runCommand(cmd) {
+export async function runCommand(cmd: Command) {
 	// console.dir(cmd);
 	if (!cmd.name) {
 		// No command handler matched! This is unexpected.
@@ -52,7 +52,7 @@ export async function runCommand(cmd) {
 		debug(fn);
 		debug(cmd.fnName || "default");
 		debug(fn[cmd.fnName || "default"]);
-		await fn[cmd.fnName || "default"](cmd);
+		await fn[cmd.fnName || "default"](cmd, process.cwd());
 	} catch (error) {
 		console.dir(error);
 	}
