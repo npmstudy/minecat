@@ -13,16 +13,16 @@ import path from "path";
 
 const log = debug("minecat");
 
-export function renamePackageName(response) {
+export function renamePackageName(newname) {
   try {
     const configFile = path.join(
       process.cwd(),
       "/packages/",
-      response["newname"],
+      newname,
       "/package.json"
     );
     const json = JSON.parse(fs.readFileSync(configFile).toString());
-    json.name = response["newname"];
+    json.name = newname;
     fs.writeFileSync(configFile, JSON.stringify(json, null, 4));
   } catch (error) {
     throw error;

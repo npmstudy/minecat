@@ -28,14 +28,15 @@ export async function add(cmd) {
     return;
   }
 
+  const newname = response["newname"];
   // 如果newname不存在，就拷贝tpl到newname
   const from = path.join(pkgHome, "/", response.tpl);
-  const to = path.join(process.cwd(), "/packages/", response["newname"]);
+  const to = path.join(process.cwd(), "/packages/", newname);
 
   moveTo(from, to);
 
   // rename package name
-  renamePackageName(response);
+  renamePackageName(newname);
 
   console.dir("done");
 }
