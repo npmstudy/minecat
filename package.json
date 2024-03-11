@@ -21,7 +21,7 @@
     "ci:version": "changeset version",
     "ci:publish": "changeset publish",
     "example": "npm run build && pnpm -F example dev",
-    "lint": "biome check . --apply-unsafe"
+    "lint": "biome check . --apply"
   },
   "license": "MIT",
   "devDependencies": {
