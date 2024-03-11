@@ -1,13 +1,15 @@
 import { defineConfig } from "tsup";
 
-export default defineConfig((options) => ({
-  entry: "src/index.ts",
-  sourcemap: !options.watch,
-  minify: !options.watch,
-  dts: true,
-  clean: true,
-  format: ["esm", "cjs"],
-  loader: {
-    ".js": "jsx",
-  },
-}));
+export default defineConfig((options) => {
+  return {
+    entry: "src/index.ts",
+    sourcemap: true,
+    minify: !options.watch,
+    dts: true,
+    clean: true,
+    format: ["esm", "cjs"],
+    loader: {
+      ".js": "jsx",
+    },
+  };
+});
