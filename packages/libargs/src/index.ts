@@ -3,7 +3,7 @@ import Debug from "debug";
 import { runCommand } from "./run";
 import { printHelp } from "./util";
 import type { PrintTable } from "./util";
-import type { CliConfig } from "./types";
+import type { CliConfig, CommandType } from "./types";
 
 const debug = Debug("libargs");
 
@@ -11,7 +11,7 @@ const debug = Debug("libargs");
 function resolveCommand(
 	commands: CliConfig["commands"],
 	flags: yargs.Arguments,
-) {
+): CommandType {
 	const clonedCommands = { ...commands };
 	const cmdKeys = new Set(Object.keys(clonedCommands));
 	const cmdAlias = new Set(Object.values(clonedCommands).map((it) => it.alias));

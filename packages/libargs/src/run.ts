@@ -18,12 +18,6 @@ export async function runCommand(cmd) {
 		throw new Error(`Error running ${cmd} -- no command found.`);
 	}
 
-	if (cmd.name === "help") {
-		console.dir("help");
-		return;
-	}
-
-	const input = cmd.input;
 	let flag: [string, string][];
 	let table: PrintTable = {};
 
@@ -39,20 +33,6 @@ export async function runCommand(cmd) {
 		};
 	}
 
-	cmd.help = () => {
-		printHelp({
-			version: cmd?.version,
-			commandName: cmd.show,
-			usage: cmd.usage || "[...flags]",
-			tables: table,
-			description: `  ${cmd.desc}`,
-		});
-	};
-
-	if (input?.help || input?.h) {
-		cmd.help();
-		return 0;
-	}
 	// These commands can run directly without parsing the user config.
 	// 当cmd目录下，有同名目录，可能会有坑
 	const isWin = os.platform() === "win32";
