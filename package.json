@@ -1,5 +1,5 @@
 {
-  "name": "minecat",
+  "name": "minecat-monorepo",
   "private": true,
   "minecat": {
     "type": "Node.js"

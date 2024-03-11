@@ -1,6 +1,6 @@
 {
   "name": "minecat",
-  "version": "0.7.7",
+  "version": "0.7.8",
   "description": "a monorepo cli tool for Node.js、React",
   "bin": {
     "minecat": "dist/cli.js"
@@ -12,8 +12,19 @@
   "type": "module",
   "author": "npmstudy <npmstudy@qq.com>",
   "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
+  "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": {
+        "import": "./dist/index.d.ts",
+        "require": "./dist/index.d.cts"
+      },
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "default": "./dist/index.js"
+    }
+  },
   "files": [
     "dist",
     "postinstall.js"
