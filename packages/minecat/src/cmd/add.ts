@@ -1,16 +1,14 @@
 import debug from "debug";
+import path from "path";
 
 import type {
   MinecatPackageJson,
   MinecatProjectType,
 } from "../types/package-json";
 
-import {
-  getPrompts,
-  moveTplToDestination,
-  renamePackageName,
-  getProjectType,
-} from "./add-ext";
+import { getPrompts, renamePackageName, getProjectType } from "./add-ext";
+
+import { moveTo } from "../utils";
 
 const log = debug("minecat");
 
@@ -31,7 +29,10 @@ export async function add(cmd) {
   }
 
   // 如果newname不存在，就拷贝tpl到newname
-  moveTplToDestination(pkgHome, response);
+  const from = path.join(pkgHome, "/", response.tpl);
+  const to = path.join(process.cwd(), "/packages/", response["newname"]);
+
+  moveTo(from, to);
 
   // rename package name
   renamePackageName(response);

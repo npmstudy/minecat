@@ -8,7 +8,6 @@ import shell from "shelljs";
 
 import {
   getPrompts,
-  moveTplToDestination,
   renamePackageName,
   getProjectType,
 } from "../../cmd/add-ext";

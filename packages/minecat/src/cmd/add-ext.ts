@@ -13,31 +13,6 @@ import path from "path";
 
 const log = debug("minecat");
 
-// let proj_package_json: MinecatPackageJson;
-// let proj_script_names: Array<keyof MinecatPackageJson["scripts"]>;
-// let pkg_list = {};
-// let pkg_names = [];
-
-export function moveTplToDestination(pkgHome, response) {
-  // 先判断newname是否存在
-  log(
-    "cp from " +
-      pkgHome +
-      response.tpl +
-      " to " +
-      process.cwd() +
-      "/packages/" +
-      response["newname"]
-  );
-
-  // 如果newname不存在，就拷贝tpl到newname
-  shell.cp(
-    "-Rf",
-    path.join(pkgHome, "/", response.tpl),
-    path.join(process.cwd(), "/packages/", response["newname"])
-  );
-}
-
 export function renamePackageName(response) {
   try {
     const configFile = path.join(
