@@ -21,10 +21,15 @@
     "rules": {
       "recommended": true,
       "suspicious": {
-        "//comment": "turn on these two after refactoring",
         "noImplicitAnyLet": "off",
         "noExplicitAny": "off"
       }
+    }
+  },
+  "javascript": {
+    "formatter": {
+      "semicolons": "always",
+      "quoteStyle": "double"
     }
   }
 }
