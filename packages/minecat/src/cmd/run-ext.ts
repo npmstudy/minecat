@@ -65,9 +65,6 @@ export async function getPrompt(currentCmd, proj_script_names) {
 }
 
 export function getProjectScriptsName(): any {
-  let proj_type;
-  let proj_script_names;
-
   const json = JSON.parse(
     fs.readFileSync(`${process.cwd()}/package.json`).toString(),
   );
@@ -76,9 +73,10 @@ export function getProjectScriptsName(): any {
     console.log("please check this is a minecat project");
     return;
   }
+
   // proj_package_json = json;
-  proj_type = json?.minecat?.type;
-  proj_script_names = Object.keys(json.scripts);
+  const proj_type = json?.minecat?.type;
+  const proj_script_names = Object.keys(json.scripts);
   // console.dir(proj_script_names);
   log(`this is a minecat project with type = ${json.minecat.type}`);
 

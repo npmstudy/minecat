@@ -2,7 +2,6 @@ import fs from "node:fs";
 import { homedir } from "node:os";
 import debug from "debug";
 import prompts from "prompts";
-import shell from "shelljs";
 import type {
   MinecatPackageJson,
   MinecatProjectType,
@@ -13,20 +12,16 @@ import path from "node:path";
 
 const log = debug("minecat");
 
-export function renamePackageName(newname) {
-  try {
-    const configFile = path.join(
-      process.cwd(),
-      "/packages/",
-      newname,
-      "/package.json",
-    );
-    const json = JSON.parse(fs.readFileSync(configFile).toString());
-    json.name = newname;
-    fs.writeFileSync(configFile, JSON.stringify(json, null, 4));
-  } catch (error) {
-    throw error;
-  }
+export function renamePackageName(newname: string) {
+  const configFile = path.join(
+    process.cwd(),
+    "/packages/",
+    newname,
+    "/package.json",
+  );
+  const json = JSON.parse(fs.readFileSync(configFile).toString());
+  json.name = newname;
+  fs.writeFileSync(configFile, JSON.stringify(json, null, 4));
 }
 
 export function getProjectType(): MinecatProjectType {
