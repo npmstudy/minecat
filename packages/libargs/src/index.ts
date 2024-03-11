@@ -14,7 +14,7 @@ export * as colors from "kleur/colors";
 /** Determine which command the user requested */
 function resolveCommand(
   commands: CliConfig["commands"],
-  flags: yargs.Arguments
+  flags: yargs.Arguments,
 ) {
   const clonedCommands = { ...commands };
   const cmdKeys = new Set(Object.keys(clonedCommands));
@@ -54,6 +54,7 @@ interface Command {
   desc: string;
   show?: string;
   dir?: string;
+  input?: yargs.Arguments;
   usage?: string;
   fnName?: string;
   file?: string;
@@ -93,14 +94,15 @@ export async function cli(cfg: CliConfig, args: string[]) {
   // console.dir(cfg.commands[cmd]);
   const cmds: [string, string][] = Object.keys(cfg.commands).map((cmd) => {
     return [
-      cfg.commands[cmd]["alias"] ? `${cfg.commands[cmd]["alias"]},${cmd}` : cmd,
-      cfg.commands[cmd]["desc"],
+      cfg.commands[cmd].alias ? `${cfg.commands[cmd].alias},${cmd}` : cmd,
+      cfg.commands[cmd].desc,
     ];
   });
 
-  const flag: [string, string][] = Object.keys(cfg.flags).map(function (f) {
-    return [f, cfg.flags[f]];
-  });
+  const flag: [string, string][] = Object.keys(cfg.flags).map((f) => [
+    f,
+    cfg.flags[f],
+  ]);
 
   const table: PrintTable = {
     Commands: cmds,
@@ -110,7 +112,7 @@ export async function cli(cfg: CliConfig, args: string[]) {
   const cmd = resolveCommand(cfg.commands, flags);
 
   try {
-    if (cmd == "help") {
+    if (cmd === "help") {
       printHelp({
         version: cfg?.version,
         commandName: cfg.name,
@@ -122,16 +124,15 @@ export async function cli(cfg: CliConfig, args: string[]) {
         },
       });
       return;
-    } else {
-      flags._ = flags._.slice(3);
-
-      cfg.commands[cmd].name = cmd;
-      cfg.commands[cmd].show = `${cfg.name} ${cmd}`;
-      cfg.commands[cmd].dir = cfg.dir;
-      cfg.commands[cmd]["input"] = flags;
-      debug(cfg.commands[cmd]);
-      await runCommand(cfg.commands[cmd]);
     }
+    flags._ = flags._.slice(3);
+
+    cfg.commands[cmd].name = cmd;
+    cfg.commands[cmd].show = `${cfg.name} ${cmd}`;
+    cfg.commands[cmd].dir = cfg.dir;
+    cfg.commands[cmd].input = flags;
+    debug(cfg.commands[cmd]);
+    await runCommand(cfg.commands[cmd]);
   } catch (err) {
     await throwAndExit(cmd, err);
   }

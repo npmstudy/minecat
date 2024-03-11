@@ -1,7 +1,7 @@
 import { readFileSync, writeFileSync } from "node:fs";
-import { getSafeHomeDir } from "./dir";
-import type { MinecatConfig } from "../types/minecat-config";
 import path from "node:path";
+import type { MinecatConfig } from "../types/minecat-config";
+import { getSafeHomeDir } from "./dir";
 
 export const DEFAULT_CONFIGS: MinecatConfig = {
   "Node.js": "https://github.com/npmstudy/your-node-v20-monoreopo-project",
@@ -10,7 +10,7 @@ export const DEFAULT_CONFIGS: MinecatConfig = {
 };
 
 export function getConfigFile(): string {
-  return path.join(getSafeHomeDir(), `/config.json`);
+  return path.join(getSafeHomeDir(), "/config.json");
 }
 
 export function getConfig() {
@@ -18,15 +18,14 @@ export function getConfig() {
 
   try {
     return JSON.parse(readFileSync(configFile).toString());
-  } catch (error) {    
+  } catch (error) {
     // MacOS errno = -2, WinOS error = -405
     if (error.errno === -2 || error.errno === -4058) {
       // if config.json is not exist, write default config to it.
       writeConfig(DEFAULT_CONFIGS);
       return DEFAULT_CONFIGS;
-    } else {
-      throw error;
     }
+    throw error;
   }
 }
 

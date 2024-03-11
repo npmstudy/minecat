@@ -1,9 +1,9 @@
-import { describe, expect, it, vi } from "vitest";
-import * as Run from "../../cmd/run";
-import prompt from "prompts";
 import fs from "node:fs";
 import path from "node:path";
 import { join } from "desm";
+import prompt from "prompts";
+import { describe, expect, it, vi } from "vitest";
+import * as Run from "../../cmd/run";
 
 describe("cmd/run.ts", () => {
   it("should call console.dir() when minecat run dev", async () => {
@@ -14,7 +14,7 @@ describe("cmd/run.ts", () => {
       proj_script_names: ["build", "dev"],
     });
 
-    let cmd = {
+    const cmd = {
       desc: "init a minecat project with pnpm.",
       file: "init",
       usage: "<project-name>",
@@ -38,7 +38,7 @@ describe("cmd/run.ts", () => {
   it("should call console.dir() when minecat run", async () => {
     const spy = vi.spyOn(console, "dir");
 
-    let cmd = {
+    const cmd = {
       desc: "init a minecat project with pnpm.",
       file: "init",
       usage: "<project-name>",
@@ -68,7 +68,7 @@ describe("cmd/run.ts", () => {
     // 准备测试数据
     prompt.inject(injected);
 
-    let cmd = {
+    const cmd = {
       desc: "config a minecat project with pnpm.",
       file: "config",
       usage: "<project-name>",
@@ -98,7 +98,7 @@ describe("cmd/run.ts", () => {
     // 准备测试数据
     prompt.inject(injected);
 
-    let cmd = {
+    const cmd = {
       desc: "config a minecat project with pnpm.",
       file: "config",
       usage: "<project-name>",

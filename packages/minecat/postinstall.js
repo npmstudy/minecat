@@ -5,7 +5,7 @@ import { homedir } from "node:os";
 
 // import shell from "shelljs";
 export function getSafeHome() {
-  const home = homedir + `/.minecat`;
+  const home = `${homedir}/.minecat`;
   // if (!shell.test("-d", home)) {
   //   shell.mkdir("-p", home);
   // }
@@ -24,7 +24,7 @@ export function writeConfig(cfg) {
 }
 
 export function getConfigFile() {
-  return getSafeHome() + `/config.json`;
+  return `${getSafeHome()}/config.json`;
 }
 
 export function getConfig() {
@@ -37,9 +37,8 @@ export function getConfig() {
       // if config.json is not exist， write default config to it.
       writeConfig(defaultCfg);
       return defaultCfg;
-    } else {
-      throw error;
     }
+    throw error;
   }
 }
 

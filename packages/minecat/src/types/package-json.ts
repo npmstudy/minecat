@@ -1,4 +1,4 @@
-import { JsonObject, PackageJson } from "type-fest";
+import type { JsonObject, PackageJson } from "type-fest";
 
 export interface MinecatPackageJson extends PackageJson {
   minecat: MinecatProjectConfig;

@@ -1,10 +1,10 @@
+import os from "node:os";
+import { join } from "node:path";
+import { pathToFileURL } from "node:url";
+import Debug from "debug";
 import yargs from "yargs-parser";
-import { join } from 'path';
-import os from "os";
-import { pathToFileURL } from "url";
 import { printHelp } from "./util";
 import type { PrintTable } from "./util";
-import Debug from "debug";
 
 const debug = Debug("libargs");
 /**
@@ -29,9 +29,7 @@ export async function runCommand(cmd) {
   let table: PrintTable = {};
 
   if (cmd.flags) {
-    flag = Object.keys(cmd.flags).map(function (f) {
-      return [f, cmd.flags[f]];
-    });
+    flag = Object.keys(cmd.flags).map((f) => [f, cmd.flags[f]]);
 
     table = {
       Flags: flag,
@@ -42,7 +40,7 @@ export async function runCommand(cmd) {
     };
   }
 
-  cmd.help = function () {
+  cmd.help = () => {
     printHelp({
       version: cmd?.version,
       commandName: cmd.show,
@@ -55,30 +53,27 @@ export async function runCommand(cmd) {
   if (input?.help || input?.h) {
     cmd.help();
     return 0;
+  }
+  // These commands can run directly without parsing the user config.
+  // 当cmd目录下，有同名目录，可能会有坑
+  const isWin = os.platform() === "win32";
+  let moduleURL;
+  if (isWin) {
+    moduleURL = pathToFileURL(join(cmd.dir, `${cmd.file || cmd.name}.js`)).href;
   } else {
-    // These commands can run directly without parsing the user config.
-    // 当cmd目录下，有同名目录，可能会有坑
-    var isWin = os.platform() === "win32";
-    var moduleURL;
-    if (isWin) {
-      moduleURL = pathToFileURL(
-        join(cmd.dir, `${cmd.file || cmd.name}.js`)
-      ).href;
-    } else {
-      moduleURL = join(
-        cmd.dir.replace("src", "dist"),
-        `${cmd.file || cmd.name}.js`
-      );
-    }
+    moduleURL = join(
+      cmd.dir.replace("src", "dist"),
+      `${cmd.file || cmd.name}.js`,
+    );
+  }
 
-    try {
-      const fn = await import(moduleURL);
-      debug(fn);
-      debug(cmd["fnName"] || "default");
-      debug(fn[cmd["fnName"] || "default"]);
-      await fn[cmd["fnName"] || "default"](cmd);
-    } catch (error) {
-      console.dir(error);
-    }
+  try {
+    const fn = await import(moduleURL);
+    debug(fn);
+    debug(cmd.fnName || "default");
+    debug(fn[cmd.fnName || "default"]);
+    await fn[cmd.fnName || "default"](cmd);
+  } catch (error) {
+    console.dir(error);
   }
 }

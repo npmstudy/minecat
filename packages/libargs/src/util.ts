@@ -1,5 +1,5 @@
-import { bgGreen, bgWhite, black, bold, dim, green } from "kleur/colors";
 import Debug from "debug";
+import { bgGreen, bgWhite, black, bold, dim, green } from "kleur/colors";
 
 const debug = Debug("libargs");
 export type PrintTable = Record<string, [command: string, help: string][]>;
@@ -24,7 +24,7 @@ export function printHelp({
   const title = (label: string) => `  ${bgWhite(black(` ${label} `))}`;
   const table = (
     rows: [string, string][],
-    { padding }: { padding: number }
+    { padding }: { padding: number },
   ) => {
     const split = process.stdout.columns < 60;
     let raw = "";
@@ -35,20 +35,20 @@ export function printHelp({
       } else {
         raw += `${`${row[0]}`.padStart(padding)}`;
       }
-      raw += "  " + dim(row[1]) + "\n";
+      raw += `  ${dim(row[1])}\n`;
     }
 
     return raw.slice(0, -1); // remove latest \n
   };
 
-  let message = [];
+  const message = [];
 
   if (headline) {
     message.push(
       linebreak(),
       `  ${bgGreen(black(` ${commandName} `))} ${
         version ? green(`v${version}`) : ""
-      } ${headline}`
+      } ${headline}`,
     );
   }
 
@@ -62,13 +62,13 @@ export function printHelp({
     }
     const tableEntries = Object.entries(tables);
     const padding = Math.max(
-      ...tableEntries.map(([, rows]) => calculateTablePadding(rows))
+      ...tableEntries.map(([, rows]) => calculateTablePadding(rows)),
     );
     for (const [tableTitle, tableRows] of tableEntries) {
       message.push(
         linebreak(),
         title(tableTitle),
-        table(tableRows, { padding })
+        table(tableRows, { padding }),
       );
     }
   }
@@ -78,5 +78,5 @@ export function printHelp({
   }
 
   // eslint-disable-next-line no-console
-  console.log(message.join("\n") + "\n");
+  console.log(`${message.join("\n")}\n`);
 }
