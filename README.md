@@ -36,10 +36,14 @@
 
 See [Contributing Guide](CONTRIBUTING.md).
 
-## License
+## Stats
 
-MIT @ npmstudy
+![Alt](https://repobeats.axiom.co/api/embed/2a82dfb27f519663603eb279c18f4d513a290fb0.svg "Repobeats analytics image")
 
 ## Star History
 
 [![Star History Chart](https://api.star-history.com/svg?repos=npmstudy/minecat&type=Date)](https://star-history.com/#npmstudy/minecat&Date)
+
+## License
+
+MIT @ npmstudy
